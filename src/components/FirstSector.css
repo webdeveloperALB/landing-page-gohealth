@@ -1,19 +1,15 @@
-/* General Styles */
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: linear-gradient(to top, white 18.5%, #0e4354 18.5%, #08171c 100%);
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-  }
-  
+  font-family: Arial, sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
   .landing-container {
+    background: linear-gradient(to top, white 14%, #0e4354 14%, #08171c 100%);
     display: flex;
     align-items: center;
     flex-direction: column;
     justify-content: center;
-    margin: 7rem 4rem !important;
+    padding: 7rem 4rem 4rem 4rem !important;
   }
 
   .landing-container2 {
