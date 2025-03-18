@@ -154,4 +154,162 @@
   }
 }
 
+@media (max-width: 1200px) {
+  .main-nav {
+    padding: 1rem 1.5rem;
+  }
+  
+  .nav-section {
+    gap: 1.5rem;
+  }
+  
+  .nav-link {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .top-stripe {
+    padding: 8px;
+  }
+  
+  .emergency-text {
+    font-size: 1.2rem;
+  }
+  
+  .nav-logo {
+    height: 45px;
+  }
+  
+  .cta-button {
+    padding: 0.6rem 1.5rem;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-nav {
+    flex-wrap: wrap;
+    padding: 1rem;
+    gap: 1rem;
+  }
+  
+  .nav-section {
+    gap: 1rem;
+    flex: auto;
+  }
+  
+  .nav-link {
+    font-size: 14px;
+    margin: 0 0.3rem;
+    padding: 0.3rem 0 0.8rem 0;
+  }
+  
+  .nav-logo {
+    height: 40px;
+    position: static;
+    transform: none;
+  }
+  
+  .center-section {
+    order: -1;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .left-section,
+  .right-section {
+    justify-content: center;
+  }
+  
+  .cta-button {
+    padding: 0.5rem 1.2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .top-stripe {
+    padding: 6px 10px;
+  }
+  
+  .emergency-icon {
+    width: 12px;
+    height: 12px;
+  }
+  
+  .emergency-text {
+    font-size: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 80%;
+  }
+  
+  .main-nav {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.5rem;
+  }
+  
+  .nav-section {
+    width: 100%;
+    justify-content: center;
+    gap: 0.8rem;
+    padding: 0.2rem 0;
+  }
+  
+  .nav-link {
+    font-size: 13px;
+    padding: 0.2rem 0 0.6rem 0;
+  }
+  
+  .nav-logo {
+    height: 35px;
+  }
+  
+  .cta-button {
+    font-size: 13px;
+    padding: 0.4rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .top-stripe {
+    padding: 5px 8px;
+  }
+  
+  .emergency-text {
+    font-size: 0.9rem;
+  }
+  
+  .nav-link {
+    font-size: 12px;
+    margin: 0 0.2rem;
+  }
+  
+  .nav-logo {
+    height: 30px;
+  }
+  
+  .cta-button {
+    font-size: 12px;
+    padding: 0.3rem 0.8rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .emergency-text {
+    font-size: 0.8rem;
+  }
+  
+  .nav-link {
+    font-size: 11px;
+  }
+  
+  .cta-button {
+    font-size: 11px;
+    padding: 0.3rem 0.6rem;
+  }
+}
+
 
