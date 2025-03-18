@@ -47,6 +47,11 @@
   .dental-service-icon-container {
     margin-bottom: 20px;
   }
+
+  .mask-image2 {
+    width: 50%;
+    height: auto;
+  }
   
   .dental-service-icon {
     background: radial-gradient(50% 50% at 50% 50%, rgba(0, 73, 153, 0) 45.83%, rgba(0, 73, 153, 0.11) 100%);

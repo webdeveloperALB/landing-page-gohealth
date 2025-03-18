@@ -14,7 +14,7 @@ const FifthSection = () => {
         <div className="dental-service-card">
           <div className="dental-service-icon-container">
             <div className="dental-service-icon">
-            <img src="/1.svg" alt="Background mask" className="mask-image" />
+            <img src="/1.svg" alt="Background mask" className="mask-icon" />
             </div>
           </div>
           <h2 className="dental-service-title">Impianti Dentali</h2>
@@ -30,7 +30,7 @@ const FifthSection = () => {
         <div className="dental-service-card">
           <div className="dental-service-icon-container">
             <div className="dental-service-icon">
-            <img src="/2.svg" alt="Background mask" className="mask-image" />
+            <img src="/2.svg" alt="Background mask" className="mask-icon" />
             </div>
           </div>
           <h2 className="dental-service-title">Corona Dentale</h2>
@@ -46,7 +46,7 @@ const FifthSection = () => {
         <div className="dental-service-card">
           <div className="dental-service-icon-container">
             <div className="dental-service-icon">
-            <img src="/3.svg" alt="Background mask" className="mask-image" />
+            <img src="/3.svg" alt="Background mask" className="mask-icon" />
             </div>
           </div>
           <h2 className="dental-service-title">Faccette Dentali</h2>
@@ -62,7 +62,7 @@ const FifthSection = () => {
         <div className="dental-service-card">
           <div className="dental-service-icon-container">
             <div className="dental-service-icon">
-            <img src="/4.svg" alt="Background mask" className="mask-image" />
+            <img src="/4.svg" alt="Background mask" className="mask-icon" />
             </div>
           </div>
           <h2 className="dental-service-title">Ponte Dentale</h2>
