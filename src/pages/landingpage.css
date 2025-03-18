@@ -4,13 +4,15 @@ body {
   margin: 0;
   padding: 0;
   background: linear-gradient(272.32deg, #08171c -5.68%, #0e4354 100.56%);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
 .landing-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 7rem 2rem !important;
+  margin: 7rem 4rem !important;
 }
 
 .landing-header {
@@ -136,9 +138,9 @@ body {
 
 .landing-content__image img {
   margin-top: 50px;
-  width: 100%;
+  width: 90%;
   max-width: 600px;
-  height: auto;
+  height: 100%;
   display: block;
 }
  .image-label {
@@ -159,5 +161,5 @@ body {
 
 .dopo {
   bottom: 30px;
-  right: 20px;
+  right: 80px;
 }
