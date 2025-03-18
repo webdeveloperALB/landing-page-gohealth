@@ -1,0 +1,140 @@
+.dental-services-container {
+    margin: 0 auto;
+    padding: 40px 20px;
+    font-family: "Inter", sans-serif;
+  }
+  
+  .dental-services-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .dental-services-subtitle {
+    color: #0f3b6c;
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: 0.5px;
+  }
+  
+  .dental-services-title {
+    color: #0f3b6c;
+    font-size: 36px;
+    font-weight: 700;
+    margin: 10px 0 0;
+  }
+  
+  .dental-services-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+  }
+  
+  .dental-service-card {
+    background-color: #f0faf9;
+    border-radius: 24px;
+    padding: 30px;
+    width: 100%;
+    max-width: 350px;
+    min-height: 350px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    border: 1px solid #1BA69E
+  }
+  
+  .dental-service-icon-container {
+    margin-bottom: 20px;
+  }
+  
+  .dental-service-icon {
+    background: radial-gradient(50% 50% at 50% 50%, rgba(0, 73, 153, 0) 45.83%, rgba(0, 73, 153, 0.11) 100%);
+
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .dental-service-title {
+    color: #0f3b6c;
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 15px;
+  }
+  
+  .dental-service-description {
+    color: #4a5568;
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0;
+    flex-grow: 1;
+  }
+  
+  .dental-service-link {
+    display: flex;
+    align-items: center;
+    color: #0f9d8a;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    margin-top: 20px;
+    letter-spacing: 0.5px;
+  }
+  
+  .dental-service-arrow {
+    margin-left: 8px;
+  }
+  
+  .dental-services-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+    gap: 8px;
+  }
+  
+  .pagination-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #cbd5e0;
+  }
+  
+  .pagination-dot.active {
+    width: 12px;
+    height: 12px;
+    background-color: #0f9d8a;
+    border: 2px solid #e6f0f9;
+  }
+  
+  @media (max-width: 1200px) {
+    .dental-services-cards {
+      gap: 20px;
+    }
+  
+    .dental-service-card {
+      max-width: 260px;
+    }
+  }
+  
+  @media (max-width: 992px) {
+    .dental-service-card {
+      max-width: 320px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .dental-services-title {
+      font-size: 30px;
+    }
+  
+    .dental-service-card {
+      max-width: 100%;
+    }
+  }
+  
+  

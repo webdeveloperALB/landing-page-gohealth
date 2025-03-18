@@ -1,0 +1,86 @@
+/* FourthSection.css */
+.transformation-container {
+    background: linear-gradient(to bottom, #07121E 50%, white 50%);
+    position: relative;
+    width: 100%;
+    padding: 4rem;
+  }
+  
+  .content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+  
+  .text-content {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .subtitle {
+    color: #1BA69E;
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+  }
+  
+  .title {
+    color:rgb(255, 255, 255);
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.2;
+  }
+  
+  .mask-group-overlay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 1.5rem;
+  }
+  
+  .mask-image {
+    width: 80%;
+    height: auto;
+    display: block;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .transformation-container {
+      margin: 3rem auto;
+    }
+    
+    .title {
+      font-size: 2rem;
+    }
+    
+    .subtitle {
+      font-size: 1rem;
+    }
+    
+    .content-wrapper {
+      gap: 1.5rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .title {
+      font-size: 1.75rem;
+    }
+    
+    .subtitle {
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+    }
+    
+    .mask-group-overlay {
+      margin-top: 1rem;
+    }
+  }
