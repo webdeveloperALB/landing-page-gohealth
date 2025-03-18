@@ -10,7 +10,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 7rem 0 !important;
+  margin: 7rem 2rem !important;
 }
 
 .landing-header {
