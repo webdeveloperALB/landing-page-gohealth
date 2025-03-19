@@ -3,6 +3,37 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
+
+/* Treatment buttons */
+.nav-item.active {
+  background-color: #f0f0f0;
+  border-color: #007bff;
+  color: #007bff;
+}
+
+/* Date picker */
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
+.date-picker {
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+/* Treatment select */
+.treatment-select {
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+  cursor: pointer;
+  appearance: none;
+  padding: 0;
+}
   .landing-container {
     background: linear-gradient(to top, white 14%, #0e4354 14%, #08171c 100%);
     display: flex;
@@ -140,7 +171,7 @@ body {
   
   .landing-content__image img {
     margin-top: 50px;
-    border-radius: 5px;
+    border-radius: 40px;
     width: 90%;
     max-width: 600px;
     height: 90%;
@@ -169,6 +200,8 @@ body {
 
 
   .appointment-container {
+    display: flex; 
+    flex-direction: column;
     width: 100%;
     margin: 5rem 0 0 0;
     padding: 5px 32px 25px 32px;
@@ -178,6 +211,7 @@ body {
   }
   
   .appointment-header {
+    gap: 16rem;
     display: flex;
     margin-bottom: 32px;
   }
@@ -211,12 +245,13 @@ body {
   }
   
   .appointment-form {
-    display: grid;
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: row;
     gap: 16px;
   }
   
   .form-field {
+    width: 30%;
     background-color: white;
     border-radius: 16px;
     display: flex;
@@ -313,6 +348,8 @@ body {
   
   .landing-container2 {
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
   
   .landing-header__title {
@@ -337,10 +374,11 @@ body {
   .landing-content__image img {
     width: 100%;
     max-width: 500px;
-    margin: 40px auto 0;
+    margin: 0 auto 0 auto;
   }
   
   .appointment-header {
+    gap: 0;
     flex-direction: column;
   }
   
@@ -351,7 +389,9 @@ body {
   }
   
   .appointment-form {
-    grid-template-columns: 1fr;
+    display: grid;
+    grid-template-columns: 2fr;
+    gap: 16px;
   }
 }
 
@@ -392,13 +432,13 @@ body {
   }
   
   .prima {
-    top: 60px;
-    left: 10px;
+    top: 20px;
+    left: 20px;
   }
   
   .dopo {
     bottom: 20px;
-    right: 50px;
+    right: 20px;
   }
   
   .appointment-container {
@@ -418,13 +458,9 @@ body {
   }
 
 
-    .landing-header__content {
-    padding: 0;
-  }
-
   .landing-header__content {
-    align-items: center;
-    justify-content: center;
+    align-items: center !important;
+    justify-content: center !important;
     padding: 0;
   }
 
@@ -482,13 +518,13 @@ body {
   }
   
   .prima {
-    top: 50px;
-    left: 5px;
+    top: 20px;
+    left: 20px;
   }
   
   .dopo {
-    bottom: 15px;
-    right: 40px;
+    bottom: 20px;
+    right: 20px;
   }
   
   .appointment-container {
@@ -515,6 +551,7 @@ body {
   }
   
   .form-field {
+    width: 100%;
     padding: 10px 0;
   }
   

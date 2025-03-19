@@ -1,8 +1,46 @@
+import { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { FaMapMarkerAlt, FaCalendarAlt, FaUserFriends } from "react-icons/fa";
 import Navbar from "../Navbar";
 import "./FirstSector.css";
-import { FaMapMarkerAlt, FaCalendarAlt, FaUserFriends } from "react-icons/fa";
 
 function FirstSector() {
+    const [selectedTreatment, setSelectedTreatment] = useState("IMPLANTOLOGIA");
+    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [treatmentType, setTreatmentType] = useState("1 Adulto");
+
+    const treatments = [
+        "IMPLANTOLOGIA",
+        "ORTODONZIA",
+        "ESTETICA DENTALE",
+        "PROTESI DENTALI"
+    ];
+
+    const treatmentOptions = [
+        "1 Adulto",
+        "1 Bambino",
+        "1 Adulto, 1 Bambino",
+        "2 Adulti",
+        "2 Adulti, 1 Bambino"
+    ];
+
+    const handleBooking = () => {
+        const formattedDate = selectedDate.toLocaleDateString("it-IT", {
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+        });
+
+        // Use URL-encoded newline characters (%0A) for line breaks
+        const message = `Ciao, vorrei prenotare un appuntamento per:%0A%0A` +
+            `*Trattamento:* ${selectedTreatment}%0A` +
+            `*Data:* ${formattedDate}%0A` +
+            `*Trattamento per:* ${treatmentType}`;
+
+        window.open(`https://wa.me/355696283333?text=${message}`);
+    };
+
     return (
         <div className="landing-container">
             {/* Header Section */}
@@ -60,15 +98,21 @@ function FirstSector() {
                     <span className="image-label dopo">Dopo</span>
                 </div>
             </div>
+
             <div className="appointment-container">
                 <div className="appointment-header">
                     <h1 className="appointment-title">Trova La Soluzione Perfetta</h1>
 
                     <div className="nav-menu">
-                        <button className="nav-item">IMPLANTOLOGIA</button>
-                        <button className="nav-item">ORTODONZIA</button>
-                        <button className="nav-item">ESTETICA DENTALE</button>
-                        <button className="nav-item">PROTESI DENTALI</button>
+                        {treatments.map((treatment) => (
+                            <button
+                                key={treatment}
+                                className={`nav-item ${selectedTreatment === treatment ? "active" : ""}`}
+                                onClick={() => setSelectedTreatment(treatment)}
+                            >
+                                {treatment}
+                            </button>
+                        ))}
                     </div>
                 </div>
 
@@ -89,7 +133,14 @@ function FirstSector() {
                         </div>
                         <div className="field-content">
                             <p className="field-label">Data Dell'appuntamento</p>
-                            <p className="field-value">12 Agosto 2024</p>
+                            <DatePicker
+                                selected={selectedDate}
+                                onChange={(date) => setSelectedDate(date)}
+                                dateFormat="dd MMMM yyyy"
+                                minDate={new Date()}
+                                locale="it"
+                                className="date-picker"
+                            />
                         </div>
                     </div>
 
@@ -99,15 +150,26 @@ function FirstSector() {
                         </div>
                         <div className="field-content">
                             <p className="field-label">Trattamento Per</p>
-                            <p className="field-value">1 Adulto, 1 Bambino</p>
+                            <select
+                                value={treatmentType}
+                                onChange={(e) => setTreatmentType(e.target.value)}
+                                className="treatment-select"
+                            >
+                                {treatmentOptions.map((option) => (
+                                    <option key={option} value={option}>
+                                        {option}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
                     </div>
 
-                    <button className="book-button">PRENOTA UN APPUNTAMENTO</button>
+                    <button className="book-button" onClick={handleBooking}>
+                        PRENOTA UN APPUNTAMENTO
+                    </button>
                 </div>
             </div>
         </div>
-
     );
 }
 
