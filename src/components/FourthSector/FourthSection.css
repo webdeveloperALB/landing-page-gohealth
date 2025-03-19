@@ -1,86 +1,106 @@
-/* FourthSection.css */
 .transformation-container {
-    background: linear-gradient(to bottom, #07121E 50%, white 50%);
-    position: relative;
-    width: 100%;
-    padding: 4rem;
-  }
-  
-  .content-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
-  }
-  
-  .text-content {
-    text-align: center;
-    margin-bottom: 2rem;
-  }
-  
-  .subtitle {
-    color: #1BA69E;
-    font-size: 1.2rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 1rem;
-  }
-  
-  .title {
-    color:rgb(255, 255, 255);
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin: 0;
-    line-height: 1.2;
-  }
-  
-  .mask-group-overlay {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    margin-top: 1.5rem;
-  }
-  
-  .mask-image {
-    width: 80%;
-    height: auto;
-    display: block;
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .transformation-container {
-      margin: 3rem auto;
-    }
-    
-    .title {
-      font-size: 2rem;
-    }
-    
-    .subtitle {
-      font-size: 1rem;
-    }
-    
-    .content-wrapper {
-      gap: 1.5rem;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .title {
-      font-size: 1.75rem;
-    }
-    
-    .subtitle {
-      font-size: 0.9rem;
-      letter-spacing: 1px;
-    }
-    
-    .mask-group-overlay {
-      margin-top: 1rem;
-    }
-  }
+  width: 100%;
+  padding: 60px 0;
+  background: linear-gradient(to bottom, #07121E 60%, white 60%);
+}
+
+.content-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.text-content {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.subtitle {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.title {
+  color: white;
+  font-size: 36px;
+  font-weight: bold;
+}
+
+/* Before-After Container */
+.before-after-container {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  overflow: hidden;
+  border-radius: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.before-image,
+.after-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  transition: clip-path 0.3s ease; /* Make this 0s for instant transition */
+}
+
+.before-image {
+  z-index: 1;
+}
+
+.after-image {
+  z-index: 2;
+}
+
+/* Fixed central divider */
+.fixed-divider {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 100%;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none; /* So it doesn't interfere with clicking */
+}
+
+.divider-line {
+  width: 4px;
+  height: 100%;
+  background-color: white;
+  position: absolute;
+}
+
+.divider-buttons {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  background-color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  pointer-events: auto; /* Make this clickable */
+}
+
+.arrow-left,
+.arrow-right {
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0 3px;
+  user-select: none;
+}
+
+/* Optional: Add hover effects */
+.arrow-left:hover,
+.arrow-right:hover {
+  color: #0088cc;
+}
