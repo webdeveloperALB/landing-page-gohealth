@@ -1,15 +1,15 @@
-import FirstSector from "./components/FirstSector";
-import FourthSection from "./components/FourthSection";
+import FirstSector from "./components/FirstSector/FirstSector";
+import FourthSection from "./components/FourthSector/FourthSection";
 import Navbar from "./components/Navbar";
-import SecondSector from "./components/SecondSector";
-import ThirdSection from "./components/ThirdSection";
-import FifthSection from "./components/FifthSection";
-import SixthComponent from "./components/SixthComponent";
-import SeventhComponent from "./components/SeventhComponent";
-import EightComponent from "./components/EightComponent";
-import NinthComponent from "./components/NinthComponent";
-import TenthComponent  from "./components/TenthComponent";
-import ElevenComponent  from "./components/ElevenComponent";
+import SecondSector from "./components/SecondSector/SecondSector";
+import ThirdSection from "./components/ThirdSector/ThirdSection";
+import FifthSection from "./components/FifthSector/FifthSection";
+import SixthComponent from "./components/SixthSector/SixthComponent";
+import SeventhComponent from "./components/SeventhSector/SeventhComponent";
+import EightComponent from "./components/EightSector/EightComponent";
+import NinthComponent from "./components/NinthSector/NinthComponent";
+import TenthComponent  from "./components/TenthSector/TenthComponent";
+import ElevenComponent  from "./components/ElevenSector/ElevenComponent";
 
 const LandingPage = () => {
   return (

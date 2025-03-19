@@ -1,4 +1,4 @@
-import Navbar from "./Navbar";
+import Navbar from "../Navbar";
 import "./FirstSector.css";
 import { FaMapMarkerAlt, FaCalendarAlt, FaUserFriends } from "react-icons/fa";
 
