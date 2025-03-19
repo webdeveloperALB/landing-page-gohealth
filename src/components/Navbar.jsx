@@ -1,12 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
 
 const Navbar = () => {
   const [activeLink, setActiveLink] = useState("home");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check if viewport is mobile
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    // Initial check
+    checkIfMobile();
+    
+    // Add event listener
+    window.addEventListener("resize", checkIfMobile);
+    
+    // Clean up
+    return () => window.removeEventListener("resize", checkIfMobile);
+  }, []);
 
   const handleSetActive = (link) => {
     setActiveLink(link);
+    setIsMenuOpen(false);
+  };
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
   };
 
   return (
@@ -25,48 +48,62 @@ const Navbar = () => {
 
       {/* Main Navigation */}
       <nav className="main-nav">
-        {/* Left Navigation Items */}
-        <div className="nav-section left-section">
-          <Link
-            to="/"
-            className={`nav-link ${activeLink === "home" ? "active" : ""}`}
-            onClick={() => handleSetActive("home")}
-          >
-            HOME
-          </Link>
-          <a
-            href="/treatments"
-            className={`nav-link ${
-              activeLink === "treatments" ? "active" : ""
-            }`}
-            onClick={() => handleSetActive("treatments")}
-          >
-            TREATMENTS
-          </a>
-          <a
-            href="/about"
-            className={`nav-link ${activeLink === "about" ? "active" : ""}`}
-            onClick={() => handleSetActive("about")}
-          >
-            ABOUT US
-          </a>
-          <a
-            href="/blog"
-            className={`nav-link ${activeLink === "blog" ? "active" : ""}`}
-            onClick={() => handleSetActive("blog")}
-          >
-            BLOG
-          </a>
-        </div>
-
-        {/* Center Logo */}
-        <div className="nav-section center-section">
+        {/* Center Logo (moved outside of flex layout for mobile) */}
+        <div className="center-section">
           <img src="/NavbarLogo.png" alt="Clinic Logo" className="nav-logo" />
         </div>
 
-        {/* Right CTA */}
-        <div className="nav-section right-section">
-          <button className="cta-button">CHECK-UP GRATUITO</button>
+        {/* Hamburger Menu Button (only shown on mobile) */}
+        <button 
+          className="hamburger-button" 
+          onClick={toggleMenu}
+          aria-label="Toggle menu"
+        >
+          <span className="hamburger-line"></span>
+          <span className="hamburger-line"></span>
+          <span className="hamburger-line"></span>
+        </button>
+
+        {/* Navigation Links Container */}
+        <div className={`nav-links-container ${isMenuOpen ? 'menu-open' : ''}`}>
+          {/* Left Navigation Items */}
+          <div className="nav-section left-section">
+            <Link
+              to="/"
+              className={`nav-link ${activeLink === "home" ? "active" : ""}`}
+              onClick={() => handleSetActive("home")}
+            >
+              HOME
+            </Link>
+            <a
+              href="/treatments"
+              className={`nav-link ${
+                activeLink === "treatments" ? "active" : ""
+              }`}
+              onClick={() => handleSetActive("treatments")}
+            >
+              TREATMENTS
+            </a>
+            <a
+              href="/about"
+              className={`nav-link ${activeLink === "about" ? "active" : ""}`}
+              onClick={() => handleSetActive("about")}
+            >
+              ABOUT US
+            </a>
+            <a
+              href="/blog"
+              className={`nav-link ${activeLink === "blog" ? "active" : ""}`}
+              onClick={() => handleSetActive("blog")}
+            >
+              BLOG
+            </a>
+          </div>
+
+          {/* Right CTA */}
+          <div className="nav-section right-section">
+            <button className="cta-button">CHECK-UP GRATUITO</button>
+          </div>
         </div>
       </nav>
     </header>

@@ -34,7 +34,6 @@
 
 /* Main Navigation Styles */
 .main-nav {
-  display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
@@ -151,162 +150,153 @@
   }
 }
 
-@media (max-width: 1200px) {
-  .main-nav {
-    padding: 1rem 1.5rem;
+/* Hamburger Menu Styles */
+.hamburger-button {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 21px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1002;
+}
+
+.hamburger-line {
+  display: block;
+  width: 100%;
+  height: 3px;
+  background-color: #0a3366;
+  border-radius: 3px;
+  transition: all 0.3s ease;
+}
+
+.nav-links-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+/* Animations */
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
   }
-  
-  .nav-section {
-    gap: 1.5rem;
-  }
-  
-  .nav-link {
-    font-size: 15px;
+  to {
+    transform: translateY(0);
   }
 }
 
-@media (max-width: 1024px) {
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .emergency-text {
+    font-size: 0.9rem;
+  }
+  
+  .main-nav {
+      display: flex;
+    padding: 1rem;
+    justify-content: space-between;
+  }
+  
+  .nav-logo {
+    position: relative;
+    left: 0;
+    transform: none;
+    height: 40px;
+  }
+  
+  .hamburger-button {
+    display: flex;
+  }
+  
+  .nav-links-container {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    flex-direction: column;
+    width: 100%;
+    background-color: white;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .nav-links-container.menu-open {
+    max-height: 500px;
+  }
+  
+  .nav-section {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+  }
+  
+  .left-section, .right-section {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .nav-link {
+    width: 100%;
+    text-align: center;
+    padding: 1rem 0;
+    margin: 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .nav-link.active {
+    border-bottom: 3px solid;
+    border-image-source: linear-gradient(90deg, #339bbb 0%, #1aa69d 100%);
+    border-image-slice: 1;
+  }
+  
+  .cta-button {
+    width: 100%;
+    margin-top: 1rem;
+    text-align: center;
+  }
+}
+
+/* Tablet adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .nav-section {
+    gap: 1rem;
+  }
+  
+  .cta-button {
+    padding: 0.7rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Larger screens */
+@media (min-width: 1025px) {
+  .main-nav {
+    padding: 1rem 4rem;
+  }
+}
+
+/* For very small screens */
+@media (max-width: 480px) {
   .top-stripe {
     padding: 8px;
   }
   
   .emergency-text {
-    font-size: 1.2rem;
-  }
-  
-  .nav-logo {
-    height: 45px;
-  }
-  
-  .cta-button {
-    padding: 0.6rem 1.5rem;
-    font-size: 14px;
-  }
-}
-
-@media (max-width: 768px) {
-  .main-nav {
-    flex-wrap: wrap;
-    padding: 1rem;
-    gap: 1rem;
-  }
-  
-  .nav-section {
-    gap: 1rem;
-    flex: auto;
-  }
-  
-  .nav-link {
-    font-size: 14px;
-    margin: 0 0.3rem;
-    padding: 0.3rem 0 0.8rem 0;
-  }
-  
-  .nav-logo {
-    height: 40px;
-    position: static;
-    transform: none;
-  }
-  
-  .center-section {
-    order: -1;
-    width: 100%;
-    justify-content: center;
-  }
-  
-  .left-section,
-  .right-section {
-    justify-content: center;
-  }
-  
-  .cta-button {
-    padding: 0.5rem 1.2rem;
-  }
-}
-
-@media (max-width: 600px) {
-  .top-stripe {
-    padding: 6px 10px;
-  }
-  
-  .emergency-icon {
-    width: 12px;
-    height: 12px;
-  }
-  
-  .emergency-text {
-    font-size: 1rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 80%;
+    font-size: 0.8rem;
   }
   
   .main-nav {
-    flex-direction: column;
-    gap: 0.5rem;
-    padding: 0.5rem;
-  }
-  
-  .nav-section {
-    width: 100%;
-    justify-content: center;
-    gap: 0.8rem;
-    padding: 0.2rem 0;
-  }
-  
-  .nav-link {
-    font-size: 13px;
-    padding: 0.2rem 0 0.6rem 0;
+    padding: 0.8rem;
   }
   
   .nav-logo {
     height: 35px;
   }
-  
-  .cta-button {
-    font-size: 13px;
-    padding: 0.4rem 1rem;
-  }
 }
-
-@media (max-width: 480px) {
-  .top-stripe {
-    padding: 5px 8px;
-  }
-  
-  .emergency-text {
-    font-size: 0.9rem;
-  }
-  
-  .nav-link {
-    font-size: 12px;
-    margin: 0 0.2rem;
-  }
-  
-  .nav-logo {
-    height: 30px;
-  }
-  
-  .cta-button {
-    font-size: 12px;
-    padding: 0.3rem 0.8rem;
-  }
-}
-
-@media (max-width: 360px) {
-  .emergency-text {
-    font-size: 0.8rem;
-  }
-  
-  .nav-link {
-    font-size: 11px;
-  }
-  
-  .cta-button {
-    font-size: 11px;
-    padding: 0.3rem 0.6rem;
-  }
-}
-
 
