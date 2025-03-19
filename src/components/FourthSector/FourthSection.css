@@ -104,3 +104,54 @@
 .arrow-right:hover {
   color: #0088cc;
 }
+
+
+/* Responsive Breakpoints */
+@media (max-width: 768px) {
+  .transformation-container {
+    background: linear-gradient(to bottom, #07121E 50%, white 50%);
+    padding: clamp(1.5rem, 4vw, 2rem) 0;
+  }
+
+  .before-after-container {
+    height: min(500px, 70vh);
+  }
+
+  .divider-buttons {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  }
+}
+
+@media (max-width: 480px) {
+  .transformation-container {
+    background: linear-gradient(to bottom, #07121E 45%, white 45%);
+  }
+
+  .title {
+    font-size: clamp(1.5rem, 6vw, 1.75rem);
+  }
+
+  .subtitle {
+    letter-spacing: 0.5px;
+  }
+
+  .before-after-container {
+    height: min(400px, 60vh);
+    border-radius: clamp(10px, 3vw, 15px);
+  }
+
+  .divider-buttons {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+@media (max-width: 320px) {
+  .title {
+    font-size: 1.4rem;
+  }
+
+  .before-after-container {
+    height: 55vh;
+  }
+}

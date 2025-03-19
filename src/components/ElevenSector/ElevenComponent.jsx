@@ -15,7 +15,7 @@ const ElevenComponent = () => {
   const [selectedTreatment, setSelectedTreatment] = useState("");
 
   return (
-    <div className="booking-container">
+    <div id="eleven-section" className="booking-container">
       <div className="map-section">
         <div className="map-wrapper">
           <iframe
