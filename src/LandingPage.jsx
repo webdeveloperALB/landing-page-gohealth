@@ -6,6 +6,7 @@ import ThirdSection from "./components/ThirdSection";
 import FifthSection from "./components/FifthSection";
 import SixthComponent from "./components/SixthComponent";
 import SeventhComponent from "./components/SeventhComponent";
+import EightComponent from "./components/EightComponent";
 
 const LandingPage = () => {
   return (
@@ -17,6 +18,7 @@ const LandingPage = () => {
       <FifthSection />
       <SixthComponent />
       <SeventhComponent />
+      <EightComponent />
     </div>
   );
 };
