@@ -6,9 +6,11 @@ body {
 
 /* Treatment buttons */
 .nav-item.active {
-  background-color: #f0f0f0;
+  border-radius: 15px;
+  padding: 0.4rem;
+  background: linear-gradient(272.32deg, #08171C -5.68%, #0E4354 100.56%);
   border-color: #007bff;
-  color: #007bff;
+  color:rgb(255, 255, 255);
 }
 
 /* Date picker */
@@ -240,7 +242,7 @@ body {
   }
   
   .nav-item:hover {
-    color: rgba(10, 58, 111, 0.8);
+    color: rgb(104, 104, 104);
     border-bottom: 2px solid #0a3a6f;
   }
   
