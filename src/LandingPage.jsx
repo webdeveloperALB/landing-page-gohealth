@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import SecondSector from "./components/SecondSector";
 import ThirdSection from "./components/ThirdSection";
 import FifthSection from "./components/FifthSection";
+import SixthComponent from "./components/SixthComponent";
 
 const LandingPage = () => {
   return (
@@ -13,6 +14,7 @@ const LandingPage = () => {
       <ThirdSection />
       <FourthSection />
       <FifthSection />
+      <SixthComponent />
     </div>
   );
 };
