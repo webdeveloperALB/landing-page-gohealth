@@ -1,0 +1,87 @@
+.hero-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Align content to the top */
+    min-height: 100vh;
+    background: linear-gradient(
+      to bottom,
+      white 10%,
+      #0a252f 10%,
+      #0d3846 107.7%
+    );
+  
+    color: white;
+    text-align: center;
+    padding: 0 1rem;
+  
+    position: relative; /* Needed for absolute positioning */
+}
+
+.hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 60%; /* Move content 60% from the top */
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center horizontally */
+    width: 100%; /* Ensure full width responsiveness */
+  }
+
+.hero-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.hero-subtitle {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 2.5rem;
+}
+
+.play-button {
+  background-color: white;
+  color: black;
+  border-radius: 50%;
+  width: 5rem;
+  height: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.play-button:hover {
+  background-color: #f0f0f0;
+}
+
+.play-button:focus {
+  outline: none;
+}
+
+/* Media queries for responsiveness */
+@media (min-width: 768px) {
+  .hero-title {
+    font-size: 3rem;
+  }
+
+  .hero-subtitle {
+    font-size: 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-title {
+    font-size: 3.5rem;
+  }
+
+  .hero-subtitle {
+    font-size: 3rem;
+  }
+}
