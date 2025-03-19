@@ -1,0 +1,186 @@
+.booking-container {
+    display: flex;
+    width: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .map-section {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .map-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .info-boxes-container {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+  }
+  
+  .info-box {
+    background-color: #063642;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-radius: 20px;
+    flex: 1;
+  }
+  
+  .info-box svg {
+    background-color: #0a4d5c;
+    padding: 10px;
+    border-radius: 20px;
+    width: 40px;
+    height: 40px;
+  }
+  
+  .info-box h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  
+  .info-box p {
+    margin: 5px 0 0;
+    font-size: 14px;
+    opacity: 0.8;
+  }
+  
+  .form-section {
+    flex: 1;
+    background-color: #063642;
+    color: white;
+    padding: 40px;
+    overflow-y: auto;
+  }
+  
+  .form-header {
+    margin-bottom: 30px;
+  }
+  
+  .contact-title {
+    color: #26b9b3;
+    margin: 0;
+    font-size: 14px;
+    letter-spacing: 1px;
+  }
+  
+  .booking-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin: 15px 0 30px;
+    line-height: 1.2;
+  }
+  
+  .booking-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .form-row {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .full-width {
+    width: 100%;
+  }
+  
+  .form-group label {
+    font-size: 14px;
+    color: #26b9b3;
+  }
+  
+  .required {
+    color: #26b9b3;
+  }
+  
+  .custom-select {
+    position: relative;
+  }
+  
+  .custom-select select,
+  .custom-select input {
+    width: 100%;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid #FFFFFF;
+    border-radius: 20px;
+    color: white;
+    font-size: 16px;
+    appearance: none;
+  }
+  
+  .custom-select input {
+    box-sizing: border-box;
+  }
+  
+  .custom-select input::placeholder,
+  .custom-select select::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
+  
+  .select-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.6);
+    pointer-events: none;
+  }
+  
+  .submit-button {
+    background-color: #26b9b3;
+    color: white;
+    border: none;
+    padding: 15px;
+    font-weight: 500;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+  }
+  
+  .submit-button:hover {
+    background-color: #1fa8a2;
+  }
+  
+  /* Make the form responsive */
+  @media (max-width: 768px) {
+    .booking-container {
+      flex-direction: column;
+      height: auto;
+    }
+  
+    .map-section {
+      height: 300px;
+    }
+  
+    .form-row {
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .info-boxes-container {
+      flex-direction: column;
+    }
+  }

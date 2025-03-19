@@ -38,6 +38,7 @@
   
   /* Individual card styles */
   .story-card {
+    border: 1px solid #1BA69E;
     flex: 1;
     min-width: 300px;
     background-color: #f0fafa;
