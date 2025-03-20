@@ -167,12 +167,80 @@
   position: relative;
 }
 
+* Add these media queries to your existing CSS */
 
-/* Mobile styles */
+/* Large desktop and laptops */
+@media (max-width: 1440px) {
+  .testimonial-content {
+    padding: 22rem 7rem 0 4rem;
+  }
+}
+
+/* Standard desktop */
+@media (max-width: 1200px) {
+  .testimonial-content {
+    padding: 18rem 5rem 0 3rem;
+  }
+  
+  .testimonial-title {
+    font-size: 2.2rem;
+  }
+}
+
+/* Small desktop and tablet landscape */
+@media (max-width: 992px) {
+  .testimonial-container {
+    height: 550px;
+  }
+  
+  .testimonial-content {
+    padding: 16rem 4rem 0 2.5rem;
+  }
+  
+  .testimonial-title {
+    font-size: 2rem;
+  }
+  
+  .mask-icon3 {
+    width: 90%;
+  }
+}
+
+/* Tablet portrait */
 @media (max-width: 768px) {
+  .testimonial-container {
+    flex-direction: column;
+    height: auto;
+    background: linear-gradient(180deg, white 12%, transparent 12%), 
+              linear-gradient(83.58deg, #0a242e 10.01%, #0d3846 94.28%);
+  }
+  
+  .testimonial-image-container {
+    width: 100%;
+    height: 250px;
+  }
+  
+  .mask-icon3 {
+    width: 70%;
+    margin: 0 auto;
+    display: block;
+  }
+  
+  .testimonial-content {
+    width: 100%;
+    padding: 2rem 2rem 4rem 2rem;
+  }
+  
+  .testimonial-slider {
+    min-height: 250px;
+  }
+  
   .testimonial-navigation {
-    right: 1rem;
-    gap: 1rem;
+    flex-direction: row;
+    right: 50%;
+    transform: translateX(50%);
+    bottom: 1rem;
+    top: auto;
   }
   
   .nav-dot {
@@ -183,5 +251,40 @@
   .nav-dot svg {
     width: 20px;
     height: 20px;
+  }
+}
+
+/* Mobile landscape */
+@media (max-width: 576px) {
+  .testimonial-image-container {
+    height: 200px;
+  }
+  
+  .testimonial-content {
+    padding: 1.5rem 1.5rem 4rem 1.5rem;
+  }
+  
+  .testimonial-header {
+    margin-bottom: 1rem;
+  }
+  
+  .testimonial-title {
+    font-size: 1.8rem;
+    margin-bottom: 1.2rem;
+  }
+  
+  .testimonial-stars {
+    margin-bottom: 1.2rem;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 375px) {
+  .testimonial-title {
+    font-size: 1.5rem;
+  }
+  
+  .testimonial-slider {
+    min-height: 300px;
   }
 }
