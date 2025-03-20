@@ -283,6 +283,9 @@
 
 /* For very small screens */
 @media (max-width: 480px) {
+  .hamburger-button {
+    margin-right: 20px;
+  }
   .top-stripe {
     padding: 8px;
   }
