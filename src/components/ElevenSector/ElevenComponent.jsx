@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./ElevenComponent.css";
 import {
   Calendar,
@@ -9,10 +9,86 @@ import {
   Info,
 } from "lucide-react";
 
+const CustomSelect = ({ options, value, onChange, placeholder }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const selectRef = useRef(null);
+
+  const handleClickOutside = (event) => {
+    if (selectRef.current && !selectRef.current.contains(event.target)) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <div className="custom-select" ref={selectRef}>
+      <div
+        className={`select-header ${isOpen ? "open" : ""}`}
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <span>{value || placeholder}</span>
+        <ChevronDown className={`icon ${isOpen ? "rotate" : ""}`} />
+      </div>
+      {isOpen && (
+        <div className="dropdown-options">
+          {options.map((option) => (
+            <div
+              key={option.value}
+              className={`option-item ${
+                value === option.value ? "selected" : ""
+              }`}
+              onClick={() => {
+                onChange(option.value);
+                setIsOpen(false);
+              }}
+            >
+              {option.label}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 const ElevenComponent = () => {
-  const [selectedDepartment, setSelectedDepartment] =
-    useState("Dental Oral Care");
+  const [selectedDepartment, setSelectedDepartment] = useState(
+    "Dental Oral Care"
+  );
   const [selectedTreatment, setSelectedTreatment] = useState("");
+  const [formData, setFormData] = useState({
+    service: "",
+    name: "",
+    email: "",
+    date: "",
+    time: "",
+  });
+
+  const departments = [
+    { value: "Dental Oral Care", label: "Dental Oral Care" },
+    { value: "Orthodontics", label: "Orthodontics" },
+    { value: "Surgery", label: "Surgery" },
+  ];
+
+  const treatments = [
+    { value: "", label: "Seleziona Trattamento" },
+    { value: "Cleaning", label: "Cleaning" },
+    { value: "Root Canal", label: "Root Canal" },
+    { value: "Whitening", label: "Whitening" },
+  ];
+
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Handle form submission
+  };
 
   return (
     <div id="eleven-section" className="booking-container">
@@ -56,39 +132,27 @@ const ElevenComponent = () => {
           </h1>
         </div>
 
-        <form className="booking-form">
+        <form className="booking-form" onSubmit={handleSubmit}>
           <div className="form-row">
             <div className="form-group">
               <label>
                 Reparto <span className="required">*</span>
               </label>
-              <div className="custom-select">
-                <select
-                  value={selectedDepartment}
-                  onChange={(e) => setSelectedDepartment(e.target.value)}
-                >
-                  <option value="Dental Oral Care">Dental Oral Care</option>
-                  <option value="Orthodontics">Orthodontics</option>
-                  <option value="Surgery">Surgery</option>
-                </select>
-                <ChevronDown className="select-icon" />
-              </div>
+              <CustomSelect
+                options={departments}
+                value={selectedDepartment}
+                onChange={setSelectedDepartment}
+              />
             </div>
 
             <div className="form-group">
               <label>Tipologia Di Trattamento</label>
-              <div className="custom-select">
-                <select
-                  value={selectedTreatment}
-                  onChange={(e) => setSelectedTreatment(e.target.value)}
-                >
-                  <option value="">Seleziona Trattamento</option>
-                  <option value="Cleaning">Cleaning</option>
-                  <option value="Root Canal">Root Canal</option>
-                  <option value="Whitening">Whitening</option>
-                </select>
-                <ChevronDown className="select-icon" />
-              </div>
+              <CustomSelect
+                options={treatments}
+                value={selectedTreatment}
+                onChange={setSelectedTreatment}
+                placeholder="Seleziona Trattamento"
+              />
             </div>
           </div>
 
@@ -96,8 +160,16 @@ const ElevenComponent = () => {
             <label>
               Tipo Di Servizio Richiesto <span className="required">*</span>
             </label>
-            <div className="custom-select">
-              <input type="text" placeholder="Come Possiamo Aiutarti?" />
+            <div className="input-wrapper">
+              <input
+                type="text"
+                name="service"
+                placeholder="Come Possiamo Aiutarti?"
+                value={formData.service}
+                onChange={handleInputChange}
+                required
+              />
+              <Info className="input-icon" />
             </div>
           </div>
 
@@ -106,9 +178,15 @@ const ElevenComponent = () => {
               <label>
                 Nome <span className="required">*</span>
               </label>
-              <div className="custom-select">
-                <input type="text" placeholder="Il Tuo Nome" />
-                <ChevronDown className="select-icon" />
+              <div className="input-wrapper">
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Il Tuo Nome"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  required
+                />
               </div>
             </div>
 
@@ -116,9 +194,15 @@ const ElevenComponent = () => {
               <label>
                 Email <span className="required">*</span>
               </label>
-              <div className="custom-select">
-                <input type="email" placeholder="La Tua Email" />
-                <ChevronDown className="select-icon" />
+              <div className="input-wrapper">
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="La Tua Email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  required
+                />
               </div>
             </div>
           </div>
@@ -128,9 +212,16 @@ const ElevenComponent = () => {
               <label>
                 Data <span className="required">*</span>
               </label>
-              <div className="custom-select">
-                <input type="text" placeholder="Seleziona La Data" />
-                <Calendar className="select-icon" />
+              <div className="input-wrapper">
+                <input
+                  type="text"
+                  name="date"
+                  placeholder="Seleziona La Data"
+                  value={formData.date}
+                  onChange={handleInputChange}
+                  required
+                />
+                <Calendar className="input-icon" />
               </div>
             </div>
 
@@ -138,9 +229,16 @@ const ElevenComponent = () => {
               <label>
                 Ora <span className="required">*</span>
               </label>
-              <div className="custom-select">
-                <input type="text" placeholder="Seleziona L'orario" />
-                <Clock className="select-icon" />
+              <div className="input-wrapper">
+                <input
+                  type="text"
+                  name="time"
+                  placeholder="Seleziona L'orario"
+                  value={formData.time}
+                  onChange={handleInputChange}
+                  required
+                />
+                <Clock className="input-icon" />
               </div>
             </div>
           </div>
