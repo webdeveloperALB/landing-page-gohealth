@@ -1,0 +1,21 @@
+/* LandingPage.css */
+.whatsapp-icon {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+  }
+  
+  .whatsapp-icon a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color:rgb(20, 110, 100);
+    border-radius: 50%;
+    padding: 10px;
+  }
+  
+  .whatsapp-icon a:hover {
+    background-color: #128C7E;
+  }
+  

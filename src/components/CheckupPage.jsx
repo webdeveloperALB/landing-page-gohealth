@@ -262,7 +262,7 @@ export default function CheckupPage() {
         </div>
 
         <div className="form-row center">
-          <button className="book-button">BOOK APPOINTMENT</button>
+          <button className="book-button2">BOOK APPOINTMENT</button>
         </div>
       </div>
     </div>

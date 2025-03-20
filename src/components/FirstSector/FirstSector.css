@@ -7,9 +7,9 @@ body {
 /* Treatment buttons */
 .nav-item.active {
   border-radius: 15px;
+  height: 70%;
   padding: 0.4rem;
   background: linear-gradient(272.32deg, #08171C -5.68%, #0E4354 100.56%);
-  border-color: #007bff;
   color:rgb(255, 255, 255);
 }
 
@@ -228,6 +228,8 @@ body {
   
   .nav-menu {
     display: flex;
+    align-items: center;
+    justify-content: center;
     gap: 24px;
   }
   
@@ -243,7 +245,6 @@ body {
   }
   
   .nav-item:hover {
-    color: rgb(104, 104, 104);
     border-bottom: 2px solid #0a3a6f;
   }
   
@@ -318,6 +319,15 @@ body {
   }
 }
 
+@media screen and (max-width: 1024px) {
+  .landing-content__image {
+    margin-left: 160px;
+  }
+
+  .appointment-header {
+    gap: 0rem;
+  }
+}
 /* Medium screens (laptops, small desktops) */
 @media screen and (max-width: 1200px) {
   .landing-container {
@@ -348,6 +358,11 @@ body {
   .landing-container {
     padding: 5rem 2rem 2rem 2rem !important;
   }
+
+  .landing-content__image {
+    margin-left: 0;
+  }
+
   
   .landing-container2 {
     flex-direction: column;
@@ -403,7 +418,9 @@ body {
   .landing-container {
     padding: 10rem 1.5rem 1.5rem 1.5rem !important;
   }
-  
+  .form-field {
+    width: 100%;
+  }
   .landing-header__rating {
     position: relative;
     top: 0;
@@ -457,6 +474,13 @@ body {
   .landing-container {
     padding: 8rem 1rem 1rem 1rem !important;
     background: linear-gradient(to top, white 8%, #0e4354 8%, #08171c 100%);
+  }
+
+  .landing-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 
 

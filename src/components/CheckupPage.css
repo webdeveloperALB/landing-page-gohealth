@@ -146,7 +146,7 @@
   }
   
   /* Button styles */
-  .book-button {
+  .book-button2 {
     background-color: #26d07c;
     color: white;
     border: none;
@@ -159,7 +159,7 @@
     margin-top: 16px;
   }
   
-  .book-button:hover {
+  .book-button2:hover {
     background-color: #1fb36c;
   }
   
@@ -356,13 +356,14 @@
   }
 
   .form-row {
+    margin-bottom: 1rem;
     flex-direction: column;
     gap: 12px;
-    margin-bottom: 0;
+    margin-bottom: 1rem;
   }
 
   /* Adjust button padding */
-  .book-button {
+  .book-button2 {
     padding: 12px 30px;
     width: 100%;
     max-width: 300px;
@@ -421,7 +422,7 @@
     border-radius: 15px;
   }
 
-  .book-button {
+  .book-button2 {
     padding: 12px 20px;
     font-size: 13px;
   }

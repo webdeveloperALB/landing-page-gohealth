@@ -7,19 +7,13 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Check if viewport is mobile
   useEffect(() => {
     const checkIfMobile = () => {
       setIsMobile(window.innerWidth <= 768);
     };
 
-    // Initial check
     checkIfMobile();
-
-    // Add event listener
     window.addEventListener("resize", checkIfMobile);
-
-    // Clean up
     return () => window.removeEventListener("resize", checkIfMobile);
   }, []);
 
@@ -34,7 +28,6 @@ const Navbar = () => {
 
   return (
     <header className="navbar-container">
-      {/* Top Blue Stripe */}
       <div className="top-stripe">
         <img
           src="/Vector.svg"
@@ -46,16 +39,13 @@ const Navbar = () => {
         </p>
       </div>
 
-      {/* Main Navigation */}
       <nav className="main-nav">
-        {/* Center Logo (moved outside of flex layout for mobile) */}
         <div className="center-section">
           <Link to="/">
             <img src="/NavbarLogo.png" alt="Clinic Logo" className="nav-logo" />
           </Link>
         </div>
 
-        {/* Hamburger Menu Button (only shown on mobile) */}
         <button
           className="hamburger-button"
           onClick={toggleMenu}
@@ -66,13 +56,11 @@ const Navbar = () => {
           <span className="hamburger-line"></span>
         </button>
 
-        {/* Navigation Links Container */}
         <div
           className={`nav-links-container ${isMenuOpen ? "menu-open" : ""} ${
             isMobile ? "mobile" : ""
           }`}
         >
-          {/* Left Navigation Items */}
           <div className="nav-section left-section">
             <Link
               to="/"
@@ -81,32 +69,31 @@ const Navbar = () => {
             >
               HOME
             </Link>
-            <a
-              href="/treatments"
+            <Link
+              to="/treatments"
               className={`nav-link ${
                 activeLink === "treatments" ? "active" : ""
               }`}
               onClick={() => handleSetActive("treatments")}
             >
               TREATMENTS
-            </a>
-            <a
-              href="/about"
+            </Link>
+            <Link
+              to="/about"
               className={`nav-link ${activeLink === "about" ? "active" : ""}`}
               onClick={() => handleSetActive("about")}
             >
               ABOUT US
-            </a>
-            <a
-              href="/blog"
+            </Link>
+            <Link
+              to="/blog"
               className={`nav-link ${activeLink === "blog" ? "active" : ""}`}
               onClick={() => handleSetActive("blog")}
             >
               BLOG
-            </a>
+            </Link>
           </div>
 
-          {/* Right CTA */}
           <Link to="/checkup" className="cta-button">
             CHECK-UP GRATUITO
           </Link>

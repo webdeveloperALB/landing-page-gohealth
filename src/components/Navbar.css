@@ -100,10 +100,6 @@
   transition: transform 0.3s ease;
 }
 
-.nav-logo:hover {
-  transform: translateX(-50%) scale(1.05);
-}
-
 /* CTA Button Styles */
 .cta-button {
   background-color: #ffffff;

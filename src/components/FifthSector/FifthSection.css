@@ -120,6 +120,10 @@
     .dental-services-cards {
       gap: 20px;
     }
+
+    .dental-services-cards {
+      flex-wrap: nowrap;
+    }
   
     .dental-service-card {
       max-width: 260px;
@@ -129,6 +133,9 @@
   @media (max-width: 992px) {
     .dental-service-card {
       max-width: 320px;
+    }
+    .dental-services-cards {
+      flex-wrap: wrap;
     }
   }
   
