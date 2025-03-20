@@ -167,8 +167,6 @@
   position: relative;
 }
 
-* Add these media queries to your existing CSS */
-
 /* Large desktop and laptops */
 @media (max-width: 1440px) {
   .testimonial-content {
@@ -236,11 +234,7 @@
   }
   
   .testimonial-navigation {
-    flex-direction: row;
-    right: 50%;
-    transform: translateX(50%);
-    bottom: 1rem;
-    top: auto;
+    display: none;
   }
   
   .nav-dot {
