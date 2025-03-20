@@ -7,51 +7,45 @@ import { CalendarIcon, Clock, MapPin, ChevronDown, ChevronLeft, ChevronRight } f
 export default function CheckupPage() {
   const [showCalendar, setShowCalendar] = useState(false)
   const [showTimePicker, setShowTimePicker] = useState(false)
-  const [selectedDate, setSelectedDate] = useState("")
-  const [selectedTime, setSelectedTime] = useState("")
-
-  // Calendar functionality
+  const [selectedDate, setSelectedDate] = useState(null)
+  const [selectedTime, setSelectedTime] = useState(null)
   const [currentMonth, setCurrentMonth] = useState(new Date())
 
+  // New form states
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    age: "",
+    email: "",
+    mobile: "",
+    address: "",
+    service: "",
+    branch: "Tirana, Albania",
+    message: ""
+  })
+
+  // Calendar functionality
   const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
   ]
 
   const daysOfWeek = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
 
-  const getDaysInMonth = (year, month) => {
-    return new Date(year, month + 1, 0).getDate()
-  }
-
-  const getFirstDayOfMonth = (year, month) => {
-    return new Date(year, month, 1).getDay()
-  }
+  const getDaysInMonth = (year, month) => new Date(year, month + 1, 0).getDate()
+  const getFirstDayOfMonth = (year, month) => new Date(year, month, 1).getDay()
 
   const renderCalendarDays = () => {
     const year = currentMonth.getFullYear()
     const month = currentMonth.getMonth()
     const daysInMonth = getDaysInMonth(year, month)
     const firstDay = getFirstDayOfMonth(year, month)
-
     const days = []
 
-    // Add empty cells for days before the first day of the month
     for (let i = 0; i < firstDay; i++) {
       days.push(<div key={`empty-${i}`} className="calendar-day empty"></div>)
     }
 
-    // Add days of the month
     for (let day = 1; day <= daysInMonth; day++) {
       const date = new Date(year, month, day)
       const isToday = new Date().toDateString() === date.toDateString()
@@ -61,35 +55,89 @@ export default function CheckupPage() {
           key={`day-${day}`}
           className={`calendar-day ${isToday ? "today" : ""}`}
           onClick={() => {
-            const formattedDate = `${day} ${months[month]} ${year}`
-            setSelectedDate(formattedDate)
+            setSelectedDate(date)
             setShowCalendar(false)
           }}
         >
           {day}
-        </div>,
+        </div>
       )
     }
 
     return days
   }
 
-  const prevMonth = () => {
-    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))
-  }
-
-  const nextMonth = () => {
-    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))
-  }
+  const prevMonth = () => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))
+  const nextMonth = () => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))
 
   // Time picker functionality
-  const timeSlots = [
-    "00:00", "01:00", "02:00", "03:00", "04:00", "05:00",
-    "06:00", "07:00", "08:00", "09:00", "10:00", "11:00",
-    "12:00", "13:00", "14:00", "15:00", "16:00", "17:00",
-    "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"
-  ];
+  const timeSlots = Array.from({ length: 24 }, (_, i) => `${i.toString().padStart(2, '0')}:00`)
 
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value })
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    if (!formData.firstName || !formData.lastName || !formData.email || 
+        !formData.service || !selectedDate || !selectedTime) {
+      alert("Per favore compila tutti i campi obbligatori")
+      return
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      alert("Per favore inserisci un indirizzo email valido")
+      return
+    }
+
+    try {
+      const response = await fetch('https://your-server.com/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          // Existing fields
+          name: `${formData.firstName} ${formData.lastName}`,
+          email: formData.email,
+          service: formData.service,
+          date: selectedDate.toISOString(),
+          time: selectedTime.toISOString(),
+          
+          // New fields
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          age: formData.age,
+          mobile: formData.mobile,
+          address: formData.address,
+          branch: formData.branch,
+          message: formData.message
+        })
+      })
+
+      if (response.ok) {
+        alert("Prenotazione inviata con successo!")
+        // Reset form
+        setFormData({
+          firstName: "",
+          lastName: "",
+          age: "",
+          email: "",
+          mobile: "",
+          address: "",
+          service: "",
+          branch: "Tirana, Albania",
+          message: ""
+        })
+        setSelectedDate(null)
+        setSelectedTime(null)
+      } else {
+        throw new Error('Errore nell\'invio')
+      }
+    } catch (error) {
+      console.error('Error:', error)
+      alert("Si è verificato un errore durante l'invio")
+    }
+  }
 
   return (
     <div className="consultation-container">
@@ -100,7 +148,7 @@ export default function CheckupPage() {
 
       <div className="divider"></div>
 
-      <div className="form-content">
+      <form className="form-content" onSubmit={handleSubmit}>
         <h2 className="section-title">
           Dettagli del Paziente<span className="required-star">*</span>
         </h2>
@@ -108,18 +156,38 @@ export default function CheckupPage() {
         <div className="form-row">
           <div className="form-group">
             <label htmlFor="firstName">Nome</label>
-            <input type="text" id="firstName" placeholder="Il tuo nome" />
+            <input
+              type="text"
+              id="firstName"
+              placeholder="Il tuo nome"
+              value={formData.firstName}
+              onChange={handleInputChange}
+              required
+            />
           </div>
 
           <div className="form-group">
             <label htmlFor="lastName">Cognome</label>
-            <input type="text" id="lastName" placeholder="Il tuo cognome" />
+            <input
+              type="text"
+              id="lastName"
+              placeholder="Il tuo cognome"
+              value={formData.lastName}
+              onChange={handleInputChange}
+              required
+            />
           </div>
 
           <div className="form-group">
             <label htmlFor="age">Età</label>
             <div className="select-wrapper">
-              <input type="text" id="age" placeholder="La tua età" />
+              <input
+                type="number"
+                id="age"
+                placeholder="La tua età"
+                value={formData.age}
+                onChange={handleInputChange}
+              />
               <ChevronDown className="select-icon" />
             </div>
           </div>
@@ -128,19 +196,38 @@ export default function CheckupPage() {
         <div className="form-row">
           <div className="form-group wide">
             <label htmlFor="email">Indirizzo Email</label>
-            <input type="email" id="email" placeholder="Il tuo indirizzo email" />
+            <input
+              type="email"
+              id="email"
+              placeholder="Il tuo indirizzo email"
+              value={formData.email}
+              onChange={handleInputChange}
+              required
+            />
           </div>
 
           <div className="form-group wide">
             <label htmlFor="mobile">Numero di Telefono</label>
-            <input type="tel" id="mobile" placeholder="Il tuo numero di telefono" />
+            <input
+              type="tel"
+              id="mobile"
+              placeholder="Il tuo numero di telefono"
+              value={formData.mobile}
+              onChange={handleInputChange}
+            />
           </div>
         </div>
 
         <div className="form-row">
           <div className="form-group full-width">
             <label htmlFor="address">Indirizzo</label>
-            <input type="text" id="address" placeholder="Il tuo indirizzo" />
+            <input
+              type="text"
+              id="address"
+              placeholder="Il tuo indirizzo"
+              value={formData.address}
+              onChange={handleInputChange}
+            />
           </div>
         </div>
 
@@ -154,7 +241,14 @@ export default function CheckupPage() {
               Tipo di Servizio Richiesto <span className="required-star">*</span>
             </label>
             <div className="select-wrapper">
-              <input type="text" id="service" placeholder="Come possiamo aiutarti?" />
+              <input
+                type="text"
+                id="service"
+                placeholder="Come possiamo aiutarti?"
+                value={formData.service}
+                onChange={handleInputChange}
+                required
+              />
               <ChevronDown className="select-icon" />
             </div>
           </div>
@@ -170,7 +264,7 @@ export default function CheckupPage() {
                 type="text"
                 id="date"
                 placeholder="Seleziona Data"
-                value={selectedDate}
+                value={selectedDate ? selectedDate.toLocaleDateString('it-IT') : ''}
                 onClick={() => setShowCalendar(!showCalendar)}
                 readOnly
               />
@@ -179,22 +273,20 @@ export default function CheckupPage() {
               {showCalendar && (
                 <div className="calendar-picker">
                   <div className="calendar-header">
-                    <button className="calendar-nav-btn" onClick={prevMonth}>
+                    <button type="button" className="calendar-nav-btn" onClick={prevMonth}>
                       <ChevronLeft size={16} />
                     </button>
                     <div className="calendar-title">
                       {months[currentMonth.getMonth()]} {currentMonth.getFullYear()}
                     </div>
-                    <button className="calendar-nav-btn" onClick={nextMonth}>
+                    <button type="button" className="calendar-nav-btn" onClick={nextMonth}>
                       <ChevronRight size={16} />
                     </button>
                   </div>
 
                   <div className="calendar-weekdays">
                     {daysOfWeek.map((day) => (
-                      <div key={day} className="weekday">
-                        {day}
-                      </div>
+                      <div key={day} className="weekday">{day}</div>
                     ))}
                   </div>
 
@@ -213,7 +305,7 @@ export default function CheckupPage() {
                 type="text"
                 id="time"
                 placeholder="Seleziona Orario"
-                value={selectedTime}
+                value={selectedTime ? selectedTime.toLocaleTimeString('it-IT') : ''}
                 onClick={() => setShowTimePicker(!showTimePicker)}
                 readOnly
               />
@@ -221,18 +313,23 @@ export default function CheckupPage() {
 
               {showTimePicker && (
                 <div className="time-picker">
-                  {timeSlots.map((time) => (
-                    <div
-                      key={time}
-                      className="time-slot"
-                      onClick={() => {
-                        setSelectedTime(time)
-                        setShowTimePicker(false)
-                      }}
-                    >
-                      {time}
-                    </div>
-                  ))}
+                  {timeSlots.map((time) => {
+                    const [hours] = time.split(':')
+                    const date = new Date()
+                    date.setHours(hours)
+                    return (
+                      <div
+                        key={time}
+                        className="time-slot"
+                        onClick={() => {
+                          setSelectedTime(date)
+                          setShowTimePicker(false)
+                        }}
+                      >
+                        {time}
+                      </div>
+                    )
+                  })}
                 </div>
               )}
             </div>
@@ -243,7 +340,14 @@ export default function CheckupPage() {
               Filiale <span className="required-star">*</span>
             </label>
             <div className="input-with-icon">
-              <input type="text" id="branch" placeholder="Tirana, Albania" />
+              <input
+                type="text"
+                id="branch"
+                placeholder="Tirana, Albania"
+                value={formData.branch}
+                onChange={handleInputChange}
+                required
+              />
               <MapPin className="input-icon map-pin" />
             </div>
           </div>
@@ -252,14 +356,19 @@ export default function CheckupPage() {
         <div className="form-row">
           <div className="form-group full-width">
             <label htmlFor="message">Messaggio Aggiuntivo</label>
-            <textarea id="message" placeholder="Scrivi qui..."></textarea>
+            <textarea
+              id="message"
+              placeholder="Scrivi qui..."
+              value={formData.message}
+              onChange={handleInputChange}
+            ></textarea>
           </div>
         </div>
 
         <div className="form-row center">
-          <button className="book-button2">PRENOTA APPUNTAMENTO</button>
+          <button type="submit" className="book-button2">PRENOTA APPUNTAMENTO</button>
         </div>
-      </div>
+      </form>
     </div>
   )
 }
