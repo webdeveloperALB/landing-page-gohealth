@@ -1,0 +1,169 @@
+/* Main container styles */
+.consultation-container {
+    width: 100%;
+    max-width: 1120px;
+    margin: 10rem auto 2rem auto;
+    background: linear-gradient(180deg, #0c2331 0%, #0d2c3d 100%);
+    border-radius: 16px;
+    color: white;
+    font-family: "Inter", sans-serif;
+  }
+  
+  /* Header styles */
+  .consultation-header {
+    padding: 15px 40px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .status-circle {
+    width: 16px;
+    height: 16px;
+    background-color: #26d07c;
+    border-radius: 50%;
+  }
+  
+  .header-text {
+    font-size: 16px;
+    font-weight: 500;
+  }
+  
+  .divider {
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.1);
+    width: 100%;
+  }
+  
+  /* Form content styles */
+  .form-content {
+    padding: 20px 40px 40px;
+  }
+  
+  .section-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    margin-top: 8px;
+  }
+  
+  .required-star {
+    color: #26d07c;
+  }
+  
+  /* Form layout */
+  .form-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  
+  .form-group {
+    flex: 1;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .form-group.wide {
+    flex: 1;
+    min-width: 300px;
+  }
+  
+  .form-group.full-width {
+    flex: 1 0 100%;
+  }
+  
+  /* Label styles */
+  label {
+    font-size: 14px;
+    font-weight: 400;
+  }
+  
+  /* Input styles */
+  input,
+  textarea,
+  .select-wrapper {
+    background-color: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50px;
+    padding: 12px 20px;
+    color: white;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  textarea {
+    border-radius: 20px;
+    min-height: 80px;
+    resize: none;
+  }
+  
+  input::placeholder,
+  textarea::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
+  
+  /* Select wrapper styles */
+  .select-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0;
+  }
+  
+  .select-wrapper input {
+    border: none;
+    width: 100%;
+    padding: 12px 20px;
+  }
+  
+  .select-icon {
+    position: absolute;
+    right: 20px;
+    width: 16px;
+    height: 16px;
+    color: white;
+  }
+  
+  /* Input with icon styles */
+  .input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .input-icon {
+    position: absolute;
+    right: 20px;
+    width: 16px;
+    height: 16px;
+    color: #26d07c;
+  }
+  
+  /* Button styles */
+  .book-button {
+    background-color: #26d07c;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 14px 40px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 16px;
+  }
+  
+  .book-button:hover {
+    background-color: #1fb36c;
+  }
+  
+  .center {
+    justify-content: center;
+  }
+  
+  

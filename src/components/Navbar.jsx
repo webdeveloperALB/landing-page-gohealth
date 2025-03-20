@@ -12,13 +12,13 @@ const Navbar = () => {
     const checkIfMobile = () => {
       setIsMobile(window.innerWidth <= 768);
     };
-    
+
     // Initial check
     checkIfMobile();
-    
+
     // Add event listener
     window.addEventListener("resize", checkIfMobile);
-    
+
     // Clean up
     return () => window.removeEventListener("resize", checkIfMobile);
   }, []);
@@ -54,8 +54,8 @@ const Navbar = () => {
         </div>
 
         {/* Hamburger Menu Button (only shown on mobile) */}
-        <button 
-          className="hamburger-button" 
+        <button
+          className="hamburger-button"
           onClick={toggleMenu}
           aria-label="Toggle menu"
         >
@@ -65,7 +65,11 @@ const Navbar = () => {
         </button>
 
         {/* Navigation Links Container */}
-        <div className={`nav-links-container ${isMenuOpen ? 'menu-open' : ''}`}>
+        <div
+          className={`nav-links-container ${isMenuOpen ? "menu-open" : ""} ${
+            isMobile ? "mobile" : ""
+          }`}
+        >
           {/* Left Navigation Items */}
           <div className="nav-section left-section">
             <Link
@@ -101,9 +105,9 @@ const Navbar = () => {
           </div>
 
           {/* Right CTA */}
-          <div className="nav-section right-section">
-            <button className="cta-button">CHECK-UP GRATUITO</button>
-          </div>
+          <Link to="/checkup" className="cta-button">
+            CHECK-UP GRATUITO
+          </Link>
         </div>
       </nav>
     </header>
