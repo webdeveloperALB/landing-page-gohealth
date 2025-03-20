@@ -34,12 +34,12 @@
 }
 
 .info-box {
-  width: 18rem; /* Force width */
+  width: 17rem; /* Force width */
   flex: none; /* Prevent shrinking */
   background: linear-gradient(90deg, #091B21 0%, #0E4151 100%);
   backdrop-filter: blur(18px);
   padding: 0.5rem;
-  border-radius: 8px;
+  border-radius: 20px;
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -63,6 +63,7 @@
 }
 
 .info-box svg {
+  margin-left: 0.5rem;
   padding: 0.2rem;
   border-radius: 5px;
   background: #1BA69E;
@@ -123,23 +124,20 @@ label {
 }
 
 .select-header {
+  color: #FFFFFF;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  border: 1px solid #FFFFFF;
+  border-radius: 20px;
   cursor: pointer;
-  background-color: white;
+  background-color: transparent;
   transition: border-color 0.2s ease;
 }
 
-.select-header:hover {
-  border-color: #007bff;
-}
 
 .select-header.open {
-  border-color: #007bff;
   box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
 }
 
@@ -155,7 +153,7 @@ label {
 
 .dropdown-options {
   position: absolute;
-  top: calc(100% + 4px);
+  top: calc(100% + 4px); 
   left: 0;
   right: 0;
   background: white;
@@ -178,7 +176,7 @@ label {
 }
 
 .option-item.selected {
-  background-color: #007bff;
+  background: linear-gradient(89.09deg, #081E26 22.61%, #207494 112.54%);
   color: white;
 }
 
@@ -188,17 +186,13 @@ label {
 }
 
 .input-wrapper input {
+  background: linear-gradient(38.12deg, #091C23 2.26%, #0E3F4F 104.88%);
   width: 100%;
   padding: 12px 16px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  border: 1px solid #FFFFFF;
+  border-radius: 20px;
   transition: border-color 0.2s ease;
-}
-
-.input-wrapper input:focus {
-  outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  color: #FFFFFF;
 }
 
 .input-icon {
@@ -206,7 +200,8 @@ label {
   right: 12px;
   top: 50%;
   transform: translateY(-50%);
-  color: #666;
+  color: #1BA69E;
+
 }
 
 .submit-button {
@@ -214,25 +209,193 @@ label {
   color: white;
   padding: 16px 32px;
   border: none;
-  border-radius: 8px;
+  border-radius: 20px;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s ease;
 }
 
-.submit-button:hover {
-  background: #0056b3;
+/* Custom Date/Time Picker */
+.custom-datetime-picker {
+  position: relative;
+  width: 100%;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
+.picker-input {
+  position: relative;
+  cursor: pointer;
+}
+
+.picker-input input {
+  width: 100%;
+  padding: 12px 40px 12px 16px;
+  border: 1px solid #ddd;
+  color: #FFFFFF;
+  border-radius: 20px;
+  background: linear-gradient(89.09deg, #081E26 22.61%, #207494 112.54%);
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+  font-family: inherit;
+  font-size: 16px;
+}
+
+.picker-popup {
+  position: absolute;
+  bottom: 100%;
+  z-index: 1000;
+  margin-top: 8px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.react-datepicker {
+  border: none !important;
+  border-radius: 8px !important;
+  font-family: inherit !important;
+}
+
+.react-datepicker__header {
+  background: #f8f9fa !important;
+  border: none !important;
+  border-radius: 8px 8px 0 0 !important;
+  padding: 16px !important;
+}
+
+.react-datepicker__current-month {
+  color: #1BA69E !important;
+  font-weight: 600 !important;
+  margin-bottom: 8px !important;
+}
+
+.react-datepicker__day {
+  width: 2.5rem !important;
+  line-height: 2.5rem !important;
+  margin: 0.1rem !important;
+  border-radius: 8px !important;
+}
+
+.react-datepicker__day--selected {
+  background-color: #1BA69E !important;
+  color: white !important;
+}
+
+.react-datepicker__day:hover {
+  background-color: #e9ecef !important;
+}
+
+.react-datepicker__time-container {
+  width: 120px !important;
+  border-left: 1px solid #eee !important;
+}
+
+.react-datepicker__time-box {
+  width: 100% !important;
+}
+
+.react-datepicker__time-list-item {
+  padding: 8px 16px !important;
+  transition: all 0.2s ease;
+  font-size: 14px !important;
+}
+
+.react-datepicker__time-list-item:hover {
+  background: #f8f9fa !important;
+}
+
+.react-datepicker__time-list-item--selected {
+  background-color: #1BA69E !important;
+  color: white !important;
+}
+
+.react-datepicker__navigation {
+  top: 16px !important;
+}
+
+.react-datepicker__time-container .react-datepicker__time {
+  border-radius: 0 8px 8px 0 !important;
+}
+
+.custom-datetime-picker .input-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #1BA69E;
+}
+/* Base Styles - Keep your existing styles */
+
+/* Add this to your existing styles to help with calendar centering */
+.react-datepicker-wrapper,
+.react-datepicker__input-container {
+  display: block;
+  width: 100%;
+}
+
+.react-datepicker-popper {
+  transform-origin: center top !important;
+}
+
+/* Responsive Media Queries */
+/* Large Screens (Desktops) */
+@media screen and (max-width: 1200px) {
   .booking-container {
-    grid-template-columns: 1fr;
-    padding: 2rem;
+    gap: 1.5rem;
+    padding: 0.5rem;
+  }
+  
+  .info-box {
+    width: 15rem;
   }
   
   .map-wrapper iframe {
-    min-height: 400px;
+    min-height: 550px;
+  }
+}
+
+/* Medium Screens (Small Desktops & Tablets Landscape) */
+@media screen and (max-width: 992px) {
+  .booking-container {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .map-section {
+    height: 500px;
+  }
+  
+  .map-wrapper iframe {
+    min-height: 500px;
+  }
+  
+  .form-section {
+    padding: 1.5rem;
+  }
+  
+  .booking-title {
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .info-boxes-container {
+    bottom: 1.5rem;
+    left: 1.5rem;
+    right: 1.5rem;
+  }
+}
+
+/* Tablets Portrait */
+@media screen and (max-width: 768px) {
+  .form-row {
+    flex-direction: column;
+    gap: 1rem;
   }
   
   .info-boxes-container {
@@ -241,4 +404,126 @@ label {
     left: 1rem;
     right: 1rem;
   }
-}   
+  
+  .info-box {
+    width: auto;
+  }
+  
+  .map-section {
+    height: 450px;
+  }
+  
+  .map-wrapper iframe {
+    min-height: 450px;
+  }
+  
+  /* Calendar/DatePicker mobile centering */
+  .react-datepicker-popper {
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+  
+  .picker-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    bottom: auto;
+    width: 90%;
+    max-width: 320px;
+  }
+}
+
+/* Mobile Landscape */
+@media screen and (max-width: 576px) {
+  .booking-container {
+    padding: 0.25rem;
+  }
+  
+  .map-section {
+    height: 350px;
+    border-radius: 8px;
+  }
+  
+  .map-wrapper iframe {
+    min-height: 350px;
+  }
+  
+  .form-section {
+    padding: 1rem;
+  }
+  
+  .booking-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+  
+  .booking-form {
+    gap: 1rem;
+  }
+  
+  .info-boxes-container {
+    bottom: 0.75rem;
+    left: 0.75rem;
+    right: 0.75rem;
+  }
+  
+  .info-box {
+    padding: 0.5rem;
+    border-radius: 12px;
+    gap: 0.5rem;
+  }
+  
+  .info-box h3 {
+    font-size: 0.9rem;
+    margin-bottom: 0.2rem;
+  }
+  
+  .info-box p {
+    font-size: 0.8rem;
+  }
+  
+  /* Additional calendar centering for mobile */
+  .react-datepicker {
+    width: 100%;
+  }
+  
+  .react-datepicker__month-container {
+    float: none;
+    width: 100%;
+  }
+  
+  .react-datepicker__day {
+    width: 2rem !important;
+    line-height: 2rem !important;
+  }
+}
+
+/* Small Mobile Portrait */
+@media screen and (max-width: 375px) {
+  .info-box {
+    display: none;
+  }
+  
+  
+  .submit-button {
+    padding: 12px 24px;
+  }
+  
+  .picker-input input,
+  .input-wrapper input,
+  .select-header {
+    padding: 10px 14px;
+  }
+  
+  /* Adjust calendar for very small screens */
+  .picker-popup {
+    max-width: 280px;
+  }
+  
+  .react-datepicker__day {
+    width: 1.8rem !important;
+    line-height: 1.8rem !important;
+    margin: 0.05rem !important;
+  }
+}

@@ -1,4 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
+import DatePicker from "react-datepicker";
+import { registerLocale } from "react-datepicker";
+import it from "date-fns/locale/it";
+import "react-datepicker/dist/react-datepicker.css";
 import "./ElevenComponent.css";
 import {
   Calendar,
@@ -8,6 +12,8 @@ import {
   Phone,
   Info,
 } from "lucide-react";
+
+registerLocale("it", it);
 
 const CustomSelect = ({ options, value, onChange, placeholder }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -55,17 +61,77 @@ const CustomSelect = ({ options, value, onChange, placeholder }) => {
   );
 };
 
-const ElevenComponent = () => {
-  const [selectedDepartment, setSelectedDepartment] = useState(
-    "Dental Oral Care"
+const DateTimePicker = ({ selected, onChange, placeholder, timeOnly }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const pickerRef = useRef(null);
+
+  const handleClickOutside = (event) => {
+    if (pickerRef.current && !pickerRef.current.contains(event.target)) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <div className="custom-datetime-picker" ref={pickerRef}>
+      <div className="picker-input" onClick={() => setIsOpen(!isOpen)}>
+        <input
+          type="text"
+          value={
+            selected
+              ? timeOnly
+                ? selected.toLocaleTimeString("it-IT", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })
+                : selected.toLocaleDateString("it-IT")
+              : ""
+          }
+          placeholder={placeholder}
+          readOnly
+        />
+        {timeOnly ? (
+          <Clock className="input-icon" />
+        ) : (
+          <Calendar className="input-icon" />
+        )}
+      </div>
+
+      {isOpen && (
+        <div className="picker-popup">
+          <DatePicker
+            selected={selected}
+            onChange={(date) => {
+              onChange(date);
+              setIsOpen(false);
+            }}
+            inline
+            showTimeSelect={timeOnly}
+            showTimeSelectOnly={timeOnly}
+            timeIntervals={15}
+            locale="it"
+            dateFormat={timeOnly ? "HH:mm" : "dd/MM/yyyy"}
+          />
+        </div>
+      )}
+    </div>
   );
+};
+
+const ElevenComponent = () => {
+  const [selectedDepartment, setSelectedDepartment] =
+    useState("Dental Oral Care");
   const [selectedTreatment, setSelectedTreatment] = useState("");
   const [formData, setFormData] = useState({
     service: "",
     name: "",
     email: "",
-    date: "",
-    time: "",
+    date: null,
+    time: null,
   });
 
   const departments = [
@@ -85,6 +151,14 @@ const ElevenComponent = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleDateChange = (date) => {
+    setFormData({ ...formData, date });
+  };
+
+  const handleTimeChange = (time) => {
+    setFormData({ ...formData, time });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle form submission
@@ -95,7 +169,7 @@ const ElevenComponent = () => {
       <div className="map-section">
         <div className="map-wrapper">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2996.039790811289!2d19.8219329!3d41.329748099999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x13503155ad618535%3A0xa70a3361bf396f57!2sGo%20Health%20Albania!5e0!3m2!1sen!2s!4v1742404901054!5m2!1sen!2s"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2996.039790811289!2d19.8219329!3d41.329748099999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x13503155ad618535%3A0xa70a3361bf396f57!2sGo%20Health%20Albania!5e0!3m2!1sen!2s!4v1742404901054!5m2!1sen!2s&ui=2&z=18"
             width="100%"
             height="100%"
             style={{ border: 0 }}
@@ -212,34 +286,23 @@ const ElevenComponent = () => {
               <label>
                 Data <span className="required">*</span>
               </label>
-              <div className="input-wrapper">
-                <input
-                  type="text"
-                  name="date"
-                  placeholder="Seleziona La Data"
-                  value={formData.date}
-                  onChange={handleInputChange}
-                  required
-                />
-                <Calendar className="input-icon" />
-              </div>
+              <DateTimePicker
+                selected={formData.date}
+                onChange={handleDateChange}
+                placeholder="Seleziona La Data"
+              />
             </div>
 
             <div className="form-group">
               <label>
                 Ora <span className="required">*</span>
               </label>
-              <div className="input-wrapper">
-                <input
-                  type="text"
-                  name="time"
-                  placeholder="Seleziona L'orario"
-                  value={formData.time}
-                  onChange={handleInputChange}
-                  required
-                />
-                <Clock className="input-icon" />
-              </div>
+              <DateTimePicker
+                selected={formData.time}
+                onChange={handleTimeChange}
+                placeholder="Seleziona L'orario"
+                timeOnly
+              />
             </div>
           </div>
 
