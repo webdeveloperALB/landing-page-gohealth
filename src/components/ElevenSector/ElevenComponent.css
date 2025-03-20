@@ -172,6 +172,7 @@
     }
   
     .map-section {
+      flex: none;
       height: 300px;
     }
   
@@ -179,8 +180,18 @@
       flex-direction: column;
       gap: 15px;
     }
-    
+   
+  }
+
+  @media (max-width: 500px) {
     .info-boxes-container {
       flex-direction: column;
+      margin-top: 20px;
+    }
+    .info-box {
+      padding: 5px 10px;
+    }
+    .info-box h3{
+      font-size: 12px;
     }
   }
