@@ -84,47 +84,42 @@ export default function CheckupPage() {
 
   // Time picker functionality
   const timeSlots = [
-    "08:00 AM",
-    "09:00 AM",
-    "10:00 AM",
-    "11:00 AM",
-    "12:00 PM",
-    "01:00 PM",
-    "02:00 PM",
-    "03:00 PM",
-    "04:00 PM",
-    "05:00 PM",
-  ]
+    "00:00", "01:00", "02:00", "03:00", "04:00", "05:00",
+    "06:00", "07:00", "08:00", "09:00", "10:00", "11:00",
+    "12:00", "13:00", "14:00", "15:00", "16:00", "17:00",
+    "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"
+  ];
+
 
   return (
     <div className="consultation-container">
       <div className="consultation-header">
         <div className="status-circle"></div>
-        <span className="header-text">Online Consultation</span>
+        <span className="header-text">Consulenza Online</span>
       </div>
 
       <div className="divider"></div>
 
       <div className="form-content">
         <h2 className="section-title">
-          Patient Details<span className="required-star">*</span>
+          Dettagli del Paziente<span className="required-star">*</span>
         </h2>
 
         <div className="form-row">
           <div className="form-group">
-            <label htmlFor="firstName">First Name</label>
-            <input type="text" id="firstName" placeholder="Your First Name" />
+            <label htmlFor="firstName">Nome</label>
+            <input type="text" id="firstName" placeholder="Il tuo nome" />
           </div>
 
           <div className="form-group">
-            <label htmlFor="lastName">Last Name</label>
-            <input type="text" id="lastName" placeholder="Your Last Name" />
+            <label htmlFor="lastName">Cognome</label>
+            <input type="text" id="lastName" placeholder="Il tuo cognome" />
           </div>
 
           <div className="form-group">
-            <label htmlFor="age">Age</label>
+            <label htmlFor="age">Età</label>
             <div className="select-wrapper">
-              <input type="text" id="age" placeholder="Your Age" />
+              <input type="text" id="age" placeholder="La tua età" />
               <ChevronDown className="select-icon" />
             </div>
           </div>
@@ -132,34 +127,34 @@ export default function CheckupPage() {
 
         <div className="form-row">
           <div className="form-group wide">
-            <label htmlFor="email">Email Address</label>
-            <input type="email" id="email" placeholder="Your Email Address" />
+            <label htmlFor="email">Indirizzo Email</label>
+            <input type="email" id="email" placeholder="Il tuo indirizzo email" />
           </div>
 
           <div className="form-group wide">
-            <label htmlFor="mobile">Mobile Number</label>
-            <input type="tel" id="mobile" placeholder="Your Mobil Number" />
+            <label htmlFor="mobile">Numero di Telefono</label>
+            <input type="tel" id="mobile" placeholder="Il tuo numero di telefono" />
           </div>
         </div>
 
         <div className="form-row">
           <div className="form-group full-width">
-            <label htmlFor="address">Yor Address</label>
-            <input type="text" id="address" placeholder="Your Address" />
+            <label htmlFor="address">Indirizzo</label>
+            <input type="text" id="address" placeholder="Il tuo indirizzo" />
           </div>
         </div>
 
         <h2 className="section-title">
-          Appointment Details<span className="required-star">*</span>
+          Dettagli dell'Appuntamento<span className="required-star">*</span>
         </h2>
 
         <div className="form-row">
           <div className="form-group full-width">
             <label htmlFor="service">
-              Type Of Service Required <span className="required-star">*</span>
+              Tipo di Servizio Richiesto <span className="required-star">*</span>
             </label>
             <div className="select-wrapper">
-              <input type="text" id="service" placeholder="How Can We Help You ?" />
+              <input type="text" id="service" placeholder="Come possiamo aiutarti?" />
               <ChevronDown className="select-icon" />
             </div>
           </div>
@@ -168,13 +163,13 @@ export default function CheckupPage() {
         <div className="form-row">
           <div className="form-group">
             <label htmlFor="date">
-              Date <span className="required-star">*</span>
+              Data <span className="required-star">*</span>
             </label>
             <div className="input-with-icon">
               <input
                 type="text"
                 id="date"
-                placeholder="Select Date"
+                placeholder="Seleziona Data"
                 value={selectedDate}
                 onClick={() => setShowCalendar(!showCalendar)}
                 readOnly
@@ -211,13 +206,13 @@ export default function CheckupPage() {
 
           <div className="form-group">
             <label htmlFor="time">
-              Time <span className="required-star">*</span>
+              Orario <span className="required-star">*</span>
             </label>
             <div className="input-with-icon">
               <input
                 type="text"
                 id="time"
-                placeholder="Select Time"
+                placeholder="Seleziona Orario"
                 value={selectedTime}
                 onClick={() => setShowTimePicker(!showTimePicker)}
                 readOnly
@@ -245,10 +240,10 @@ export default function CheckupPage() {
 
           <div className="form-group">
             <label htmlFor="branch">
-              Branch <span className="required-star">*</span>
+              Filiale <span className="required-star">*</span>
             </label>
             <div className="input-with-icon">
-              <input type="text" id="branch" placeholder="Tirana, Alb" />
+              <input type="text" id="branch" placeholder="Tirana, Albania" />
               <MapPin className="input-icon map-pin" />
             </div>
           </div>
@@ -256,16 +251,15 @@ export default function CheckupPage() {
 
         <div className="form-row">
           <div className="form-group full-width">
-            <label htmlFor="message">Additional Message</label>
-            <textarea id="message" placeholder="You An Write Here"></textarea>
+            <label htmlFor="message">Messaggio Aggiuntivo</label>
+            <textarea id="message" placeholder="Scrivi qui..."></textarea>
           </div>
         </div>
 
         <div className="form-row center">
-          <button className="book-button2">BOOK APPOINTMENT</button>
+          <button className="book-button2">PRENOTA APPUNTAMENTO</button>
         </div>
       </div>
     </div>
   )
 }
-
