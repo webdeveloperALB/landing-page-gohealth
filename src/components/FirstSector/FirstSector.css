@@ -22,6 +22,7 @@ body {
   width: 100%;
   border: none;
   background: transparent;
+  color: #000000;
   font-size: 1rem;
   cursor: pointer;
 }
@@ -174,9 +175,9 @@ body {
   .landing-content__image img {
     margin-top: 50px;
     border-radius: 40px;
-    width: 90%;
+    width: 80%;
     max-width: 600px;
-    height: 90%;
+    height: 75%;
     display: block;
   }
    .image-label {
@@ -196,8 +197,8 @@ body {
   }
   
   .dopo {
-    bottom: 30px;
-    right: 80px;
+    bottom: 120px;
+    right: 130px;
   }
 
 

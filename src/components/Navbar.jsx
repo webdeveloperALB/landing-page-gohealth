@@ -50,7 +50,9 @@ const Navbar = () => {
       <nav className="main-nav">
         {/* Center Logo (moved outside of flex layout for mobile) */}
         <div className="center-section">
-          <img src="/NavbarLogo.png" alt="Clinic Logo" className="nav-logo" />
+          <Link to="/">
+            <img src="/NavbarLogo.png" alt="Clinic Logo" className="nav-logo" />
+          </Link>
         </div>
 
         {/* Hamburger Menu Button (only shown on mobile) */}

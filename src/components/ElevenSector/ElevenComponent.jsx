@@ -159,9 +159,67 @@ const ElevenComponent = () => {
     setFormData({ ...formData, time });
   };
 
-  const handleSubmit = (e) => {
+  const isValidEmail = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission
+
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.service ||
+      !formData.date ||
+      !formData.time
+    ) {
+      alert("Per favore compila tutti i campi obbligatori");
+      return;
+    }
+
+    if (!isValidEmail(formData.email)) {
+      alert("Per favore inserisci un indirizzo email valido");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        "https://gohealth-server.onrender.com/send-email",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            service: formData.service,
+            date: formData.date.toISOString(),
+            time: formData.time.toISOString(),
+            department: selectedDepartment,
+            treatment: selectedTreatment,
+          }),
+        }
+      );
+
+      const data = await response.json();
+      if (response.ok) {
+        alert("Prenotazione inviata con successo!");
+        setFormData({
+          service: "",
+          name: "",
+          email: "",
+          date: null,
+          time: null,
+        });
+        setSelectedTreatment("");
+      } else {
+        throw new Error(data.message || "Errore nell'invio della prenotazione");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert(error.message || "Si è verificato un errore durante l'invio");
+    }
   };
 
   return (
