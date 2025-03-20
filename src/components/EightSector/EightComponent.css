@@ -40,7 +40,6 @@
   .story-card {
     border: 1px solid #1BA69E;
     flex: 1;
-    min-width: 300px;
     background-color: #f0fafa;
     border-radius: 20px;
     overflow: hidden;
