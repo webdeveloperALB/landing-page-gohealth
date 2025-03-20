@@ -10,14 +10,14 @@
 .map-section {
   position: relative;
   height: 100%;
-  border-radius: 12px;
+  border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .map-wrapper iframe {
   height: 100%;
-  min-height: 600px;
+  min-height: 700px;
 }
 
 .info-boxes-container {
@@ -365,7 +365,16 @@ label {
   .booking-container {
     grid-template-columns: 1fr;
     gap: 1rem;
+    grid-auto-flow: dense;
   }
+
+  .booking-container > *:first-child {
+    order: 1;
+}
+
+.booking-container > *:last-child {
+    order: -1;
+}
   
   .map-section {
     height: 500px;
