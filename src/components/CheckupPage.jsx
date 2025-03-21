@@ -92,7 +92,7 @@ export default function CheckupPage() {
     }
 
     try {
-      const response = await fetch('https://your-server.com/send-email', {
+      const response = await fetch('https://gohealth-server.onrender.com/send-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
