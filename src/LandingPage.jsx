@@ -31,7 +31,7 @@ const LandingPage = () => {
 
       {/* WhatsApp icon */}
       <div className="whatsapp-icon">
-        <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer">
+        <a href="https://wa.me/355696283333" target="_blank" rel="noopener noreferrer">
           <FaWhatsapp size={40} color="#25D366" />
         </a>
       </div>
