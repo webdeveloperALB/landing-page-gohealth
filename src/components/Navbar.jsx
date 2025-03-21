@@ -41,7 +41,10 @@ const Navbar = () => {
 
       <nav className="main-nav">
         <div className="center-section">
-          <Link to="/">
+          <Link 
+            to="/" 
+            onClick={() => handleSetActive("home")}
+          >
             <img src="/NavbarLogo.png" alt="Clinic Logo" className="nav-logo" />
           </Link>
         </div>
@@ -94,7 +97,11 @@ const Navbar = () => {
             </Link>
           </div>
 
-          <Link to="/checkup" className="cta-button">
+          <Link 
+            to="/checkup" 
+            className="cta-button"
+            onClick={() => setIsMenuOpen(false)}
+          >
             CHECK-UP GRATUITO
           </Link>
         </div>

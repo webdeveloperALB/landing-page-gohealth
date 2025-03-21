@@ -356,6 +356,7 @@
   }
 
   .form-row {
+    align-items: center;
     margin-bottom: 1rem;
     flex-direction: column;
     gap: 12px;
