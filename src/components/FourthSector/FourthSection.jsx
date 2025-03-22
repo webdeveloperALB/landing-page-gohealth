@@ -1,33 +1,37 @@
-import { useState } from "react";
-import "./FourthSection.css";
+"use client"
 
-const FourthSection = () => {
-  const [showingImage, setShowingImage] = useState("split"); // "split", "before", or "after"
+import { useState, useRef } from "react"
+import "./FourthSection.css"
 
-  // Define your image URLs here
-  const beforeImageUrl = "/sixth-image.jpg";
-  const afterImageUrl = "/third_image.jpg";
+export default function FourthSection() {
+  const [position, setPosition] = useState(50)
+  const [isDragging, setIsDragging] = useState(false)
+  const containerRef = useRef(null)
 
-  const handleLeftClick = () => {
-    // Show full "after" (right) image when left arrow is clicked
-    setShowingImage(showingImage === "after" ? "split" : "after");
-  };
+  const handleMouseDown = (e) => {
+    e.preventDefault()
+    setIsDragging(true)
+    document.body.style.userSelect = "none" // Disable text selection globally during drag
+  }
 
-  const handleRightClick = () => {
-    // Show full "before" (left) image when right arrow is clicked
-    setShowingImage(showingImage === "before" ? "split" : "before");
-  };
+  const handleMouseUp = () => {
+    setIsDragging(false)
+    document.body.style.userSelect = "" // Re-enable text selection
+  }
 
-  // Determine clip paths based on current state
-  const beforeClipPath =
-    showingImage === "before" ? "polygon(0 0, 100% 0, 100% 100%, 0 100%)" :
-      showingImage === "after" ? "polygon(0 0, 0% 0, 0% 100%, 0 100%)" :
-        "polygon(0 0, 50% 0, 50% 100%, 0 100%)";
+  const handleMouseMove = (e) => {
+    if (!isDragging || !containerRef.current) return
 
-  const afterClipPath =
-    showingImage === "after" ? "polygon(0 0, 100% 0, 100% 100%, 0 100%)" :
-      showingImage === "before" ? "polygon(100% 0, 100% 0, 100% 100%, 100% 100%)" :
-        "polygon(50% 0, 100% 0, 100% 100%, 50% 100%)";
+    const container = containerRef.current
+    const rect = container.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const percentage = Math.min(Math.max((x / rect.width) * 100, 2.5), 97.5)
+
+    setPosition(percentage)
+  }
+
+  const beforeImageUrl = "/sixth-image.jpg"
+  const afterImageUrl = "/third_image.jpg"
 
   return (
     <div className="transformation-container">
@@ -37,37 +41,44 @@ const FourthSection = () => {
           <h1 className="title">Vivi La Trasformazione</h1>
         </div>
 
-        <div className="before-after-container">
-          {/* Before image (left side) */}
+        <div
+          className="before-after-container"
+          ref={containerRef}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseUp}
+        >
           <div
             className="before-image"
             style={{
               backgroundImage: `url(${beforeImageUrl})`,
-              clipPath: beforeClipPath
+              clipPath: `polygon(0 0, ${position}% 0, ${position}% 100%, 0 100%)`,
             }}
           />
 
-          {/* After image (right side) */}
           <div
             className="after-image"
             style={{
               backgroundImage: `url(${afterImageUrl})`,
-              clipPath: afterClipPath
+              clipPath: `polygon(${position}% 0, 100% 0, 100% 100%, ${position}% 100%)`,
             }}
           />
 
-          {/* Fixed central divider with arrows */}
-          <div className="fixed-divider">
-            <div className="divider-line"></div>
-            <div className="divider-buttons">
-              <span className="arrow-left" onClick={handleLeftClick}>&lt;</span>
-              <span className="arrow-right" onClick={handleRightClick}>&gt;</span>
+          <div
+            className="divider"
+            style={{ left: `${position}%` }}
+            onMouseDown={handleMouseDown}
+            onDragStart={(e) => e.preventDefault()} // Prevent drag ghost image
+          >
+            <div className="divider-line" />
+            <div className="divider-handle">
+              <span className="arrow-left">&lt;</span>
+              <span className="arrow-right">&gt;</span>
             </div>
           </div>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default FourthSection;

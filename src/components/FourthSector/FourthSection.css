@@ -1,7 +1,7 @@
 .transformation-container {
   width: 100%;
   padding: 60px 0;
-  background: linear-gradient(to bottom, #07121E 60%, white 60%);
+  background: linear-gradient(to bottom, #07121e 60%, white 60%);
 }
 
 .content-wrapper {
@@ -18,22 +18,25 @@
 .subtitle {
   font-size: 18px;
   margin-bottom: 10px;
+  color: white;
 }
 
 .title {
   color: white;
   font-size: 36px;
   font-weight: bold;
+  margin: 0;
 }
 
-/* Before-After Container */
 .before-after-container {
   position: relative;
   width: 100%;
-  height: 500px;
+  max-width: 1200px;
+  height: 600px;
+  margin: 0 auto;
   overflow: hidden;
-  border-radius: 30px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
 .before-image,
@@ -45,7 +48,9 @@
   height: 100%;
   background-size: cover;
   background-position: center;
-  transition: clip-path 0.3s ease; /* Make this 0s for instant transition */
+  background-repeat: no-repeat;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .before-image {
@@ -53,105 +58,61 @@
 }
 
 .after-image {
-  z-index: 2;
+  z-index: 0;
 }
 
-/* Fixed central divider */
-.fixed-divider {
+.divider {
   position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
   height: 100%;
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  pointer-events: none; /* So it doesn't interfere with clicking */
+  transform: translateX(-50%);
+  z-index: 2;
+  user-select: none;
+  touch-action: none;
+  pointer-events: none;
+  width: 4px; /* Match divider line width */
 }
 
 .divider-line {
-  width: 4px;
-  height: 100%;
-  background-color: white;
   position: absolute;
+  left: 50%;
+  height: 100%;
+  width: 4px;
+  background: #ffffff;
+  box-shadow: 0 0 12px rgba(0,0,0,0.3);
+  transform: translateX(-50%);
 }
 
-.divider-buttons {
-  position: relative;
-  width: 40px;
-  height: 40px;
-  background-color: white;
+.divider-handle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #ffffff;
   border-radius: 50%;
+  padding: 12px;
   display: flex;
+  gap: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  cursor: ew-resize;
+  transition: transform 0.2s ease;
+  /* Perfect centering fix */
+  margin-left: -2px; /* Half of divider line width */
+  /* Vertical alignment */
+  margin-top: -1px; /* Adjust if needed based on handle height */
+  /* Force content alignment */
   justify-content: center;
   align-items: center;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  pointer-events: auto; /* Make this clickable */
 }
 
-.arrow-left,
+/* Arrow elements */
+.arrow-left, 
 .arrow-right {
-  font-size: 16px;
-  cursor: pointer;
-  padding: 0 3px;
-  user-select: none;
-}
-
-/* Optional: Add hover effects */
-.arrow-left:hover,
-.arrow-right:hover {
-  color: #0088cc;
-}
-
-
-/* Responsive Breakpoints */
-@media (max-width: 768px) {
-  .transformation-container {
-    background: linear-gradient(to bottom, #07121E 50%, white 50%);
-    padding: clamp(1.5rem, 4vw, 2rem) 0;
-  }
-
-  .before-after-container {
-    height: min(500px, 70vh);
-  }
-
-  .divider-buttons {
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-  }
-}
-
-@media (max-width: 480px) {
-  .transformation-container {
-    background: linear-gradient(to bottom, #07121E 45%, white 45%);
-  }
-
-  .title {
-    font-size: clamp(1.5rem, 6vw, 1.75rem);
-  }
-
-  .subtitle {
-    letter-spacing: 0.5px;
-  }
-
-  .before-after-container {
-    height: min(400px, 60vh);
-    border-radius: clamp(10px, 3vw, 15px);
-  }
-
-  .divider-buttons {
-    width: 28px;
-    height: 28px;
-  }
-}
-
-@media (max-width: 320px) {
-  .title {
-    font-size: 1.4rem;
-  }
-
-  .before-after-container {
-    height: 55vh;
-  }
+  display: block;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  text-align: center;
+  font-weight: 900;
+  color: #222;
+  font-size: 18px;
 }
