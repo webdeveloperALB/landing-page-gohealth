@@ -64,45 +64,45 @@
 .divider {
   position: absolute;
   height: 100%;
-  transform: translateX(-50%);
   z-index: 2;
   user-select: none;
   touch-action: none;
   pointer-events: none;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
 }
 
 .divider-line {
   position: absolute;
-  left: 50%;
-  height: 100%;
   width: 4px;
+  height: 100%;
   background: #ffffff;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
-  transform: translateX(-50%);
 }
 
 .divider-handle {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: #ffffff;
-  border-radius: 50%;
+  position: relative;
   width: 40px;
   height: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #ffffff;
+  border-radius: 50%;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
   cursor: ew-resize;
   pointer-events: auto;
+  border: none;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0;
 }
 
-.arrow-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
+.handle-text {
+  font-size: 16px;
+  line-height: 1;
+  text-align: center;
+  margin: 0;
+  padding: 0;
 }
-

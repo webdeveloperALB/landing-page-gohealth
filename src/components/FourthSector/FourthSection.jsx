@@ -71,14 +71,10 @@ export default function FourthSection() {
             onDragStart={(e) => e.preventDefault()}
           >
             <div className="divider-line" />
-            <div className="divider-handle">
-              {/* Use a custom arrow icon instead of text */}
-              <div className="arrow-icon">
-                <svg viewBox="0 0 24 24" width="24" height="24">
-                  <path d="M10 6L4 12 10 18M14 6L20 12 14 18" stroke="black" strokeWidth="2" fill="none" />
-                </svg>
-              </div>
-            </div>
+            <button className="divider-handle">
+              {/* Directly use text instead of SVG */}
+              <span className="handle-text">&lt; &gt;</span>
+            </button>
           </div>
         </div>
       </div>
