@@ -96,13 +96,26 @@
   height: 50px;
   position: absolute;
   left: 50%;
-  transform: translateX(-50%);
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease; /* Smooth return when not hovering */
+  display: inline-block; /* Ensures proper transform behavior */
+}
+
+.nav-logo:hover {
+  animation: zoomInOut 1s ease-in-out infinite;
+  will-change: transform; /* Optimizes animations */
+}
+
+@keyframes zoomInOut {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
 }
 
 /* CTA Button Styles */
 .cta-button {
-  background-color: #ffffff;
   text-decoration: underline;
   color: #25a1aa;
   border: none;
