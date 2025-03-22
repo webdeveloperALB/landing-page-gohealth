@@ -11,12 +11,12 @@ export default function FourthSection() {
   const handleMouseDown = (e) => {
     e.preventDefault()
     setIsDragging(true)
-    document.body.style.userSelect = "none" // Disable text selection globally during drag
+    document.body.style.userSelect = "none"
   }
 
   const handleMouseUp = () => {
     setIsDragging(false)
-    document.body.style.userSelect = "" // Re-enable text selection
+    document.body.style.userSelect = ""
   }
 
   const handleMouseMove = (e) => {
@@ -68,12 +68,16 @@ export default function FourthSection() {
             className="divider"
             style={{ left: `${position}%` }}
             onMouseDown={handleMouseDown}
-            onDragStart={(e) => e.preventDefault()} // Prevent drag ghost image
+            onDragStart={(e) => e.preventDefault()}
           >
             <div className="divider-line" />
             <div className="divider-handle">
-              <span className="arrow-left">&lt;</span>
-              <span className="arrow-right">&gt;</span>
+              {/* Use a custom arrow icon instead of text */}
+              <div className="arrow-icon">
+                <svg viewBox="0 0 24 24" width="24" height="24">
+                  <path d="M10 6L4 12 10 18M14 6L20 12 14 18" stroke="black" strokeWidth="2" fill="none" />
+                </svg>
+              </div>
             </div>
           </div>
         </div>
