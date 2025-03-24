@@ -1,8 +1,24 @@
 /* Main container styles */
+.appointment-header1 {
+  text-align: center;
+  padding-top: 9rem;
+}
+
+.appointment-title1 {
+  font-size: 2.4rem;
+  color: #0A3366;
+
+}
+
+.appointment-subtitle1 {
+  font-size: 0.9rem;
+  color: #0A3366;
+}
+
 .consultation-container {
     width: 100%;
     max-width: 1120px;
-    margin: 10rem auto 2rem auto;
+    margin: 3rem auto 2rem auto;
     background: linear-gradient(180deg, #0c2331 0%, #0d2c3d 100%);
     border-radius: 16px;
     color: white;
