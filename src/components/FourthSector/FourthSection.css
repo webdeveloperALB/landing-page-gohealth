@@ -82,11 +82,9 @@
 }
 
 .divider-handle {
-  position: relative;
+  position: absolute; /* Change from relative to absolute */
   width: 40px;
   height: 40px;
-  top: 50%;
-  transform: translateY(-50%);
   background: #ffffff;
   border-radius: 50%;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
@@ -99,10 +97,15 @@
   padding: 0;
 }
 
+/* Add or update the handle-text class to ensure proper text centering */
 .handle-text {
   font-size: 16px;
   line-height: 1;
   text-align: center;
   margin: 0;
   padding: 0;
+  width: 100%; /* Ensure the text spans the full width of the handle */
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
 }
