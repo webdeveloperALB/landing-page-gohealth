@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useState, useEffect } from "react"
+import { useRef, useState, useEffect, useCallback } from "react"
 import "./FifthSection.css"
 import { ArrowRight } from 'lucide-react'
 
@@ -41,7 +41,6 @@ const FifthSection = () => {
     },
   ]
 
-  // Clone items for infinite scroll - add one before and one after
   const carouselItems = [services[services.length - 1], ...services, services[0]];
 
   const getCardWidth = () => {
@@ -55,6 +54,11 @@ const FifthSection = () => {
     }
   }
 
+  const stopAutoScroll = () => {
+    clearTimeout(scrollTimeout.current)
+    scrollTimeout.current = null
+  }
+
   const handleScroll = () => {
     if (!carouselRef.current || isDragging.current) return;
 
@@ -62,16 +66,13 @@ const FifthSection = () => {
     const scrollPos = carouselRef.current.scrollLeft;
     const maxScroll = carouselRef.current.scrollWidth - carouselRef.current.offsetWidth;
 
-    // Infinite scroll logic
     if (scrollPos >= maxScroll - cardWidth / 2) {
-      // When reaching the end (after the last real item), jump to the first real item
       carouselRef.current.style.scrollBehavior = 'auto';
       carouselRef.current.scrollLeft = cardWidth;
       setTimeout(() => {
         carouselRef.current.style.scrollBehavior = 'smooth';
       }, 10);
     } else if (scrollPos <= cardWidth / 2) {
-      // When reaching the beginning (before the first real item), jump to the last real item
       carouselRef.current.style.scrollBehavior = 'auto';
       carouselRef.current.scrollLeft = cardWidth * services.length;
       setTimeout(() => {
@@ -79,21 +80,19 @@ const FifthSection = () => {
       }, 10);
     }
 
-    // Calculate active index
     const activeIdx = Math.round(scrollPos / cardWidth) - 1;
     setActiveIndex((activeIdx + services.length) % services.length);
   };
 
-  const startAutoScroll = () => {
+  const startAutoScroll = useCallback(() => {
     if (scrollTimeout.current) return;
 
     const scroll = () => {
       if (!carouselRef.current || isDragging.current) return;
       
-      const cardWidth = getCardWidth();
+      const cardWidth = containerRef.current?.offsetWidth || 0;
       const scrollPos = carouselRef.current.scrollLeft;
       
-      // Always scroll one card width forward
       carouselRef.current.scrollTo({
         left: scrollPos + cardWidth,
         behavior: 'smooth'
@@ -103,14 +102,22 @@ const FifthSection = () => {
     };
 
     scrollTimeout.current = setTimeout(scroll, 3000);
-  };
+  }, []);
 
-  const stopAutoScroll = () => {
-    clearTimeout(scrollTimeout.current)
-    scrollTimeout.current = null
-  }
+  useEffect(() => {
+    const cardWidth = containerRef.current?.offsetWidth || 0;
+    carouselRef.current.style.scrollBehavior = 'auto';
+    carouselRef.current.scrollLeft = cardWidth;
+    carouselRef.current.style.scrollBehavior = 'smooth';
+    
+    startAutoScroll();
 
-  // Drag handlers
+    return () => {
+      stopAutoScroll();
+      if (animationFrame.current) cancelAnimationFrame(animationFrame.current);
+    };
+  }, [startAutoScroll]);
+
   const handleDragStart = (e) => {
     isDragging.current = true
     startX.current = (e.pageX || e.touches[0].pageX) - carouselRef.current.offsetLeft
@@ -140,7 +147,6 @@ const FifthSection = () => {
     if (!isDragging.current) return
     isDragging.current = false
 
-    // Snap to nearest card
     const cardWidth = getCardWidth()
     const scrollPos = carouselRef.current.scrollLeft
     const activeIdx = Math.round(scrollPos / cardWidth)
@@ -154,21 +160,6 @@ const FifthSection = () => {
     document.body.style.userSelect = ""
     startAutoScroll()
   }
-
-  useEffect(() => {
-    // Initialize carousel position to the first real item (after clone)
-    const cardWidth = getCardWidth();
-    carouselRef.current.style.scrollBehavior = 'auto';
-    carouselRef.current.scrollLeft = cardWidth; // Position at first real item
-    carouselRef.current.style.scrollBehavior = 'smooth';
-    
-    startAutoScroll();
-
-    return () => {
-      stopAutoScroll();
-      if (animationFrame.current) cancelAnimationFrame(animationFrame.current);
-    };
-  }, [])
 
   return (
     <div className="dental-services-container">
