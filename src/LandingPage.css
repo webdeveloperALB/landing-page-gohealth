@@ -10,12 +10,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color:rgb(20, 110, 100);
+    background-color: rgb(255, 255, 255);
     border-radius: 50%;
     padding: 10px;
-  }
-  
-  .whatsapp-icon a:hover {
+    box-shadow: 0 4px 6px rgb(0, 0, 0);
+    transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.whatsapp-icon a:hover {
     background-color: #128C7E;
-  }
-  
+    transform: scale(1.1);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
