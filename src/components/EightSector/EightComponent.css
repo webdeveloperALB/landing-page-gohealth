@@ -1,140 +1,189 @@
-/* Main container styles */
+/* Base container styles */
 .success-stories-container {
-    font-family: "Arial", sans-serif;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  overflow: hidden;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.brand-name {
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.main-title {
+  font-size: 32px;
+  color: #333;
+  margin: 0;
+}
+
+/* Carousel styling */
+.carousel-wrapper {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  margin: 0 auto;
+  margin-bottom: 30px;
+  padding-bottom: 1rem;
+}
+
+.carousel-track {
+  position: relative;
+  width: 80%;
+  max-width: 500px;
+  height: auto;
+  min-height: 470px; /* Increased as requested */
+  margin: 0 auto;
+  background-color: transparent; /* Ensure background is transparent */
+}
+
+/* Story card styling */
+.story-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%; /* Take full width of parent (which is already 80%) */
+  height: 100%;
+  min-height: 470px; /* Match the track's min-height */
+  display: flex;
+  flex-direction: column;
+  background-color: #fff; /* Consistent background color */
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.8s ease, opacity 0.6s ease;
+  will-change: transform, opacity;
+  visibility: hidden; /* Hide all cards by default */
+  opacity: 0;
+}
+
+/* Only show the active card */
+.story-card.active {
+  visibility: visible;
+  opacity: 1;
+  z-index: 2;
+}
+
+.card-image {
+  height: 280px; /* Fixed height */
+  overflow: hidden;
+  flex-shrink: 0; /* Prevent image from shrinking */
+}
+
+.story-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.story-card:hover .story-image {
+  transform: scale(1.05);
+}
+
+.card-content {
+  padding: 20px;
+  flex-grow: 1; /* Allow content to grow */
+  display: flex;
+  flex-direction: column;
+  background-color: #fff; /* Ensure consistent background */
+}
+
+.card-title {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.card-description {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 20px;
+  line-height: 1.5;
+  flex-grow: 1; /* Allow description to take available space */
+}
+
+.read-more-btn {
+  background-color: transparent;
+  color: rgb(0, 0, 0);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  align-self: flex-start; /* Align button to the start */
+  margin-top: auto; /* Push button to bottom of content */
+}
+
+.read-more-btn:hover {
+  background-color: #0051a8;
+}
+
+/* Pagination styling */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #ccc;
+  margin: 0 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dot.active {
+  background-color: #0070f3;
+  transform: scale(1.2);
+}
+
+/* Enhanced infinite loop transition */
+@media (prefers-reduced-motion: no-preference) {
+  /* Slide entering from right */
+  .story-card.entering {
+    animation: slideInFromRight 0.8s forwards;
   }
-  
-  /* Header styles */
-  .header {
-    margin-bottom: 40px;
+
+  /* Slide exiting to left */
+  .story-card.exiting {
+    animation: slideOutToLeft 0.8s forwards;
   }
-  
-  .brand-name {
-    color: #00bfb3;
-    font-size: 16px;
-    font-weight: 600;
-    margin: 0;
-    margin-bottom: 8px;
-    text-transform: uppercase;
-  }
-  
-  .main-title {
-    font-size: 42px;
-    font-weight: 700;
-    margin: 0;
-    color: #000;
-  }
-  
-  /* Cards container */
-  .cards-container {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin-bottom: 40px;
-  }
-  
-  /* Individual card styles */
-  .story-card {
-    border: 1px solid #1BA69E;
-    flex: 1;
-    background-color: #f0fafa;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .card-image {
-    width: 100%;
-    height: 250px;
-    position: relative;
-  }
-  
-  .story-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .card-content {
-    padding: 25px;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-  }
-  
-  .card-title {
-    font-size: 24px;
-    font-weight: 700;
-    margin: 0 0 15px 0;
-    color: #000;
-  }
-  
-  .card-description {
-    font-size: 16px;
-    line-height: 1.5;
-    color: #555;
-    margin-bottom: 25px;
-    flex-grow: 1;
-  }
-  
-  .read-more-btn {
-    align-self: flex-start;
-    background: none;
-    border: none;
-    color: #000;
-    font-weight: 600;
-    font-size: 14px;
-    padding: 0;
-    cursor: pointer;
-    text-transform: uppercase;
-  }
-  
-  .read-more-btn:hover {
-    color: #00bfb3;
-  }
-  
-  /* Pagination dots */
-  .pagination {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 30px;
-  }
-  
-  .dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: #ddd;
-    display: inline-block;
-  }
-  
-  .dot.active {
-    background-color: #00bfb3;
-    border: 2px solid white;
-    box-shadow: 0 0 0 1px #00bfb3;
-  }
-  
-  /* Responsive adjustments */
-  @media (max-width: 992px) {
-    .cards-container {
-      flex-direction: column;
+
+  @keyframes slideInFromRight {
+    0% {
+      transform: translateX(100%);
+      opacity: 0;
+      visibility: visible;
     }
-  
-    .story-card {
-      width: 100%;
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+      visibility: visible;
     }
   }
-  
-  @media (max-width: 768px) {
-    .main-title {
-      font-size: 32px;
+
+  @keyframes slideOutToLeft {
+    0% {
+      transform: translateX(0);
+      opacity: 1;
+      visibility: visible;
+    }
+    100% {
+      transform: translateX(-100%);
+      opacity: 0;
+      visibility: hidden;
     }
   }
-  
-  
+}
+
