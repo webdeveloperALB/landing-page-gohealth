@@ -13,7 +13,7 @@
 
 .brand-name {
   font-size: 18px;
-  color: #666;
+  color: #09BBAF;
   margin-bottom: 10px;
 }
 
@@ -35,10 +35,10 @@
 
 .carousel-track {
   position: relative;
-  width: 80%;
-  max-width: 500px;
+  width: 100% !important;
+  max-width: 450px;
   height: auto;
-  min-height: 470px; /* Increased as requested */
+  min-height: 500px; /* Increased as requested */
   margin: 0 auto;
   background-color: transparent; /* Ensure background is transparent */
 }
@@ -54,7 +54,7 @@
   display: flex;
   flex-direction: column;
   background-color: #fff; /* Consistent background color */
-  border-radius: 8px;
+  border-radius: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.8s ease, opacity 0.6s ease;
@@ -92,7 +92,8 @@
   flex-grow: 1; /* Allow content to grow */
   display: flex;
   flex-direction: column;
-  background-color: #fff; /* Ensure consistent background */
+  background: #F2FFFE;
+  border: 1px solid #B3D4D2
 }
 
 .card-title {
@@ -103,27 +104,25 @@
 
 .card-description {
   font-size: 16px;
-  color: #666;
-  margin-bottom: 20px;
+  color: #50615D;
+  margin-bottom: 10px;
   line-height: 1.5;
   flex-grow: 1; /* Allow description to take available space */
 }
 
 .read-more-btn {
+  text-decoration: underline;
+  font-size: 0.8rem;
   background-color: transparent;
   color: rgb(0, 0, 0);
   border: none;
-  padding: 10px 20px;
+  padding: 10px 0;
   border-radius: 4px;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 600;
   transition: background-color 0.3s ease;
   align-self: flex-start; /* Align button to the start */
   margin-top: auto; /* Push button to bottom of content */
-}
-
-.read-more-btn:hover {
-  background-color: #0051a8;
 }
 
 /* Pagination styling */
