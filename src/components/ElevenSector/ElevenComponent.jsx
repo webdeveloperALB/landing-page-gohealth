@@ -237,13 +237,7 @@ const ElevenComponent = () => {
           ></iframe>
 
           <div className="info-boxes-container">
-            <div className="info-box">
-              <MapPin />
-              <div>
-                <h3>La Nostra Posizione</h3>
-                <p>Tirana, Albania</p>
-              </div>
-            </div>
+            
 
             <div className="info-box">
               <Phone />

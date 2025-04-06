@@ -15,6 +15,10 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+.gm-style .place-card, .gm-style .default-card, .gm-style .directions-card {
+  display: none;
+}
+
 .map-wrapper iframe {
   height: 100%;
   min-height: 700px;
