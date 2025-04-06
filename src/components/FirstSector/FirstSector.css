@@ -64,10 +64,19 @@ body {
   }
   
   .landing-header__rating {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
     position: absolute;
-    width: 315.99px;
     height: 65.47px;
     top: 203px;
+  }
+
+  .experience-icon2 img{
+    margin-top: 5.5rem;
+    height: auto;
+    width: 200px !important;
   }
   
   .landing-header__rating span {
@@ -308,352 +317,155 @@ body {
     background-color: rgba(10, 158, 158, 0.9);
   }
   
-  /* Media Queries for FirstSector Component */
+  @media (max-width: 1200px) {
+    .landing-container {
+      padding: 9rem 2rem 2rem 2rem !important; /* More top padding for fixed navbar */
+    }
+  
+    .landing-container2 {
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+    }
+  
+    .landing-header__text {
+      text-align: center;
+    }
+  
+    .landing-header__title {
+      width: 100%;
+      font-size: 30px;
+    }
+  
+    .landing-header__stats {
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+  
+    .landing-header__stat {
+      margin-bottom: 1rem;
+    }
+  
+    .landing-content__image img {
+      width: 100%;
+      height: auto;
+    }
+  
+    .appointment-header {
+      flex-direction: column;
+      gap: 2rem;
+      align-items: center;
+      text-align: center;
+    }
+  
+    .nav-menu {
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+  
+    .appointment-form {
+      flex-direction: column;
+      gap: 12px;
+    }
+  
+    .form-field {
+      width: 100%;
+    }
+  
+    .book-button {
+      width: 100%;
+      text-align: center;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .landing-header__title {
+      font-size: 26px;
+    }
 
-/* Large screens (desktop) */
-@media screen and (min-width: 1201px) {
-  .landing-container {
-    padding: 7rem 4rem 4rem 4rem;
+    .nav-item {
+      border: #000000 2px solid;
+      border-radius: 20px;
+      padding: 0.5rem;
+    }
+  
+    .image-label {
+      font-size: 16px;
+      padding: 10px 18px;
+    }
+  
+    .prima {
+      left: 15px;
+    }
+  
+    .dopo {
+      bottom: 30px;
+      right: 20px;
+    }
   }
   
-  .landing-header__title {
-    width: 60%;
-    font-size: 36px;
-  }
-}
+  @media (max-width: 576px) {
+    .landing-header__title {
+      font-size: 22px;
+    }
 
-@media screen and (max-width: 1024px) {
-  .landing-content__image {
-    margin-left: 160px;
-  }
+    .experience-icon2 img {
+      margin-top: 1rem;
+    }
 
-  .appointment-header {
-    gap: 0rem;
-  }
-}
-/* Medium screens (laptops, small desktops) */
-@media screen and (max-width: 1200px) {
-  .landing-container {
-    padding: 6rem 3rem 3rem 3rem !important;
+    .landing-header__rating {
+      flex-direction: column;
+      padding-top: 3.5rem;
+      width: 90%;
+    }
+  
+    .appointment-title {
+      font-size: 24px;
+    }
+  
+    .landing-container {
+      padding: 10rem 1rem 2rem 1rem !important;
+    }
+  
+    .landing-header__stat-icon {
+      width: 70px;
+      height: 70px;
+    }
+  
+    .landing-header__stat-icon img {
+      width: 32px;
+      height: 32px;
+    }
+  
+    .landing-header__stat-number {
+      font-size: 22px;
+    }
+  
+    .landing-header__stat-label {
+      font-size: 14px;
+    }
+  
+    .nav-menu {
+      gap: 8px;
+    }
+  
+    .nav-item {
+      font-size: 13px;
+    }
+  
+    .field-label {
+      font-size: 12px;
+    }
+  
+    .field-value,
+    .treatment-select,
+    .date-picker {
+      font-size: 14px;
+    }
+  
+    .book-button {
+      font-size: 14px;
+      padding: 12px;
+    }
   }
   
-  .landing-header__title {
-    width: 70%;
-    font-size: 32px;
-  }
-  
-  .landing-header__stat-icon {
-    width: 85px;
-    height: 85px;
-  }
-  
-  .landing-header__stat-number {
-    font-size: 26px;
-  }
-  
-  .landing-header__stat-label {
-    font-size: 14px;
-  }
-}
-
-/* Tablets and small laptops */
-@media screen and (max-width: 992px) {
-  .landing-container {
-    padding: 5rem 2rem 2rem 2rem !important;
-  }
-
-  .landing-header__stat-3 img {
-    width: 40%;
-    order: -1; 
-}
-
-  .landing-content__image {
-    margin-left: 0;
-  }
-
-  
-  .landing-container2 {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .landing-header__title {
-    width: 90%;
-    font-size: 28px;
-  }
-  
-  .landing-header__stats {
-    gap: 20px;
-  }
-  
-  .landing-header__stat-icon {
-    width: 75px;
-    height: 75px;
-  }
-  
-  .landing-header__stat-icon img {
-    width: 38px;
-    height: 38px;
-  }
-  
-  .landing-content__image img {
-    width: 100%;
-    max-width: 500px;
-    margin: 0 auto 0 auto;
-  }
-  
-  .appointment-header {
-    gap: 0;
-    flex-direction: column;
-  }
-  
-  .nav-menu {
-    margin-top: 15px;
-    gap: 15px;
-    flex-wrap: wrap;
-  }
-  
-  .appointment-form {
-    display: grid;
-    grid-template-columns: 2fr;
-    gap: 16px;
-  }
-}
-
-/* Tablets */
-@media screen and (max-width: 768px) {
-  .landing-container {
-    padding: 10rem 1.5rem 1.5rem 1.5rem !important;
-  }
-  .form-field {
-    width: 100%;
-  }
-  .landing-header__rating {
-    position: relative;
-    top: 0;
-    margin-bottom: 20px;
-  }
-  
-  .landing-header__main {
-    margin-top: 2rem;
-  }
-  
-  .landing-header__title {
-    font-size: 24px;
-  }
-  
-  .landing-header__stats {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  
-  .landing-header__3 {
-    width: 100%;
-    margin-top: 20px;
-  }
-  
-  .image-label {
-    font-size: 18px;
-    padding: 12px 24px;
-  }
-  
-  .prima {
-    top: 20px;
-    left: 20px;
-  }
-  
-  .dopo {
-    bottom: 20px;
-    right: 20px;
-  }
-  
-  .appointment-container {
-    padding: 20px 20px 20px 20px;
-  }
-  
-  .appointment-title {
-    font-size: 24px;
-  }
-}
-
-/* Mobile devices */
-@media screen and (max-width: 576px) {
-  .landing-container {
-    padding: 8rem 1rem 1rem 1rem !important;
-    background: linear-gradient(to top, white 8%, #0e4354 8%, #08171c 100%);
-  }
-
-  .landing-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-
-
-  .landing-header__content {
-    align-items: center !important;
-    justify-content: center !important;
-    padding: 0;
-  }
-
-  .landing-header__text {
-    display: grid;
-    place-items: center;
-  }
-
-  .landing-header__text h1 {
-    display: flex;
-    align-self: center;
-    justify-self: center;
-  }
-  
-  .landing-header__rating img {
-    padding: 0 0.2rem;
-    width: 100%;
-    height: auto;
-  }
-  
-  .landing-header__company {
-    font-size: 12px;
-  }
-  
-  .landing-header__title {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-  }
-  
-  .landing-header__stats {
-    align-items: center;
-    gap: 30px;
-  }
-  
-  .landing-header__stat-icon {
-    width: 65px;
-    height: 65px;
-  }
-  
-  .landing-header__stat-icon img {
-    width: 32px;
-    height: 32px;
-  }
-  
-  .landing-header__stat-number {
-    font-size: 24px;
-  }
-  
-  .landing-header__stat-label {
-    font-size: 13px;
-  }
-  
-  .image-label {
-    font-size: 14px;
-    padding: 8px 16px;
-    border-radius: 12px;
-  }
-  
-  .prima {
-    top: 20px;
-    left: 20px;
-  }
-  
-  .dopo {
-    bottom: 20px;
-    right: 20px;
-  }
-  
-  .appointment-container {
-    margin: 3rem 0 0 0;
-    padding: 15px 15px 20px 15px;
-    border-radius: 16px;
-  }
-  
-  .appointment-title {
-    font-size: 20px;
-  }
-  
-  .nav-menu {
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .nav-item {
-    font-size: 13px;
-    padding: 8px 0;
-    border-bottom: 1px solid #e5e5e5;
-    width: 100%;
-    text-align: left;
-  }
-  
-  .form-field {
-    width: 100%;
-    padding: 10px 0;
-  }
-  
-  .icon-container {
-    width: 35px;
-    height: 35px;
-    margin: 0 12px 0 8px;
-  }
-  
-  .field-icon {
-    width: 16px;
-    height: 16px;
-  }
-  
-  .field-label {
-    font-size: 12px;
-  }
-  
-  .field-value {
-    font-size: 14px;
-  }
-  
-  .book-button {
-    font-size: 14px;
-    padding: 14px 20px;
-  }
-}
-
-/* Very small mobile devices */
-@media screen and (max-width: 375px) {
-  .landing-container {
-    padding: 8rem 0.75rem 0.75rem 0.75rem !important;
-  }
-  
-  .landing-header__stat-icon {
-    width: 60px;
-    height: 60px;
-  }
-  
-  .landing-header__stat-icon img {
-    width: 28px;
-    height: 28px;
-  }
-  
-  .landing-header__stat-number {
-    font-size: 22px;
-  }
-  
-  .landing-header__stat-label {
-    font-size: 12px;
-  }
-  
-  .image-label {
-    font-size: 12px;
-    padding: 6px 12px;
-    border-radius: 10px;
-  }
-  
-  .appointment-title {
-    font-size: 18px;
-  }
-  
-  .book-button {
-    font-size: 13px;
-    padding: 12px 16px;
-  }
-}

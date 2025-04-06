@@ -48,7 +48,12 @@ function FirstSector() {
                 <div className="landing-header">
                     <div className="landing-header__rating">
                         <img src="/google-trustpilot.svg" alt="Trust badges" />
+
+                        <div className="experience-icon2">
+                            <img src="/logo3.png" alt="Experience icon" />
+                        </div>
                     </div>
+
 
                     <div className="landing-header__main">
                         <div className="landing-header__content">
@@ -80,12 +85,6 @@ function FirstSector() {
                                     </div>
                                     <p className="landing-header__stat-number">7+</p>
                                     <p className="landing-header__stat-label">Anni Di Esperienza</p>
-                                </div>
-
-                                <div className="landing-header__3">
-                                    <div className="landing-header__stat-3">
-                                        <img src="/logo3.png" alt="Experience icon" />
-                                    </div>
                                 </div>
                             </div>
                         </div>
