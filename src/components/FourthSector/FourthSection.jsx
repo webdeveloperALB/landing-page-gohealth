@@ -21,12 +21,10 @@ export default function FourthSection() {
 
   const handleMouseMove = (e) => {
     if (!isDragging || !containerRef.current) return
-
     const container = containerRef.current
     const rect = container.getBoundingClientRect()
     const x = e.clientX - rect.left
     const percentage = Math.min(Math.max((x / rect.width) * 100, 2.5), 97.5)
-
     setPosition(percentage)
   }
 
@@ -36,9 +34,8 @@ export default function FourthSection() {
     const rect = container.getBoundingClientRect()
     const x = e.touches[0].clientX - rect.left
     const percentage = Math.min(Math.max((x / rect.width) * 100, 2.5), 97.5)
-
     setPosition(percentage)
-    e.preventDefault() // Prevent scrolling
+    e.preventDefault()
   }
 
   const beforeImageUrl = "/sixth-image.jpg"
@@ -56,9 +53,9 @@ export default function FourthSection() {
           className="before-after-container"
           ref={containerRef}
           onMouseMove={handleMouseMove}
-          onTouchMove={handleTouchMove} // Add this line
+          onTouchMove={handleTouchMove}
           onMouseUp={handleMouseUp}
-          onTouchEnd={handleMouseUp} // Add this line
+          onTouchEnd={handleMouseUp}
           onMouseLeave={handleMouseUp}
         >
           <div
@@ -81,12 +78,11 @@ export default function FourthSection() {
             className="divider"
             style={{ left: `${position}%` }}
             onMouseDown={handleMouseDown}
-            onTouchStart={handleMouseDown} // Add touch start
+            onTouchStart={handleMouseDown}
             onDragStart={(e) => e.preventDefault()}
           >
             <div className="divider-line" />
             <button className="divider-handle">
-              {/* Directly use text instead of SVG */}
               <span className="handle-text">&lt; &gt;</span>
             </button>
           </div>
