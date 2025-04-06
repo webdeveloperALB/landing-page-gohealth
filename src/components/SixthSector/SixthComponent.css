@@ -22,7 +22,7 @@
 .testimonial-content {
   width: 100%;
   color: white;
-  padding: 25rem 7rem 0 4rem;
+  padding: 28rem 7rem 0rem 4rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -215,7 +215,7 @@
   }
 
   .testimonial-content {
-    padding: 1.5rem 1.5rem 4rem 1.5rem;
+    padding: 1.5rem 1.5rem 0rem 1.5rem;
   }
 
   .testimonial-header {

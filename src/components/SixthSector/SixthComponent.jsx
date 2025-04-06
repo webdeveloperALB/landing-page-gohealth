@@ -9,24 +9,24 @@ import React from "react";
 const testimonials = [
   {
     id: 1,
-    text: "Professionalità eccellente, ottima comunicazione e assistenza. Sono stato molto soddisfatto del lavoro eseguito, tutto è andato per il meglio, personale molto gentile e disponibile anche per trovarci un alloggio vicino alla clinica. Sono grato di essere venuto qui per le cure dentali. Grazie!",
+    text: "Professionalità eccellente e assistenza impeccabile. Sono molto soddisfatto del lavoro e della gentilezza del personale!",
     author: "Davide Salè",
   },
   {
     id: 2,
-    text: "Clinica eccellente, professionali e molto scrupolosi sul lavoro ed i dettagli 💪💯❤❤ top, grazie per il bel sorriso che ho ora ❤❤❤❤ ...",
+    text: "Clinica professionale e attenta ai dettagli. Grazie per il sorriso che ho adesso, siete il top!",
     author: "Massimiliano Gullà",
   },
   {
     id: 3,
-    text: "Un’organizzazione eccellente! Non mi sono pentito della scelta. In Italia tanti pregiudizi, ma qui ho trovato professionalità, umanità, pulizia e attrezzature moderne. Ridurre tutto al risparmio è ingiusto: qui c’è passione e competenza vera. Bravi!",
+    text: "Scelta perfetta: ho trovato professionalità, umanità e attrezzature moderne. Non è solo risparmio, ma vera eccellenza.",
     author: "Pino Vessio",
   },
   {
     id: 4,
-    text: "Professionalità, accoglienza e velocità di esecuzione sono solo alcune delle caratteristiche che rendono unica questa clinica. Il personale sempre cordiale e impeccabile ti fa sentire a casa. Materiali di assoluta eccellenza e tecnologie all’avanguardia sono una garanzia per un risultato che non ha pari! Grazie di tutto!!!",
+    text: "Accoglienza, velocità ed eccellenza rendono questa clinica unica. Tecnologie moderne e personale impeccabile garantiscono risultati eccezionali.",
     author: "Claudio Spinelli",
-  },
+  }  
 ];
 
 export default function SixthComponent() {
