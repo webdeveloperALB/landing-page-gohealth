@@ -305,7 +305,7 @@
 @media screen and (max-width: 1025px) {
   .consultation-container {
     max-width: 90%;
-    margin: 9rem auto 2rem auto;
+    margin: 4rem auto 2rem auto;
   }
 
   .form-content {
@@ -324,7 +324,7 @@
 /* Medium tablets (900px and below) */
 @media screen and (max-width: 900px) {
   .consultation-container {
-    margin: 10rem auto 2rem auto;
+    margin: 4rem auto 2rem auto;
   }
 
   .consultation-header {
@@ -355,7 +355,7 @@
 @media screen and (max-width: 768px) {
   .consultation-container {
     max-width: 95%;
-    margin: 10rem auto 1.5rem auto;
+    margin: 4rem auto 1.5rem auto;
     border-radius: 12px;
   }
 
@@ -400,8 +400,11 @@
 
 /* Large phones (576px and below) */
 @media screen and (max-width: 576px) {
+  .appointment-header1 {
+    padding-top: 7rem;
+  }
   .consultation-container {
-    margin: 8rem auto 1rem auto;
+    margin: 2.5rem auto 1rem auto;
     border-radius: 10px;
   }
 
@@ -463,7 +466,7 @@
 /* Small phones (400px and below) */
 @media screen and (max-width: 400px) {
   .consultation-container {
-    margin: 8rem auto 1rem auto;
+    margin: 2.5rem auto 1rem auto;
   }
 
   .consultation-header {
