@@ -19,7 +19,7 @@ const testimonials = [
   },
   {
     id: 3,
-    text: "Una eccellente organizzazione; sono venuto qui sulla percezione a prima vista che non mi sarei pentito della scelta. In Italia quando dici che vai in Albania, mille pregiudizi, mille problemi poi quando capita di raccontare il nostro vissuto tra i medici in Italia ti rendi conto che il rapporto dottore paziente è solo un dare e avere economico, ci lamentiamo che non ci sono i medici di una volta. I meriti di questa clinica: professionalità, pulizia, attrezzatura e carica umana... dire solo che in Albania si spende di meno è sminuire chi fa il lavoro con tanta professionalità e con la continua voglia di aggiornarsi, le pareti sono piene di attestati in tal senso, bravi!!!!",
+    text: "Un’organizzazione eccellente! Non mi sono pentito della scelta. In Italia tanti pregiudizi, ma qui ho trovato professionalità, umanità, pulizia e attrezzature moderne. Ridurre tutto al risparmio è ingiusto: qui c’è passione e competenza vera. Bravi!",
     author: "Pino Vessio",
   },
   {
@@ -33,30 +33,23 @@ export default function SixthComponent() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
-  // Function to handle testimonial navigation
-  // Use useCallback to memoize the function
   const goToTestimonial = React.useCallback(
     (index) => {
       if (isTransitioning) return;
-
       setIsTransitioning(true);
       setCurrentIndex(index);
-
-      // Reset transition state after animation completes
       setTimeout(() => {
         setIsTransitioning(false);
-      }, 500); // Match this with your CSS transition time
+      }, 500);
     },
     [isTransitioning]
   );
 
-  // Auto-scroll testimonials every 5 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       const nextIndex = (currentIndex + 1) % testimonials.length;
       goToTestimonial(nextIndex);
     }, 5000);
-
     return () => clearInterval(interval);
   }, [currentIndex, goToTestimonial]);
 
@@ -96,7 +89,6 @@ export default function SixthComponent() {
               }}
             >
               <p className="testimonial-text">{testimonial.text}</p>
-
               <div className="testimonial-author">{testimonial.author}</div>
             </div>
           ))}
