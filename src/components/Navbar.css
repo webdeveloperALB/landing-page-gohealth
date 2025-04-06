@@ -310,5 +310,10 @@
   .nav-logo {
     height: 35px;
   }
+
+  .emergency-icon {
+    margin-right: 0;
+    margin-left: 10px;
+  }
 }
 
