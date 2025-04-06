@@ -30,6 +30,17 @@ export default function FourthSection() {
     setPosition(percentage)
   }
 
+  const handleTouchMove = (e) => {
+    if (!isDragging || !containerRef.current) return
+    const container = containerRef.current
+    const rect = container.getBoundingClientRect()
+    const x = e.touches[0].clientX - rect.left
+    const percentage = Math.min(Math.max((x / rect.width) * 100, 2.5), 97.5)
+
+    setPosition(percentage)
+    e.preventDefault() // Prevent scrolling
+  }
+
   const beforeImageUrl = "/sixth-image.jpg"
   const afterImageUrl = "/third_image.jpg"
 
@@ -45,7 +56,9 @@ export default function FourthSection() {
           className="before-after-container"
           ref={containerRef}
           onMouseMove={handleMouseMove}
+          onTouchMove={handleTouchMove} // Add this line
           onMouseUp={handleMouseUp}
+          onTouchEnd={handleMouseUp} // Add this line
           onMouseLeave={handleMouseUp}
         >
           <div
@@ -68,6 +81,7 @@ export default function FourthSection() {
             className="divider"
             style={{ left: `${position}%` }}
             onMouseDown={handleMouseDown}
+            onTouchStart={handleMouseDown} // Add touch start
             onDragStart={(e) => e.preventDefault()}
           >
             <div className="divider-line" />

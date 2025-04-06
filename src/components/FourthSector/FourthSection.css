@@ -109,3 +109,9 @@
   justify-content: center; /* Center horizontally */
   align-items: center; /* Center vertically */
 }
+
+@media (pointer: coarse) {
+  .divider-handle {
+    touch-action: none;
+  }
+}
