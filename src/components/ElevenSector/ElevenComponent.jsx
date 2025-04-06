@@ -8,7 +8,6 @@ import {
   Calendar,
   Clock,
   ChevronDown,
-  MapPin,
   Phone,
   Info,
 } from "lucide-react";
@@ -44,9 +43,8 @@ const CustomSelect = ({ options, value, onChange, placeholder }) => {
           {options.map((option) => (
             <div
               key={option.value}
-              className={`option-item ${
-                value === option.value ? "selected" : ""
-              }`}
+              className={`option-item ${value === option.value ? "selected" : ""
+                }`}
               onClick={() => {
                 onChange(option.value);
                 setIsOpen(false);
@@ -85,9 +83,9 @@ const DateTimePicker = ({ selected, onChange, placeholder, timeOnly }) => {
             selected
               ? timeOnly
                 ? selected.toLocaleTimeString("it-IT", {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })
                 : selected.toLocaleDateString("it-IT")
               : ""
           }
@@ -235,18 +233,6 @@ const ElevenComponent = () => {
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
           ></iframe>
-
-          <div className="info-boxes-container">
-            
-
-            <div className="info-box">
-              <Phone />
-              <div>
-                <h3>Hai Domande?</h3>
-                <p>info@gohealthalbania.com</p>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
