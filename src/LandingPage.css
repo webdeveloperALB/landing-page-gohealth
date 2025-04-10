@@ -6,17 +6,32 @@
 @media (max-width: 768px) {
   .sectors-container {
     grid-template-areas:
-    "first"
-      "second"
+      "first"
+      "fourth"
+      "tenth"
+      "seventh"
+      "ninth"
       "third"
-      "fourth";
+      "fifth"
+      "second"
+      "sixth"
+      "eight"
+      "eleven";
   }
 
   .first-sector { grid-area: first; }
   .second-sector { grid-area: second; }
   .third-sector { grid-area: third; }
   .fourth-sector { grid-area: fourth; }
+  .fifth-sector { grid-area: fifth; }
+  .sixth-sector { grid-area: sixth; }
+  .seventh-sector { grid-area: seventh; }
+  .eight-sector { grid-area: eight; }
+  .ninth-sector { grid-area: ninth; }
+  .tenth-sector { grid-area: tenth; }
+  .eleven-sector { grid-area: eleven; }
 }
+
 
 .whatsapp-icon {
     position: fixed;

@@ -1,8 +1,9 @@
 "use client"
 import "./SeventhComponent.css"
 
-const SeventhComponent= () => {
+const SeventhComponent= ({ className }) => {
   return (
+    <div className={`seventh-sector ${className}`}>
     <div className="hero-container">
       <div className="hero-content">
         <h1 className="hero-title">La Migliore Clinica Dentale A Tirana</h1>
@@ -18,6 +19,7 @@ const SeventhComponent= () => {
         </div>
       </div>
     </div>
+     </div>
   )
 }
 export default SeventhComponent

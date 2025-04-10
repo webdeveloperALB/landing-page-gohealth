@@ -2,8 +2,9 @@
 import React from 'react';
 import './TenthComponent.css';
 
-const TenthComponent = () => {
+const TenthComponent = ({ className }) => {
   return (
+    <div className={`tenth-sector ${className}`}>
     <div className="banner-container">
       <div className="banner-content">
         <div className="banner-top">
@@ -26,6 +27,7 @@ const TenthComponent = () => {
           <img src="/comevisto/5.svg" alt="National Geographic" className="publication-logo" />
         </div>
       </div>
+    </div>
     </div>
   );
 };

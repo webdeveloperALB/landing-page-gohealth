@@ -3,7 +3,7 @@
 import { useState, useRef } from "react"
 import "./FourthSection.css"
 
-export default function FourthSection() {
+export default function FourthSection({ className }) {
   const [position, setPosition] = useState(50)
   const [isDragging, setIsDragging] = useState(false)
   const containerRef = useRef(null)
@@ -42,6 +42,7 @@ export default function FourthSection() {
   const afterImageUrl = "/third_image.jpg"
 
   return (
+    <div className={`fourth-sector ${className}`}>
     <div className="transformation-container">
       <div className="content-wrapper">
         <div className="text-content">
@@ -88,6 +89,7 @@ export default function FourthSection() {
           </div>
         </div>
       </div>
+    </div>
     </div>
   )
 }
