@@ -16,18 +16,18 @@ import "./LandingPage.css"
 
 const LandingPage = () => {
   return (
-    <div>
-      <FirstSector />
-      <SecondSector />
-      <ThirdSection />
-      <FourthSection />
-      <FifthSection />
-      <SixthComponent />
-      <SeventhComponent />
-      <EightComponent />
-      <NinthComponent />
-      <TenthComponent />
-      <ElevenComponent />
+    <div className="sectors-container">
+     <FirstSector className="first-sector" />
+      <SecondSector className="second-sector" />
+      <ThirdSection className="third-sector" />
+      <FourthSection className="fourth-sector" />
+      <FifthSection className="fifth-sector" />
+      <SixthComponent className="sixth-sector" />
+      <SeventhComponent className="seventh-sector" />
+      <EightComponent className="eight-sector" />
+      <NinthComponent className="ninth-sector" />
+      <TenthComponent className="tenth-sector" />
+      <ElevenComponent className="eleven-sector" />
 
       {/* WhatsApp icon */}
       <div className="whatsapp-icon">

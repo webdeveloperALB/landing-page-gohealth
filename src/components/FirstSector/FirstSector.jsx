@@ -5,7 +5,7 @@ import { FaMapMarkerAlt, FaCalendarAlt, FaUserFriends } from "react-icons/fa";
 import Navbar from "../Navbar";
 import "./FirstSector.css";
 
-function FirstSector() {
+function FirstSector({ className }) {
     const [selectedTreatment, setSelectedTreatment] = useState("IMPLANTOLOGIA");
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [treatmentType, setTreatmentType] = useState("1 Adulto");
@@ -42,12 +42,14 @@ function FirstSector() {
     };
 
     return (
+        <div className={`first-sector ${className}`}>
+             <Navbar />
         <div className="landing-container">
             {/* Header Section */}
             <div className="landing-container2">
                 <div className="landing-header">
                     <div className="landing-header__rating">
-                        <img src="/google-trustpilot.svg" alt="Trust badges" />
+                        <img src="/google-trustpilot.svg" alt="Trust badges" className="trust-badge" /> 
 
                         <div className="experience-icon2">
                             <img src="/logo3.png" alt="Experience icon" />
@@ -168,6 +170,7 @@ function FirstSector() {
                     </button>
                 </div>
             </div>
+        </div>
         </div>
     );
 }

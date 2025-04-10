@@ -1,8 +1,9 @@
 import "./SecondSector.css"
 import { CheckCircle } from "lucide-react"
 
-export default function SecondSector() {
+export default function SecondSector({ className }) {
     return (
+        <div className={`first-sector ${className}`}>
         <div className="container">
             <div className="contentSection">
                 <p className="subtitle">SIAMO LA TUA SCELTA MIGLIORE</p>
@@ -45,6 +46,7 @@ export default function SecondSector() {
             <div className="imageSection">
                 <img src="/second-image.png" alt="Image description" />
             </div>
+        </div>
         </div>
     );
 }

@@ -1,4 +1,23 @@
-/* LandingPage.css */
+.sectors-container {
+  display: grid;
+  grid-auto-flow: row;
+}
+
+@media (max-width: 768px) {
+  .sectors-container {
+    grid-template-areas:
+    "first"
+      "second"
+      "third"
+      "fourth";
+  }
+
+  .first-sector { grid-area: first; }
+  .second-sector { grid-area: second; }
+  .third-sector { grid-area: third; }
+  .fourth-sector { grid-area: fourth; }
+}
+
 .whatsapp-icon {
     position: fixed;
     bottom: 20px;
@@ -22,3 +41,4 @@
     transform: scale(1.1);
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
 }
+

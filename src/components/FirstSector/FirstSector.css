@@ -414,23 +414,39 @@ body {
       font-size: 22px;
     }
 
+    .trust-badge {
+      width: 12rem;
+      height: auto;
+    }
+
     .experience-icon2 img {
-      margin-top: 1rem;
+      width: 7rem !important;
+      margin-top: 3rem;
     }
 
     .landing-header__rating {
-      flex-direction: column;
-      padding-top: 3.5rem;
-      width: 90%;
+      top: 9rem;
+      flex-direction: row;
+      width: 99%;
     }
   
     .appointment-title {
       font-size: 24px;
     }
+
+    .landing-header__main{
+      margin-top: 10rem;
+    }
+
+    .landing-header__text {
+      padding: 0;
+      text-align: left;
+    }
   
     .landing-container {
-      padding: 10rem 1rem 2rem 1rem !important;
+      padding: 5rem 1rem 2rem 1rem !important;
     }
+
   
     .landing-header__stat-icon {
       width: 70px;
