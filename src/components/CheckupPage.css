@@ -1,7 +1,11 @@
 /* Main container styles */
+body {
+  background: #ffffff;
+}
 .appointment-header1 {
   text-align: center;
   padding-top: 9rem;
+  background: #EEFEFD;
 }
 
 .appointment-title1 {
@@ -16,15 +20,15 @@
 }
 
 .consultation-container {
-    width: 100%;
-    max-width: 1120px;
-    margin: 3rem auto 2rem auto;
-    background: linear-gradient(180deg, #0c2331 0%, #0d2c3d 100%);
-    border-radius: 16px;
-    color: white;
-    font-family: "Inter", sans-serif;
-  }
-  
+  width: 100%;
+  max-width: 1120px;
+  margin: 3rem auto 2rem auto;
+  background: linear-gradient(180deg, #0c2331 0%, #0d2c3d 100%);
+  border-radius: 16px;
+  color: white;
+  font-family: "Inter", sans-serif;
+}
+
  /* Header styles */
 .consultation-header {
     padding: 15px 40px;
@@ -403,8 +407,15 @@
   .appointment-header1 {
     padding-top: 7rem;
   }
+  .appointment-title1 {
+    font-size: 1.8rem;
+  }
+  .appointment-subtitle1 {
+    font-size: 0.8rem;
+  }
+  
   .consultation-container {
-    margin: 2.5rem auto 1rem auto;
+    margin: 2.5rem auto 0 auto;
     border-radius: 10px;
   }
 
@@ -466,7 +477,7 @@
 /* Small phones (400px and below) */
 @media screen and (max-width: 400px) {
   .consultation-container {
-    margin: 2.5rem auto 1rem auto;
+    margin: 2.5rem auto 0 auto;
   }
 
   .consultation-header {
