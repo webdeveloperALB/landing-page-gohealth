@@ -1,59 +1,112 @@
+/* Base grid layout for ALL screen sizes */
 .sectors-container {
   display: grid;
   grid-auto-flow: row;
+  grid-template-areas:
+    "first"
+    "second"
+    "third"
+    "fourth"
+    "fifth"
+    "sixth"
+    "seventh"
+    "eight"
+    "ninth"
+    "tenth"
+    "eleven";
 }
 
+/* Explicitly define ALL grid areas */
+.first-sector {
+  grid-area: first;
+}
+
+.second-sector {
+  grid-area: second;
+}
+
+.third-sector {
+  grid-area: third;
+}
+
+.fourth-sector {
+  grid-area: fourth;
+}
+
+.fifth-sector {
+  grid-area: fifth;
+}
+
+.sixth-sector {
+  grid-area: sixth;
+}
+
+.seventh-sector {
+  grid-area: seventh;
+}
+
+.eight-sector {
+  grid-area: eight;
+}
+
+.ninth-sector {
+  grid-area: ninth;
+}
+
+.tenth-sector {
+  grid-area: tenth;
+}
+
+.eleven-sector {
+  grid-area: eleven;
+}
+
+/* Mobile override */
 @media (max-width: 768px) {
   .sectors-container {
     grid-template-areas:
       "first"
       "fourth"
       "tenth"
-      "seventh"
-      "ninth"
       "third"
       "fifth"
+      "seventh"
       "second"
       "sixth"
+      "ninth"
       "eight"
       "eleven";
   }
-
-  .first-sector { grid-area: first; }
-  .second-sector { grid-area: second; }
-  .third-sector { grid-area: third; }
-  .fourth-sector { grid-area: fourth; }
-  .fifth-sector { grid-area: fifth; }
-  .sixth-sector { grid-area: sixth; }
-  .seventh-sector { grid-area: seventh; }
-  .eight-sector { grid-area: eight; }
-  .ninth-sector { grid-area: ninth; }
-  .tenth-sector { grid-area: tenth; }
-  .eleven-sector { grid-area: eleven; }
 }
 
+/* Critical grid item sizing */
+[class$="-sector"] {
+  min-height: 0;
+  min-width: 0;
+  height: 100%;
+  width: 100%;
+}
 
 .whatsapp-icon {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
-  }
-  
-  .whatsapp-icon a {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgb(255, 255, 255);
-    border-radius: 50%;
-    padding: 10px;
-    box-shadow: 0 4px 6px rgb(0, 0, 0);
-    transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.whatsapp-icon a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(255, 255, 255);
+  border-radius: 50%;
+  padding: 10px;
+  box-shadow: 0 4px 6px rgb(0, 0, 0);
+  transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
 .whatsapp-icon a:hover {
-    background-color: #128C7E;
-    transform: scale(1.1);
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+  background-color: #128C7E;
+  transform: scale(1.1);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
 }
-

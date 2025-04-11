@@ -42,7 +42,7 @@ export default function FourthSection({ className }) {
   const afterImageUrl = "/third_image.jpg"
 
   return (
-    <div className={`fourth-sector ${className}`}>
+    <div className={`fourth-sector ${className || ''}`}>
     <div className="transformation-container">
       <div className="content-wrapper">
         <div className="text-content">

@@ -42,7 +42,7 @@ function FirstSector({ className }) {
     };
 
     return (
-        <div className={`first-sector ${className}`}>
+        <div className={`first-sector ${className || ''}`}>
              <Navbar />
         <div className="landing-container">
             {/* Header Section */}

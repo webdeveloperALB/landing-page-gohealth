@@ -181,7 +181,7 @@
   .mask-icon3 {
     width: 70%;
     height: 100%;
-    margin: 0 auto;
+    padding: 0.2rem;
     display: block;
   }
 
@@ -212,6 +212,9 @@
 @media (max-width: 576px) {
   .testimonial-image-container {
     height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .testimonial-content {

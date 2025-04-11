@@ -1,3 +1,8 @@
+.fourth-sector {
+  min-height: 0; /* Allows content to shrink if needed */
+  min-width: 0;  /* Prevents overflow issues */
+}
+
 .transformation-container {
   width: 100%;
   padding: 60px 0;

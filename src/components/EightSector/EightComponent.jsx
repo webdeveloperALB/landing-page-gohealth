@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import "./EightComponent.css"
 
-export default function EightComponent() {
+export default function EightComponent({ className }) {
   const [activeIndex, setActiveIndex] = useState(0)
   const [isAnimating, setIsAnimating] = useState(false)
   const [direction, setDirection] = useState("next")
@@ -73,6 +73,7 @@ export default function EightComponent() {
   const prevIndex = (activeIndex - 1 + totalSlides) % totalSlides
 
   return (
+    <div className={`eight-sector ${className || ''}`}>
     <div className="success-stories-container">
       <div className="header">
         <h3 className="brand-name">VIAGGI FELICI</h3>
@@ -122,6 +123,7 @@ export default function EightComponent() {
           ></span>
         ))}
       </div>
+    </div>
     </div>
   )
 }

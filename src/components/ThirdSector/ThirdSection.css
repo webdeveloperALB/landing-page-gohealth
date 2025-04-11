@@ -1,46 +1,57 @@
 /* ThirdSection.css */
+.third-sector {
+  min-height: 0;
+  /* Allows content to shrink if needed */
+  min-width: 0;
+  /* Prevents overflow issues */
+}
+
 .scrolling-container {
-    width: 100%;
-    overflow: hidden;
-    background: #1BA69E;
-    padding: 20px 0;
-    position: relative;
+  height: 100%;
+  /* Fill the grid item's height */
+  width: 100%;
+  /* Fill the grid item's width */
+  overflow: hidden;
+  background: #1BA69E;
+  padding: 20px 0;
+  position: relative;
+}
+
+.scrolling-content {
+  display: inline-block;
+  white-space: nowrap;
+  width: 200%;
+  animation: scroll 20s linear infinite;
+}*
+
+.scrolling-text {
+  display: inline-block;
+  color: white;
+  font-size: 2rem;
+  font-weight: bold;
+  padding-right: 50px;
+  white-space: nowrap;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0%);
   }
-  
-  .scrolling-content {
-    display: inline-block;
-    white-space: nowrap;
-    width: 200%;
-    animation: scroll 20s linear infinite;
+
+  100% {
+    transform: translateX(-50%);
   }
-  
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
   .scrolling-text {
-    display: inline-block;
-    color: white;
     font-size: 2rem;
-    font-weight: bold;
-    padding-right: 50px;
-    white-space: nowrap;
   }
-  
-  @keyframes scroll {
-    0% {
-      transform: translateX(0%);
-    }
-    100% {
-      transform: translateX(-50%);
-    }
+}
+
+@media (max-width: 480px) {
+  .scrolling-text {
+    font-size: 1rem;
   }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .scrolling-text {
-      font-size: 2rem;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .scrolling-text {
-      font-size: 1.5rem;
-    }
-  }
+}

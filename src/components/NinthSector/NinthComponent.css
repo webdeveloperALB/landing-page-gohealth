@@ -2,7 +2,7 @@
   background: #1BA69E;
   max-width: 100%;
   overflow: hidden;
-  margin: 2rem 0;
+  padding: 1rem 0;
 }
 
 .scroller {
@@ -55,5 +55,9 @@
     width: 150px;
     height: 80px;
     margin: 0 0.5rem;
+  }
+
+  .scroller-container {
+    padding: 0;
   }
 }

@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react"
 import "./NinthComponent.css" // Simple CSS import
 
-export default function InfiniteCarousel() {
+export default function InfiniteCarousel({ className }) {
     const scrollerRef = useRef(null)
 
     useEffect(() => {
@@ -21,23 +21,25 @@ export default function InfiniteCarousel() {
     }, [])
 
     return (
-        <div className="scroller-container">
-            <div className="scroller" ref={scrollerRef}>
-                <div className="scroller-inner">
-                    <div className="scroller-item">
-                        <img src="/partner/1.svg" alt="Partner 1" />
-                    </div>
-                    <div className="scroller-item">
-                        <img src="/partner/2.svg" alt="Partner 2" />
-                    </div>
-                    <div className="scroller-item">
-                        <img src="/partner/3.svg" alt="Partner 3" />
-                    </div>
-                    <div className="scroller-item">
-                        <img src="/partner/4.svg" alt="Partner 4" />
-                    </div>
-                    <div className="scroller-item">
-                        <img src="/partner/5.svg" alt="Partner 5" />
+        <div className={`ninth-sector ${className}`}>
+            <div className="scroller-container">
+                <div className="scroller" ref={scrollerRef}>
+                    <div className="scroller-inner">
+                        <div className="scroller-item">
+                            <img src="/partner/1.svg" alt="Partner 1" />
+                        </div>
+                        <div className="scroller-item">
+                            <img src="/partner/2.svg" alt="Partner 2" />
+                        </div>
+                        <div className="scroller-item">
+                            <img src="/partner/3.svg" alt="Partner 3" />
+                        </div>
+                        <div className="scroller-item">
+                            <img src="/partner/4.svg" alt="Partner 4" />
+                        </div>
+                        <div className="scroller-item">
+                            <img src="/partner/5.svg" alt="Partner 5" />
+                        </div>
                     </div>
                 </div>
             </div>

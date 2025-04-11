@@ -1,4 +1,9 @@
 /* Base container styles */
+.eight-sector {
+  min-height: 0; /* Allows content to shrink if needed */
+  min-width: 0;  /* Prevents overflow issues */
+  background: #EEFEFD;
+}
 .success-stories-container {
   max-width: 1200px;
   margin: 0 auto;

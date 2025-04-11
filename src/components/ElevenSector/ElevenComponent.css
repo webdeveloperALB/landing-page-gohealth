@@ -1,4 +1,8 @@
 /* Base Styles */
+.eleven-sector {
+  min-height: 0; /* Allows content to shrink if needed */
+  min-width: 0;  /* Prevents overflow issues */
+}
 .booking-container {
   background: linear-gradient(38.12deg, #091C23 2.26%, #0E3F4F 104.88%);
   display: grid;

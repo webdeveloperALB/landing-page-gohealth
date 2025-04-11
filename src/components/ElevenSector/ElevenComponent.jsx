@@ -120,7 +120,7 @@ const DateTimePicker = ({ selected, onChange, placeholder, timeOnly }) => {
   );
 };
 
-const ElevenComponent = () => {
+const ElevenComponent = ({ className }) => {
   const [selectedDepartment, setSelectedDepartment] =
     useState("Dental Oral Care");
   const [selectedTreatment, setSelectedTreatment] = useState("");
@@ -221,6 +221,7 @@ const ElevenComponent = () => {
   };
 
   return (
+    <div className={`eleven-sector ${className || ''}`}>
     <div id="eleven-section" className="booking-container">
       <div className="map-section">
         <div className="map-wrapper">
@@ -349,6 +350,7 @@ const ElevenComponent = () => {
           </button>
         </form>
       </div>
+    </div>
     </div>
   );
 };

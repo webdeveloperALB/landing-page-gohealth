@@ -1,6 +1,11 @@
+.fifth-sector {
+  min-height: 0; /* Allows content to shrink if needed */
+  min-width: 0;  /* Prevents overflow issues */
+}
 .dental-services-container {
   padding: 40px 20px;
   text-align: center;
+  background-color: #ffffff;
 }
 
 .dental-services-header {
@@ -189,5 +194,30 @@
 @media (max-width: 768px) {
   .dental-services-title {
     font-size: 2rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .dental-services-container {
+    background: #EEFEFD;
+  }
+  .dental-services-header {
+    display: none;
+  }
+  .dental-service-card-content {
+    background: linear-gradient(55.5deg, #0D3847 57.77%, #2088AD 154.71%);
+  }
+  .dental-service-icon {
+    background-color: transparent;
+  }
+  .dental-service-icon img {
+    filter: brightness(0) invert(1); /* This can make the image appear white if it's an icon */
+  }
+  .dental-service-title {
+    color: #ffffff;
+  }
+  .dental-service-description {
+    color: #ffffff;
+    font-size: 0.9rem;
   }
 }

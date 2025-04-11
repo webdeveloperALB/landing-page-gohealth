@@ -1,86 +1,99 @@
 /* DentalTourismBanner.css */
+.tenth-sector {
+  min-height: 0; /* Allows content to shrink if needed */
+  min-width: 0;  /* Prevents overflow issues */
+}
 .banner-container {
-    width: 100%;
-    background: #EEFEFD;
-    padding: 60px 20px;
-    display: flex;
-    justify-content: center;
-    text-align: center;
-  }
-  
-  .banner-content {
-    max-width: 1200px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-  }
-  
-  .banner-top {
-    margin-bottom: 20px;
-  }
-  
-  .come-visto {
-    color: #00a99d;
-    font-size: 14px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-  
+  width: 100%;
+  background: #EEFEFD;
+  padding: 60px 20px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.banner-content {
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.banner-top {
+  margin-bottom: 20px;
+}
+
+.come-visto {
+  color: #00a99d;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.banner-title h1 {
+  font-size: 24px;
+  line-height: 1.4;
+  color: #0d3d56;
+  font-weight: 700;
+  margin-bottom: 40px;
+  max-width: 900px;
+}
+
+.publication-logos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 40px;
+  width: 100%;
+}
+
+.publication-logo {
+  height: 25px;
+  opacity: 0.8;
+  filter: grayscale(0.2);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
   .banner-title h1 {
-    font-size: 24px;
-    line-height: 1.4;
-    color: #0d3d56;
-    font-weight: 700;
-    margin-bottom: 40px;
-    max-width: 900px;
+    font-size: 20px;
   }
-  
+
   .publication-logos {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 40px;
-    width: 100%;
+    gap: 20px;
   }
-  
+
   .publication-logo {
-    height: 25px;
-    opacity: 0.8;
-    filter: grayscale(0.2);
+    height: 24px;
   }
-  
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
-    .banner-title h1 {
-      font-size: 20px;
-    }
-    
-    .publication-logos {
-      gap: 20px;
-    }
-    
-    .publication-logo {
-      height: 24px;
-    }
+}
+
+@media (max-width: 480px) {
+  .banner-content {
+    gap: 0.7rem;
   }
-  
-  @media (max-width: 480px) {
-    .banner-container {
-      padding: 40px 15px;
-    }
-    
-    .banner-title h1 {
-      font-size: 18px;
-    }
-    
-    .publication-logos {
-      gap: 15px;
-    }
-    
-    .publication-logo {
-      height: 20px;
-    }
+  .banner-container {
+    padding: 40px 15px;
   }
+
+  .banner-publication {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 0.7rem;
+  }
+
+  .banner-title h1 {
+    font-size: 18px;
+  }
+
+  .publication-logos {
+    gap: 15px;
+  }
+
+  .publication-logo {
+    height: 12px;
+  }
+}

@@ -4,7 +4,7 @@ import { useRef, useState, useEffect, useCallback } from "react"
 import "./FifthSection.css"
 import { ArrowRight } from 'lucide-react'
 
-const FifthSection = () => {
+const FifthSection = ({ className }) => {
   const [activeIndex, setActiveIndex] = useState(0)
   const carouselRef = useRef(null)
   const containerRef = useRef(null)
@@ -162,6 +162,7 @@ const FifthSection = () => {
   }
 
   return (
+    <div className={`fifth-sector ${className || ''}`}>
     <div className="dental-services-container">
       <div className="dental-services-header">
         <h3 className="dental-services-subtitle">SORRISO PERFETTO</h3>
@@ -221,6 +222,7 @@ const FifthSection = () => {
           />
         ))}
       </div>
+    </div>
     </div>
   )
 }
