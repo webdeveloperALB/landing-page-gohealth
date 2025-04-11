@@ -42,17 +42,31 @@
   overflow: hidden;
   border-radius: 1rem;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+  mask-image: -webkit-radial-gradient(white, black);
 }
 
 .video-container iframe {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 50%;
+  left: 50%;
   width: 100%;
   height: 100%;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
   border: 0;
 }
-
+.ytp-chrome-top,
+.ytp-title,
+.ytp-watermark,
+.ytp-show-cards-title,
+.ytp-gradient-top,
+.ytp-pause-overlay,
+.ytp-ce-element {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
 /* Responsive typography */
 @media (max-width: 768px) {
   .hero-title {
