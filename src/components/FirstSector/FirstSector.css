@@ -5,7 +5,7 @@ body {
 }
 
 /* Treatment buttons */
-.nav-item.active {
+.nav-item.active {      
   border-radius: 15px;
   height: 70%;
   padding: 0.4rem;
@@ -411,7 +411,7 @@ body {
 
 @media (max-width: 576px) {
   .landing-container    {
-    background: linear-gradient(272.32deg, #08171c -5.68%, #0e4354 100.56%);
+    background: transparent
   }
   .landing-header__title {
     font-size: 22px;
@@ -428,6 +428,8 @@ body {
   }
 
   .landing-header__rating {
+    align-self: center;
+    justify-self: center;
     top: 9rem;
     flex-direction: row;
   }
