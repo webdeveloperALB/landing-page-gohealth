@@ -56,16 +56,28 @@
   object-fit: cover;
   border: 0;
 }
-.ytp-chrome-top,
+/* Nuclear option to hide all YouTube UI elements */
+.html5-video-player:not(.ytp-transparent) .ytp-chrome-top,
 .ytp-title,
-.ytp-watermark,
 .ytp-show-cards-title,
+.ytp-watermark,
+.ytp-chrome-controls,
+.ytp-impression-link,
 .ytp-gradient-top,
-.ytp-pause-overlay,
 .ytp-ce-element {
   display: none !important;
   opacity: 0 !important;
   visibility: hidden !important;
+}
+
+/* Hide loading spinner */
+.ytp-spinner {
+  display: none !important;
+}
+
+/* Hide context menu */
+.ytp-contextmenu {
+  display: none !important;
 }
 /* Responsive typography */
 @media (max-width: 768px) {
