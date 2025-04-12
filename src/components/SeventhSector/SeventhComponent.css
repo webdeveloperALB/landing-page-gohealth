@@ -94,6 +94,10 @@
   .hero-title {
     display: none;
   }
+  
+  .hero-content {
+  width: 120%;
+}
 
   .hero-subtitle {
     display: none;
