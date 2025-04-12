@@ -35,12 +35,16 @@
 
 .dental-services-cards {
   display: flex;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
+  overflow-x: scroll;
   scroll-behavior: smooth;
-  scrollbar-width: none;
-  /* Firefox */
+  -webkit-overflow-scrolling: touch;
+  touch-action: none;
+  cursor: grab;
+  scroll-snap-type: x mandatory;
+}
+
+.dental-services-cards:active {
+  cursor: grabbing;
 }
 
 .dental-services-cards::-webkit-scrollbar {
@@ -50,12 +54,13 @@
 
 .dental-service-card {
   flex: 0 0 100%;
-  scroll-snap-align: center;
+  scroll-snap-align: start;
+  will-change: transform;
   padding: 20px;
   box-sizing: border-box;
   width: 100%;
   min-width: 100%;
-  transition: transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
+  transition: transform 0.2s ease-out;
 }
 
 /* Hover Effect */
