@@ -457,6 +457,7 @@ body {
   }
 
   .landing-container {
+    background: linear-gradient(85.46deg, #092028 0.39%, #0E3F4F 71.4%);
     display: flex;
     flex-direction: column;
     align-items: center;
