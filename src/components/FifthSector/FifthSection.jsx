@@ -11,12 +11,12 @@ const FifthSection = ({ className }) => {
   const isDragging = useRef(false)
   const startX = useRef(0)
   const scrollLeft = useRef(0)
-  const animationFrame = useRef(null)
-  const scrollTimeout = useRef(null)
+  const autoScrollTimerRef = useRef(null)
   const cardWidth = useRef(0)
-  const lastDragTime = useRef(0)
-  const dragVelocity = useRef(0)
-  const lastDragX = useRef(0)
+  const touchIdentifier = useRef(null)
+  const isAnimating = useRef(false)
+  const dragThreshold = 5
+  const dragDistance = useRef(0)
 
   const services = [
     {
@@ -41,233 +41,301 @@ const FifthSection = ({ className }) => {
     },
   ]
 
+  // Create carousel with clone items for infinite loop
   const carouselItems = [services[services.length - 1], ...services, services[0]]
 
-  const getCardWidth = () => containerRef.current?.offsetWidth || 0
+  // Get width of a single card
+  const getCardWidth = useCallback(() => {
+    if (!containerRef.current) return 0
+    return containerRef.current.offsetWidth
+  }, [])
 
+  // Scroll to contact section
   const scrollToElevenComponent = () => {
     const elevenComponent = document.getElementById("eleven-section")
-    elevenComponent?.scrollIntoView({ behavior: "smooth", block: "start" })
+    if (elevenComponent) {
+      elevenComponent.scrollIntoView({ behavior: "smooth", block: "start" })
+    }
   }
 
-  const stopAutoScroll = () => {
-    clearTimeout(scrollTimeout.current)
-    scrollTimeout.current = null
-  }
+  // Stop auto scrolling
+  const stopAutoScroll = useCallback(() => {
+    if (autoScrollTimerRef.current) {
+      clearTimeout(autoScrollTimerRef.current)
+      autoScrollTimerRef.current = null
+    }
+  }, [])
 
-  // Update active index based on scroll position
-  const updateActiveIndex = useCallback(() => {
-    if (!carouselRef.current) return
+  // Start auto scrolling
+  const startAutoScroll = useCallback(() => {
+    stopAutoScroll()
     
-    const scrollPos = carouselRef.current.scrollLeft
-    const normalizedIndex = Math.round(scrollPos / cardWidth.current) - 1
-    const newActiveIndex = (normalizedIndex + services.length) % services.length
+    const scroll = () => {
+      if (!carouselRef.current || isDragging.current || isAnimating.current) return
+      
+      // Move to next card
+      const nextIndex = (activeIndex + 1) % services.length
+      navigateToCard(nextIndex)
+      
+      // Schedule next scroll
+      autoScrollTimerRef.current = setTimeout(scroll, 3000)
+    }
     
-    if (newActiveIndex !== activeIndex) {
-      setActiveIndex(newActiveIndex)
+    autoScrollTimerRef.current = setTimeout(scroll, 3000)
+  }, [activeIndex, services.length])
+
+  // Handle infinite scroll loop
+  const handleInfiniteScroll = useCallback(() => {
+    if (!carouselRef.current || !cardWidth.current) return
+
+    const scrollPosition = carouselRef.current.scrollLeft
+    const maxScroll = carouselRef.current.scrollWidth - carouselRef.current.offsetWidth
+
+    if (scrollPosition >= maxScroll - 20) {
+      // At end, jump to cloned start
+      isAnimating.current = true
+      carouselRef.current.style.scrollBehavior = 'auto'
+      carouselRef.current.scrollLeft = cardWidth.current
+      setTimeout(() => {
+        carouselRef.current.style.scrollBehavior = 'smooth'
+        isAnimating.current = false
+        setActiveIndex(0)
+      }, 50)
+    } else if (scrollPosition <= 20) {
+      // At start, jump to cloned end
+      isAnimating.current = true
+      carouselRef.current.style.scrollBehavior = 'auto'
+      carouselRef.current.scrollLeft = services.length * cardWidth.current
+      setTimeout(() => {
+        carouselRef.current.style.scrollBehavior = 'smooth'
+        isAnimating.current = false
+        setActiveIndex(services.length - 1)
+      }, 50)
+    } else {
+      // Update active index based on scroll position
+      const normalizedIndex = Math.round(scrollPosition / cardWidth.current) - 1
+      
+      // Make sure index is within bounds
+      let newIndex = normalizedIndex
+      if (normalizedIndex < 0) {
+        newIndex = services.length - 1
+      } else if (normalizedIndex >= services.length) {
+        newIndex = 0
+      }
+      
+      if (newIndex !== activeIndex) {
+        setActiveIndex(newIndex)
+      }
     }
   }, [activeIndex, services.length])
 
-  const handleScroll = useCallback(() => {
-    if (!carouselRef.current || isDragging.current) return
-
-    cardWidth.current = getCardWidth()
-    const scrollPos = carouselRef.current.scrollLeft
-    const maxScroll = carouselRef.current.scrollWidth - carouselRef.current.offsetWidth
-
-    // Handle infinite scroll loop
-    if (scrollPos >= maxScroll - cardWidth.current / 2) {
-      carouselRef.current.style.scrollBehavior = 'auto'
-      carouselRef.current.scrollLeft = cardWidth.current
-      setTimeout(() => carouselRef.current.style.scrollBehavior = 'smooth', 10)
-    } 
-    else if (scrollPos <= cardWidth.current / 2) {
-      carouselRef.current.style.scrollBehavior = 'auto'
-      carouselRef.current.scrollLeft = cardWidth.current * services.length
-      setTimeout(() => carouselRef.current.style.scrollBehavior = 'smooth', 10)
-    }
-
-    updateActiveIndex()
-  }, [services.length, updateActiveIndex])
-
-  const startAutoScroll = useCallback(() => {
-    if (scrollTimeout.current) return
-
-    const scroll = () => {
-      if (!carouselRef.current || isDragging.current) return
-      carouselRef.current.scrollTo({
-        left: carouselRef.current.scrollLeft + cardWidth.current,
-        behavior: 'smooth'
-      })
-      scrollTimeout.current = setTimeout(scroll, 3000)
-    }
-    scrollTimeout.current = setTimeout(scroll, 3000)
-  }, [])
-
+  // Initialize carousel
   useEffect(() => {
-    const container = containerRef.current
-    if (!container) return
-
-    const resizeObserver = new ResizeObserver(() => {
-      cardWidth.current = getCardWidth()
-      if (carouselRef.current) {
-        carouselRef.current.scrollTo({
-          left: (activeIndex + 1) * cardWidth.current,
-          behavior: 'auto'
-        })
-      }
-    })
-
-    resizeObserver.observe(container)
-    return () => resizeObserver.disconnect()
-  }, [activeIndex])
-
-  useEffect(() => {
-    if (!carouselRef.current) return
+    if (!carouselRef.current || !containerRef.current) return
     
+    // Set initial card width
     cardWidth.current = getCardWidth()
+    
+    // Set initial scroll position
     carouselRef.current.style.scrollBehavior = 'auto'
     carouselRef.current.scrollLeft = cardWidth.current
     
-    // Use passive: false for better performance on mobile
-    const carousel = carouselRef.current
-    const handleScrollEvent = () => {
-      if (!isDragging.current) {
-        handleScroll()
+    // Start auto-scroll after initial setup
+    const timer = setTimeout(() => {
+      carouselRef.current.style.scrollBehavior = 'smooth'
+      startAutoScroll()
+    }, 200)
+    
+    return () => {
+      clearTimeout(timer)
+      stopAutoScroll()
+    }
+  }, [getCardWidth, startAutoScroll, stopAutoScroll])
+
+  // Handle window resize
+  useEffect(() => {
+    if (!containerRef.current) return
+    
+    const handleResize = () => {
+      // Update card width
+      const newCardWidth = getCardWidth()
+      cardWidth.current = newCardWidth
+      
+      // Maintain scroll position relative to active card
+      if (carouselRef.current && !isDragging.current && !isAnimating.current) {
+        carouselRef.current.style.scrollBehavior = 'auto'
+        carouselRef.current.scrollLeft = (activeIndex + 1) * newCardWidth
       }
+    }
+    
+    // Create resize observer for responsive behavior
+    const resizeObserver = new ResizeObserver(handleResize)
+    resizeObserver.observe(containerRef.current)
+    
+    return () => resizeObserver.disconnect()
+  }, [activeIndex, getCardWidth])
+
+  // Add scroll event listener
+  useEffect(() => {
+    const carousel = carouselRef.current
+    if (!carousel) return
+    
+    // Debounced scroll handler
+    let scrollTimer = null
+    const handleScrollEvent = () => {
+      if (isDragging.current || isAnimating.current) return
+      
+      // Clear previous timeout
+      if (scrollTimer) clearTimeout(scrollTimer)
+      
+      // Set a short delay to avoid excessive calculations
+      scrollTimer = setTimeout(() => {
+        handleInfiniteScroll()
+      }, 50)
     }
     
     carousel.addEventListener('scroll', handleScrollEvent, { passive: true })
     
-    // Add momentum-based scroll physics
-    carousel.classList.add('smooth-drag')
-    
-    setTimeout(() => {
-      carouselRef.current.style.scrollBehavior = 'smooth'
-      startAutoScroll()
-    }, 100)
-    
     return () => {
-      stopAutoScroll()
-      carousel.removeEventListener('scroll', handleScrollEvent)
+      if (carousel) {
+        carousel.removeEventListener('scroll', handleScrollEvent)
+      }
+      if (scrollTimer) clearTimeout(scrollTimer)
     }
-  }, [startAutoScroll, handleScroll])
+  }, [handleInfiniteScroll])
 
+  // Navigate to card by index
+  const navigateToCard = useCallback((index) => {
+    if (!carouselRef.current || isAnimating.current) return
+    
+    stopAutoScroll()
+    
+    try {
+      isAnimating.current = true
+      setActiveIndex(index)
+      
+      carouselRef.current.style.scrollBehavior = 'smooth'
+      carouselRef.current.scrollTo({
+        left: (index + 1) * cardWidth.current,
+        behavior: "smooth"
+      })
+      
+      // Allow time for scrolling to complete
+      setTimeout(() => {
+        isAnimating.current = false
+        startAutoScroll()
+      }, 500)
+    } catch (error) {
+      console.error("Navigation error:", error)
+      isAnimating.current = false
+      startAutoScroll()
+    }
+  }, [startAutoScroll, stopAutoScroll])
+
+  // Handle drag start
   const handleDragStart = (e) => {
     if (!carouselRef.current) return
+    e.stopPropagation()
     
-    // Stop any ongoing animation or scrolling
-    if (animationFrame.current) {
-      cancelAnimationFrame(animationFrame.current)
+    stopAutoScroll()
+    
+    // For touch events
+    if (e.type === 'touchstart') {
+      if (isDragging.current) return
+      const touch = e.changedTouches[0]
+      touchIdentifier.current = touch.identifier
+      startX.current = touch.clientX
+    } else {
+      startX.current = e.clientX
     }
     
     isDragging.current = true
-    const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX
-    
-    startX.current = clientX
-    lastDragX.current = clientX
-    lastDragTime.current = Date.now()
+    dragDistance.current = 0
     scrollLeft.current = carouselRef.current.scrollLeft
-    dragVelocity.current = 0
-    
     carouselRef.current.style.scrollBehavior = 'auto'
-    stopAutoScroll()
+    carouselRef.current.style.cursor = 'grabbing'
     
-    // Prevent default to avoid text selection and other behaviors
-    if (e.type.includes('mouse')) {
+    // Add event listeners for mouse drag
+    if (e.type === 'mousedown') {
       e.preventDefault()
-      document.body.style.cursor = "grabbing"
-      document.body.style.userSelect = "none"
+      document.addEventListener('mousemove', handleDragMove)
+      document.addEventListener('mouseup', handleDragEnd)
+      document.addEventListener('mouseleave', handleDragEnd)
     }
   }
 
+  // Handle drag movement
   const handleDragMove = (e) => {
     if (!isDragging.current || !carouselRef.current) return
-    e.preventDefault()
     
-    const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX
-    const dx = clientX - startX.current
+    let clientX
     
-    // Calculate drag velocity for momentum
-    const now = Date.now()
-    const dt = now - lastDragTime.current
-    if (dt > 0) {
-      dragVelocity.current = (clientX - lastDragX.current) / dt
+    // Get client X based on event type
+    if (e.type === 'touchmove') {
+      const touch = Array.from(e.changedTouches).find(
+        t => t.identifier === touchIdentifier.current
+      )
+      if (!touch) return
+      clientX = touch.clientX
+      e.preventDefault()
+    } else {
+      clientX = e.clientX
+      e.preventDefault()
     }
     
-    lastDragX.current = clientX
-    lastDragTime.current = now
+    // Calculate drag distance
+    const deltaX = clientX - startX.current
+    dragDistance.current = Math.abs(deltaX)
     
-    // Apply drag with smooth multiplier for better feel
-    if (animationFrame.current) {
-      cancelAnimationFrame(animationFrame.current)
-    }
-    
-    animationFrame.current = requestAnimationFrame(() => {
-      carouselRef.current.scrollLeft = scrollLeft.current - dx * 1.2
-      updateActiveIndex()
-    })
+    // Apply new scroll position
+    const newScrollLeft = scrollLeft.current - deltaX
+    carouselRef.current.scrollLeft = newScrollLeft
   }
 
-  const handleDragEnd = () => {
+  // Handle drag end
+  const handleDragEnd = (e) => {
     if (!isDragging.current || !carouselRef.current) return
     
+    // Clean up for mouse events
+    if (e.type === 'mouseup' || e.type === 'mouseleave') {
+      document.removeEventListener('mousemove', handleDragMove)
+      document.removeEventListener('mouseup', handleDragEnd)
+      document.removeEventListener('mouseleave', handleDragEnd)
+    }
+    // For touch, verify it's our tracked touch
+    else if (e.type === 'touchend' || e.type === 'touchcancel') {
+      const touch = Array.from(e.changedTouches).find(
+        t => t.identifier === touchIdentifier.current
+      )
+      if (!touch) return
+    }
+    
     isDragging.current = false
-    document.body.style.cursor = ""
-    document.body.style.userSelect = ""
+    touchIdentifier.current = null
+    carouselRef.current.style.cursor = 'grab'
     
-    // Apply momentum scrolling
-    const velocity = dragVelocity.current * 120 // Amplify the effect
-    
-    // Determine target card based on velocity and current position
-    const scrollPos = carouselRef.current.scrollLeft
-    let targetCardIndex
-    
-    if (Math.abs(velocity) > 0.5) {
-      // If strong swipe, move in that direction
-      const direction = velocity < 0 ? 1 : -1
-      targetCardIndex = Math.round(scrollPos / cardWidth.current) + direction
+    // Only snap if dragged significantly
+    if (dragDistance.current > dragThreshold) {
+      const currentPosition = carouselRef.current.scrollLeft
+      const targetCard = Math.round(currentPosition / cardWidth.current)
+      
+      isAnimating.current = true
+      carouselRef.current.style.scrollBehavior = 'smooth'
+      carouselRef.current.scrollTo({
+        left: targetCard * cardWidth.current,
+        behavior: "smooth"
+      })
+      
+      // Update active index after snapping
+      setTimeout(() => {
+        isAnimating.current = false
+        handleInfiniteScroll()
+        startAutoScroll()
+      }, 300)
     } else {
-      // Otherwise snap to closest card
-      targetCardIndex = Math.round(scrollPos / cardWidth.current)
-    }
-    
-    // Apply smooth scrolling to target
-    carouselRef.current.style.scrollBehavior = 'smooth'
-    carouselRef.current.scrollTo({
-      left: targetCardIndex * cardWidth.current,
-      behavior: "smooth",
-    })
-    
-    // Resume auto-scroll after a delay
-    setTimeout(() => {
-      handleScroll() // Make sure to update active index
+      // Small drag - restore auto-scroll
       startAutoScroll()
-    }, 1000)
-  }
-
-  // Prevent click during drag
-  const handleClick = (e) => {
-    if (Math.abs(dragVelocity.current) > 0.1) {
-      e.preventDefault()
-      e.stopPropagation()
     }
-  }
-
-  // Handle dot navigation - explicitly update active card
-  const navigateToCard = (index) => {
-    if (!carouselRef.current) return
-    
-    stopAutoScroll()
-    carouselRef.current.style.scrollBehavior = 'smooth'
-    carouselRef.current.scrollTo({
-      left: (index + 1) * cardWidth.current,
-      behavior: "smooth",
-    })
-    setActiveIndex(index)
-    
-    // Resume auto-scroll after navigation
-    setTimeout(startAutoScroll, 2000)
   }
 
   return (
@@ -288,22 +356,21 @@ const FifthSection = ({ className }) => {
             ref={carouselRef}
             className="dental-services-cards"
             onMouseDown={handleDragStart}
-            onMouseMove={handleDragMove}
-            onMouseUp={handleDragEnd}
-            onMouseLeave={handleDragEnd}
             onTouchStart={handleDragStart}
             onTouchMove={handleDragMove}
             onTouchEnd={handleDragEnd}
-            onClick={handleClick}
+            onTouchCancel={handleDragEnd}
             style={{
-              cursor: isDragging.current ? 'grabbing' : 'grab',
-              userSelect: 'none'
+              userSelect: 'none',
+              touchAction: 'pan-y',
+              WebkitOverflowScrolling: 'touch',
+              cursor: 'grab'
             }}
           >
             {carouselItems.map((service, index) => (
               <div 
                 className="dental-service-card" 
-                key={index}
+                key={`service-${index}`}
                 data-index={index - 1}
               >
                 <div className="dental-service-card-content">
@@ -335,7 +402,7 @@ const FifthSection = ({ className }) => {
         <div className="dental-services-pagination">
           {services.map((_, index) => (
             <span
-              key={index}
+              key={`dot-${index}`}
               className={`pagination-dot ${index === activeIndex ? "active" : ""}`}
               onClick={() => navigateToCard(index)}
               role="button"
