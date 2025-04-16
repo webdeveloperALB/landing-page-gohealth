@@ -14,6 +14,9 @@ const FifthSection = ({ className }) => {
   const animationFrame = useRef(null)
   const scrollTimeout = useRef(null)
   const cardWidth = useRef(0)
+  const lastDragTime = useRef(0)
+  const dragVelocity = useRef(0)
+  const lastDragX = useRef(0)
 
   const services = [
     {
@@ -52,13 +55,27 @@ const FifthSection = ({ className }) => {
     scrollTimeout.current = null
   }
 
-  const handleScroll = () => {
+  // Update active index based on scroll position
+  const updateActiveIndex = useCallback(() => {
+    if (!carouselRef.current) return
+    
+    const scrollPos = carouselRef.current.scrollLeft
+    const normalizedIndex = Math.round(scrollPos / cardWidth.current) - 1
+    const newActiveIndex = (normalizedIndex + services.length) % services.length
+    
+    if (newActiveIndex !== activeIndex) {
+      setActiveIndex(newActiveIndex)
+    }
+  }, [activeIndex, services.length])
+
+  const handleScroll = useCallback(() => {
     if (!carouselRef.current || isDragging.current) return
 
     cardWidth.current = getCardWidth()
     const scrollPos = carouselRef.current.scrollLeft
     const maxScroll = carouselRef.current.scrollWidth - carouselRef.current.offsetWidth
 
+    // Handle infinite scroll loop
     if (scrollPos >= maxScroll - cardWidth.current / 2) {
       carouselRef.current.style.scrollBehavior = 'auto'
       carouselRef.current.scrollLeft = cardWidth.current
@@ -70,9 +87,8 @@ const FifthSection = ({ className }) => {
       setTimeout(() => carouselRef.current.style.scrollBehavior = 'smooth', 10)
     }
 
-    const activeIdx = Math.round(scrollPos / cardWidth.current) - 1
-    setActiveIndex((activeIdx + services.length) % services.length)
-  }
+    updateActiveIndex()
+  }, [services.length, updateActiveIndex])
 
   const startAutoScroll = useCallback(() => {
     if (scrollTimeout.current) return
@@ -94,10 +110,12 @@ const FifthSection = ({ className }) => {
 
     const resizeObserver = new ResizeObserver(() => {
       cardWidth.current = getCardWidth()
-      carouselRef.current.scrollTo({
-        left: (activeIndex + 1) * cardWidth.current,
-        behavior: 'auto'
-      })
+      if (carouselRef.current) {
+        carouselRef.current.scrollTo({
+          left: (activeIndex + 1) * cardWidth.current,
+          behavior: 'auto'
+        })
+      }
     })
 
     resizeObserver.observe(container)
@@ -105,50 +123,151 @@ const FifthSection = ({ className }) => {
   }, [activeIndex])
 
   useEffect(() => {
+    if (!carouselRef.current) return
+    
     cardWidth.current = getCardWidth()
     carouselRef.current.style.scrollBehavior = 'auto'
     carouselRef.current.scrollLeft = cardWidth.current
-    carouselRef.current.style.scrollBehavior = 'smooth'
-    startAutoScroll()
-    return () => stopAutoScroll()
-  }, [startAutoScroll])
+    
+    // Use passive: false for better performance on mobile
+    const carousel = carouselRef.current
+    const handleScrollEvent = () => {
+      if (!isDragging.current) {
+        handleScroll()
+      }
+    }
+    
+    carousel.addEventListener('scroll', handleScrollEvent, { passive: true })
+    
+    // Add momentum-based scroll physics
+    carousel.classList.add('smooth-drag')
+    
+    setTimeout(() => {
+      carouselRef.current.style.scrollBehavior = 'smooth'
+      startAutoScroll()
+    }, 100)
+    
+    return () => {
+      stopAutoScroll()
+      carousel.removeEventListener('scroll', handleScrollEvent)
+    }
+  }, [startAutoScroll, handleScroll])
 
   const handleDragStart = (e) => {
+    if (!carouselRef.current) return
+    
+    // Stop any ongoing animation or scrolling
+    if (animationFrame.current) {
+      cancelAnimationFrame(animationFrame.current)
+    }
+    
     isDragging.current = true
-    startX.current = (e.pageX || e.touches[0].pageX) - carouselRef.current.offsetLeft
+    const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX
+    
+    startX.current = clientX
+    lastDragX.current = clientX
+    lastDragTime.current = Date.now()
     scrollLeft.current = carouselRef.current.scrollLeft
+    dragVelocity.current = 0
+    
+    carouselRef.current.style.scrollBehavior = 'auto'
     stopAutoScroll()
-    document.body.style.cursor = "grabbing"
-    document.body.style.userSelect = "none"
+    
+    // Prevent default to avoid text selection and other behaviors
+    if (e.type.includes('mouse')) {
+      e.preventDefault()
+      document.body.style.cursor = "grabbing"
+      document.body.style.userSelect = "none"
+    }
   }
 
   const handleDragMove = (e) => {
-    if (!isDragging.current) return
+    if (!isDragging.current || !carouselRef.current) return
     e.preventDefault()
-    const x = (e.pageX || e.touches[0].pageX) - carouselRef.current.offsetLeft
-    const walk = x - startX.current
-
-    if (animationFrame.current) cancelAnimationFrame(animationFrame.current)
+    
+    const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX
+    const dx = clientX - startX.current
+    
+    // Calculate drag velocity for momentum
+    const now = Date.now()
+    const dt = now - lastDragTime.current
+    if (dt > 0) {
+      dragVelocity.current = (clientX - lastDragX.current) / dt
+    }
+    
+    lastDragX.current = clientX
+    lastDragTime.current = now
+    
+    // Apply drag with smooth multiplier for better feel
+    if (animationFrame.current) {
+      cancelAnimationFrame(animationFrame.current)
+    }
+    
     animationFrame.current = requestAnimationFrame(() => {
-      carouselRef.current.scrollLeft = scrollLeft.current - walk
+      carouselRef.current.scrollLeft = scrollLeft.current - dx * 1.2
+      updateActiveIndex()
     })
   }
 
   const handleDragEnd = () => {
-    if (!isDragging.current) return
-    isDragging.current = false
-
-    const scrollPos = carouselRef.current.scrollLeft
-    const activeIdx = Math.round(scrollPos / cardWidth.current)
+    if (!isDragging.current || !carouselRef.current) return
     
-    carouselRef.current.scrollTo({
-      left: activeIdx * cardWidth.current,
-      behavior: "smooth",
-    })
-
+    isDragging.current = false
     document.body.style.cursor = ""
     document.body.style.userSelect = ""
-    startAutoScroll()
+    
+    // Apply momentum scrolling
+    const velocity = dragVelocity.current * 120 // Amplify the effect
+    
+    // Determine target card based on velocity and current position
+    const scrollPos = carouselRef.current.scrollLeft
+    let targetCardIndex
+    
+    if (Math.abs(velocity) > 0.5) {
+      // If strong swipe, move in that direction
+      const direction = velocity < 0 ? 1 : -1
+      targetCardIndex = Math.round(scrollPos / cardWidth.current) + direction
+    } else {
+      // Otherwise snap to closest card
+      targetCardIndex = Math.round(scrollPos / cardWidth.current)
+    }
+    
+    // Apply smooth scrolling to target
+    carouselRef.current.style.scrollBehavior = 'smooth'
+    carouselRef.current.scrollTo({
+      left: targetCardIndex * cardWidth.current,
+      behavior: "smooth",
+    })
+    
+    // Resume auto-scroll after a delay
+    setTimeout(() => {
+      handleScroll() // Make sure to update active index
+      startAutoScroll()
+    }, 1000)
+  }
+
+  // Prevent click during drag
+  const handleClick = (e) => {
+    if (Math.abs(dragVelocity.current) > 0.1) {
+      e.preventDefault()
+      e.stopPropagation()
+    }
+  }
+
+  // Handle dot navigation - explicitly update active card
+  const navigateToCard = (index) => {
+    if (!carouselRef.current) return
+    
+    stopAutoScroll()
+    carouselRef.current.style.scrollBehavior = 'smooth'
+    carouselRef.current.scrollTo({
+      left: (index + 1) * cardWidth.current,
+      behavior: "smooth",
+    })
+    setActiveIndex(index)
+    
+    // Resume auto-scroll after navigation
+    setTimeout(startAutoScroll, 2000)
   }
 
   return (
@@ -168,7 +287,6 @@ const FifthSection = ({ className }) => {
           <div
             ref={carouselRef}
             className="dental-services-cards"
-            onScroll={handleScroll}
             onMouseDown={handleDragStart}
             onMouseMove={handleDragMove}
             onMouseUp={handleDragEnd}
@@ -176,18 +294,35 @@ const FifthSection = ({ className }) => {
             onTouchStart={handleDragStart}
             onTouchMove={handleDragMove}
             onTouchEnd={handleDragEnd}
+            onClick={handleClick}
+            style={{
+              cursor: isDragging.current ? 'grabbing' : 'grab',
+              userSelect: 'none'
+            }}
           >
             {carouselItems.map((service, index) => (
-              <div className="dental-service-card" key={index}>
+              <div 
+                className="dental-service-card" 
+                key={index}
+                data-index={index - 1}
+              >
                 <div className="dental-service-card-content">
                   <div className="dental-service-icon-container">
                     <div className="dental-service-icon">
-                      <img src={service.icon} alt={service.title} className="mask-icon" />
+                      <img 
+                        src={service.icon} 
+                        alt={service.title} 
+                        className="mask-icon" 
+                        draggable="false" 
+                      />
                     </div>
                   </div>
                   <h2 className="dental-service-title">{service.title}</h2>
                   <p className="dental-service-description">{service.description}</p>
-                  <button className="dental-service-link" onClick={scrollToElevenComponent}>
+                  <button 
+                    className="dental-service-link" 
+                    onClick={scrollToElevenComponent}
+                  >
                     RICHIEDI INFO
                     <ArrowRight className="dental-service-arrow" size={16} />
                   </button>
@@ -202,12 +337,10 @@ const FifthSection = ({ className }) => {
             <span
               key={index}
               className={`pagination-dot ${index === activeIndex ? "active" : ""}`}
-              onClick={() => {
-                carouselRef.current.scrollTo({
-                  left: (index + 1) * cardWidth.current,
-                  behavior: "smooth",
-                })
-              }}
+              onClick={() => navigateToCard(index)}
+              role="button"
+              aria-label={`Navigate to service ${index + 1}`}
+              tabIndex={0}
             />
           ))}
         </div>

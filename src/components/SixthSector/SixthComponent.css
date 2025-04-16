@@ -212,14 +212,23 @@
 }
 
 @media (max-width: 576px) {
+  .testimonial-container {
+    flex-direction: column;
+    align-items: center; /* optional, centers the items */
+  }
   .testimonial-image-container {
+    order: 2;
     height: 20rem;
     width: 95%;
-    margin: 0.5rem auto; /* This ensures horizontal centering */
+    margin: 0 auto 3rem auto; /* This ensures horizontal centering */
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative; /* Add this for proper image containment */
+  }
+
+  .testimonial-slider {
+    margin: 0;
   }
 
   .testimonial-content {
@@ -227,7 +236,8 @@
   }
 
   .testimonial-header {
-    margin-bottom: 1rem;
+    margin-top: 3rem;
+    margin-bottom: 2rem;
   }
 
   .testimonial-title {

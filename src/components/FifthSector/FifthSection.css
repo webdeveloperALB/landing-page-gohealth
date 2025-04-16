@@ -205,6 +205,14 @@
   .dental-services-container {
     background: #eefefd;
   }
+
+
+  
+  .dental-service-card:hover {
+    box-shadow: none;
+    transform: none;
+  }
+
   .dental-services-header {
     display: none;
   }
