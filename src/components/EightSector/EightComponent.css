@@ -190,3 +190,29 @@
     }
   }
 }
+@media (max-width: 500px) {
+  .card-content {
+    padding: 15px; /* Reduce padding */
+  }
+
+  .card-title {
+    font-size: 20px; /* Reduce title size */
+  }
+
+  .card-description {
+    overflow-wrap: break-word; /* Break long words */
+    -webkit-hyphens: auto;
+    hyphens: auto; 
+    margin-bottom: 8px; /* Reduce spacing */
+  }
+
+  .read-more-btn {
+    font-size: 0.75rem; /* Smaller button text */
+    padding: 8px 0; /* Adjust button padding */
+  }
+
+  /* Optional: Adjust image height */
+  .card-image {
+    height: 220px;
+  }
+}

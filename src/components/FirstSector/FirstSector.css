@@ -192,9 +192,8 @@ body {
 
 .landing-content__image img {
   margin-top: 50px;
-  border-radius: 40px;
-  width: 80%;
-  max-width: 600px;
+  border-radius: 4rem;  
+  max-width: 550px;
   height: 75%;
   display: block;
 }

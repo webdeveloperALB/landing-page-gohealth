@@ -5,30 +5,33 @@ import { Star } from "lucide-react";
 import "./SixthComponent.css";
 import React from "react";
 
-// Testimonial data
+// Updated testimonial data with images
 const testimonials = [
   {
     id: 1,
     text: "Professionalità eccellente e assistenza impeccabile. Sono molto soddisfatto del lavoro e della gentilezza del personale!",
     author: "Davide Salè",
+    image: "/parapas/Rezultati 1.svg", // Add image path
   },
   {
     id: 2,
     text: "Clinica professionale e attenta ai dettagli. Grazie per il sorriso che ho adesso, siete il top!",
     author: "Massimiliano Gullà",
+    image: "/parapas/Rezultati 6.svg", // Add image path
   },
   {
     id: 3,
     text: "Scelta perfetta: ho trovato professionalità, umanità e attrezzature moderne. Non è solo risparmio, ma vera eccellenza.",
     author: "Pino Vessio",
+    image: "/parapas/Rezultati 3.svg", // Add image path
   },
   {
     id: 4,
     text: "Accoglienza, velocità ed eccellenza rendono questa clinica unica. Tecnologie moderne e personale impeccabile garantiscono risultati eccezionali.",
     author: "Claudio Spinelli",
-  }
+    image: "/parapas/Rezultati 5.svg", // Add image path
+  },
 ];
-
 export default function SixthComponent({ className }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -57,7 +60,22 @@ export default function SixthComponent({ className }) {
     <div className={`sixth-sector ${className}`}>
       <div className="testimonial-container">
         <div className="testimonial-image-container">
-          <img src="/sixth.svg" alt="Background mask" className="mask-icon3" />
+          {/* Dynamic testimonial images */}
+          {testimonials.map((testimonial, index) => (
+            <img
+              key={testimonial.id}
+              src={testimonial.image}
+              alt={testimonial.author}
+              className="testimonial-image"
+              style={{
+                opacity: index === currentIndex ? 1 : 0,
+                transform: `translateY(${(index - currentIndex) * 10}px)`,
+                position: "absolute",
+                transition: "opacity 0.5s ease, transform 0.5s ease",
+              }}
+            />
+          ))}
+          
         </div>
 
         <div className="testimonial-content">
@@ -79,8 +97,9 @@ export default function SixthComponent({ className }) {
             {testimonials.map((testimonial, index) => (
               <div
                 key={testimonial.id}
-                className={`testimonial-slide ${index === currentIndex ? "active" : ""
-                  }`}
+                className={`testimonial-slide ${
+                  index === currentIndex ? "active" : ""
+                }`}
                 style={{
                   opacity: index === currentIndex ? 1 : 0,
                   transform: `translateY(${(index - currentIndex) * 20}px)`,

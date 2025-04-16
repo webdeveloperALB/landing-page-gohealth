@@ -40,7 +40,7 @@
   height: 600px;
   margin: 0 auto;
   overflow: hidden;
-  border-radius: 12px;
+  border-radius: 40px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
@@ -56,8 +56,9 @@
   background-repeat: no-repeat;
   -webkit-user-select: none;
   user-select: none;
-  -webkit-user-drag: none;
+  -webkit-user-drag: none; 
 }
+
 
 .before-image {
   z-index: 1;
