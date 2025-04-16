@@ -1,6 +1,7 @@
 "use client"
 import "./CheckupPage.css"
 import React from "react"
+// Removed unused 'useScript' import
 
 const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA" }) => {
   // Initialize state for form data
@@ -22,6 +23,33 @@ const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA
   const [showCalendar, setShowCalendar] = React.useState(false)
   const [showTimePicker, setShowTimePicker] = React.useState(false)
   const [currentMonth, setCurrentMonth] = React.useState(new Date())
+  
+  // Add reCAPTCHA state
+  const [recaptchaToken, setRecaptchaToken] = React.useState("")
+  const [isSubmitting, setIsSubmitting] = React.useState(false)
+  const [formMessage, setFormMessage] = React.useState({ text: "", type: "" })
+  
+  // Load reCAPTCHA script
+  React.useEffect(() => {
+    // Add reCAPTCHA script if it doesn't exist
+    if (!document.querySelector('script[src="https://www.google.com/recaptcha/api.js"]')) {
+      const script = document.createElement('script')
+      script.src = "https://www.google.com/recaptcha/api.js"
+      script.async = true
+      script.defer = true
+      document.head.appendChild(script)
+    }
+    
+    // Define the callback function for reCAPTCHA
+    window.onRecaptchaSuccess = (token) => {
+      setRecaptchaToken(token)
+    }
+    
+    // Cleanup function
+    return () => {
+      window.onRecaptchaSuccess = undefined
+    }
+  }, [])
 
   // Calendar constants
   const months = [
@@ -106,14 +134,80 @@ const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA
     return days
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
-    // Handle form submission logic here
-    console.log("Form submitted", {
-      ...formData,
-      date: selectedDate,
-      time: selectedTime,
-    })
+    
+    // Check if reCAPTCHA is completed
+    if (!recaptchaToken) {
+      setFormMessage({ 
+        text: "Per favore, completa il reCAPTCHA prima di inviare il modulo", 
+        type: "error" 
+      })
+      return
+    }
+    
+    setIsSubmitting(true)
+    setFormMessage({ text: "", type: "" })
+    
+    try {
+      // Fixed the process.env issue by hardcoding the URL or using window.ENV if available
+      const apiUrl = window.ENV?.API_URL || 'https://your-server-url.com/send-email'
+      
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          age: formData.age,
+          email: formData.email,
+          mobile: formData.mobile,
+          address: formData.address,
+          service: formData.service,
+          branch: formData.branch,
+          message: formData.message,
+          date: selectedDate,
+          time: selectedTime,
+          recaptchaToken: recaptchaToken
+        }),
+      })
+      
+      const result = await response.json()
+      
+      if (response.ok) {
+        // Reset form on success
+        setFormData({
+          firstName: "",
+          lastName: "",
+          age: "",
+          email: "",
+          mobile: "",
+          address: "",
+          service: "",
+          branch: "",
+          message: "",
+        })
+        setSelectedDate(null)
+        setSelectedTime(null)
+        
+        // Reset reCAPTCHA
+        if (window.grecaptcha) {
+          window.grecaptcha.reset()
+          setRecaptchaToken("")
+        }
+        
+        setFormMessage({ text: "Appuntamento prenotato con successo!", type: "success" })
+      } else {
+        setFormMessage({ text: result.message || "Errore durante l'invio del modulo", type: "error" })
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error)
+      setFormMessage({ text: "Errore di connessione. Riprova più tardi.", type: "error" })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -129,6 +223,12 @@ const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA
         </div>
 
         <div className="divider"></div>
+
+        {formMessage.text && (
+          <div className={`form-message ${formMessage.type}`}>
+            {formMessage.text}
+          </div>
+        )}
 
         <form className="form-content" onSubmit={handleSubmit}>
           <h2 className="section-title">
@@ -247,6 +347,7 @@ const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA
                   value={selectedDate ? selectedDate.toLocaleDateString("it-IT") : ""}
                   onClick={() => setShowCalendar(!showCalendar)}
                   readOnly
+                  required
                 />
 
                 {showCalendar && (
@@ -291,6 +392,7 @@ const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA
                   }
                   onClick={() => setShowTimePicker(!showTimePicker)}
                   readOnly
+                  required
                 />
 
                 {showTimePicker && (
@@ -347,9 +449,22 @@ const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA
             </div>
           </div>
 
+          {/* Add reCAPTCHA */}
+          <div className="form-row recaptcha-row">
+            <div 
+              className="g-recaptcha" 
+              data-sitekey="6LfefxorAAAAABcnmActDbalv_YoCo1QauTwEBPo"
+              data-callback="onRecaptchaSuccess"
+            ></div>
+          </div>
+
           <div className="form-row center">
-            <button type="submit" className="book-button2">
-              PRENOTA APPUNTAMENTO
+            <button 
+              type="submit" 
+              className="book-button2"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "INVIO IN CORSO..." : "PRENOTA APPUNTAMENTO"}
             </button>
           </div>
         </form>
@@ -359,4 +474,3 @@ const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA
 }
 
 export default CheckupPage
-
