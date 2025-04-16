@@ -209,6 +209,9 @@
   .dental-services-header {
     display: none;
   }
+  .dental-service-card {
+    padding: 0rem;
+  }
   .dental-service-card-content {
     background: linear-gradient(55.5deg, #0D3847 57.77%, #2088AD 154.71%);
   }
@@ -223,6 +226,6 @@
   }
   .dental-service-description {
     color: #ffffff;
-    font-size: 0.9rem;
+    line-height: 1.5rem;
   }
 }
