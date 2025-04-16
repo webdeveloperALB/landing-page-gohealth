@@ -2,6 +2,120 @@
   min-height: 0; /* Allows content to shrink if needed */
   min-width: 0; /* Prevents overflow issues */
 }
+
+.dental-services-carousel-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.carousel-nav-button {
+  position: absolute;
+  z-index: 10;
+  background-color: rgb(0, 0, 0);
+  color: #ffffff;
+  border: 1px solid #eaeaea;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: all 0.2s ease;
+}
+
+.carousel-nav-button:hover {
+  background-color: #000000;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Default position for large screens */
+.prev-button {
+  left: 5%;
+}
+
+.next-button {
+  right: 5%;
+}
+@media (min-width: 1200px) {
+  .prev-button {
+    left: calc(50% - 500px - 60px); /* Half screen width - half container width - button offset */
+  }
+  
+  .next-button {
+    right: calc(50% - 500px - 60px);
+  }
+}
+
+/* Large Screens (Desktops, laptops) */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .prev-button {
+    left: calc(50% - 450px - 50px);
+  }
+  
+  .next-button {
+    right: calc(50% - 450px - 50px);
+  }
+}
+
+/* Medium Screens (Tablets, small laptops) */
+@media (min-width: 768px) and (max-width: 991px) {
+  .prev-button {
+    left: calc(50% - 350px - 30px);
+  }
+  
+  .next-button {
+    right: calc(50% - 350px - 30px);
+  }
+}
+
+/* Small Screens (Tablets, large phones) */
+@media (min-width: 576px) and (max-width: 767px) {
+  .prev-button {
+    left: 15px;
+  }
+  
+  .next-button {
+    right: 15px;
+  }
+}
+
+/* Extra Small Screens (Phones) */
+@media (max-width: 575px) {
+  .carousel-nav-button {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .prev-button {
+    bottom: 5px;
+    left: 100px;
+  }
+  
+  .next-button {
+    bottom: 5px;
+    right: 100px;
+  }
+}
+
+/* Make sure the buttons don't overlap with other elements on very small screens */
+@media (max-width: 350px) {
+  .carousel-nav-button {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .prev-button {
+    left: 5px;
+  }
+  
+  .next-button {
+    right: 5px;
+  }
+}
 .dental-services-container {
   padding: 40px 20px;
   text-align: center;
@@ -29,8 +143,9 @@
   position: relative;
   margin: 0 auto;
   max-width: 400px;
-  /* Control the width to show only one card */
   width: 100%;
+  display: flex;
+  scroll-snap-type: x mandatory;
 }
 
 .dental-services-cards {
@@ -53,7 +168,7 @@
 
 .dental-service-card {
   flex: 0 0 100%;
-  scroll-snap-align: start;
+  scroll-snap-align: center;
   will-change: transform;
   padding: 20px;
   box-sizing: border-box;
@@ -226,7 +341,7 @@
     background-color: transparent;
   }
   .dental-service-icon img {
-    filter: brightness(0) invert(1); /* This can make the image appear white if it's an icon */
+    filter: brightness(0) invert(1); 
   }
   .dental-service-title {
     color: #ffffff;
