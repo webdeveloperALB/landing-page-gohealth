@@ -198,7 +198,6 @@ const ElevenComponent = ({ className }) => {
     try {
       const response = await fetch(
         "https://gohealth-server.onrender.com/send-email",
-        "http://localhost:5000/",
         {
           method: "POST",
           headers: {
