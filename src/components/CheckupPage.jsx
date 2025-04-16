@@ -151,7 +151,7 @@ const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA
     
     try {
       // Fixed the process.env issue by hardcoding the URL or using window.ENV if available
-      const apiUrl = window.ENV?.API_URL || 'https://your-server-url.com/send-email'
+      const apiUrl = window.ENV?.API_URL || 'https://gohealth-server.onrender.com/send-email'
       
       const response = await fetch(apiUrl, {
         method: 'POST',
