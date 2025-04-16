@@ -196,25 +196,34 @@ const ElevenComponent = ({ className }) => {
     }
 
     try {
-      const response = await fetch(
-        "https://gohealth-server.onrender.com/send-email",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: formData.name,
-            email: formData.email,
-            service: formData.service,
-            date: formData.date.toISOString(),
-            time: formData.time.toISOString(),
-            department: selectedDepartment,
-            treatment: selectedTreatment,
-            recaptchaToken: captchaValue,
-          }),
-        }
-      );
+      console.log("Sending data:", {
+        name: formData.name,
+        email: formData.email,
+        service: formData.service,
+        date: formData.date.toISOString(),
+        time: formData.time.toISOString(),
+        department: selectedDepartment,
+        treatment: selectedTreatment,
+        recaptchaToken: captchaValue,
+      });
+      
+      const response = await fetch("https://gohealth-server.onrender.com/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          service: formData.service,
+          date: formData.date.toISOString(),
+          time: formData.time.toISOString(),
+          department: selectedDepartment,
+          treatment: selectedTreatment,
+          recaptchaToken: captchaValue,
+        }),
+      });
+    
 
       const data = await response.json();
       if (response.ok) {
