@@ -56,7 +56,13 @@
   background-repeat: no-repeat;
   -webkit-user-select: none;
   user-select: none;
-  -webkit-user-drag: none; 
+}
+
+@supports (-webkit-user-drag: none) {
+  .before-image,
+  .after-image {
+    -webkit-user-drag: none;
+  }
 }
 
 

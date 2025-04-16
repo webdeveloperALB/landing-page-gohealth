@@ -1,6 +1,6 @@
 .fifth-sector {
   min-height: 0; /* Allows content to shrink if needed */
-  min-width: 0;  /* Prevents overflow issues */
+  min-width: 0; /* Prevents overflow issues */
 }
 .dental-services-container {
   padding: 40px 20px;
@@ -14,14 +14,14 @@
 
 .dental-services-subtitle {
   font-size: 1.2rem;
-  color: #0A3366;
+  color: #0a3366;
   margin-bottom: 10px;
 }
 
 .dental-services-title {
   font-size: 2.5rem;
   font-weight: bold;
-  color: #0A3366;
+  color: #0a3366;
 }
 
 .dental-services-cards-container {
@@ -37,7 +37,6 @@
   display: flex;
   overflow-x: scroll;
   scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
   touch-action: none;
   cursor: grab;
   scroll-snap-type: x mandatory;
@@ -75,9 +74,9 @@
 }
 
 .dental-service-card-content {
-  background: #EEFEFD;
+  background: #eefefd;
   border-radius: 20px;
-  border: 1px solid #1BA69E;
+  border: 1px solid #1ba69e;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -103,7 +102,11 @@
 }
 
 .dental-service-icon img {
-  background: radial-gradient(50% 50% at 50% 50%, rgba(0, 73, 153, 0) 45.83%, rgba(0, 73, 153, 0.11) 100%);
+  background: radial-gradient(
+    50% 50% at 50% 50%,
+    rgba(0, 73, 153, 0) 45.83%,
+    rgba(0, 73, 153, 0.11) 100%
+  );
   width: 100px;
   /* Ensure width */
   height: 100px;
@@ -144,7 +147,7 @@
   justify-self: start;
   text-align: left;
   text-decoration: underline;
-  text-decoration-color: #329BBA;
+  text-decoration-color: #329bba;
   /* Solid underline color */
   text-underline-offset: 3px;
   /* Adjust underline position */
@@ -161,22 +164,18 @@
   transition: background-color 0.3s ease;
 
   /* Gradient text */
-  background: linear-gradient(180deg, #329BBA 0%, #1BA69E 100%);
+  background: linear-gradient(180deg, #329bba 0%, #1ba69e 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-
 .dental-service-arrow {
-  color: #1BA69E;
+  color: #1ba69e;
   margin-left: 5px;
 }
 
-
-
 .dental-services-pagination {
-
   display: flex;
   justify-content: center;
   margin-top: 20px;
@@ -193,7 +192,7 @@
 }
 
 .pagination-dot.active {
-  background-color: #1BA69E;
+  background-color: #1ba69e;
 }
 
 @media (max-width: 768px) {
@@ -204,7 +203,7 @@
 
 @media (max-width: 500px) {
   .dental-services-container {
-    background: #EEFEFD;
+    background: #eefefd;
   }
   .dental-services-header {
     display: none;
@@ -213,7 +212,7 @@
     padding: 0rem;
   }
   .dental-service-card-content {
-    background: linear-gradient(55.5deg, #0D3847 57.77%, #2088AD 154.71%);
+    background: linear-gradient(55.5deg, #0d3847 57.77%, #2088ad 154.71%);
   }
   .dental-service-icon {
     background-color: transparent;

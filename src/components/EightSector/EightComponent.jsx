@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import "./EightComponent.css"
 
 export default function EightComponent({ className }) {
@@ -11,17 +11,7 @@ export default function EightComponent({ className }) {
   const [touchEndX, setTouchEndX] = useState(0)
   const totalSlides = 3
 
-  useEffect(() => {
-    if (isAnimating) return
-
-    const interval = setInterval(() => {
-      nextSlide()
-    }, 5000)
-
-    return () => clearInterval(interval)
-  }, [activeIndex, isAnimating])
-
-  const nextSlide = () => {
+  const nextSlide = useCallback(() => {
     if (isAnimating) return
 
     setDirection("next")
@@ -31,9 +21,9 @@ export default function EightComponent({ className }) {
     setTimeout(() => {
       setIsAnimating(false)
     }, 800)
-  }
+  }, [isAnimating, totalSlides])
 
-  const prevSlide = () => {
+  const prevSlide = useCallback(() => {
     if (isAnimating) return
 
     setDirection("prev")
@@ -43,7 +33,17 @@ export default function EightComponent({ className }) {
     setTimeout(() => {
       setIsAnimating(false)
     }, 800)
-  }
+  }, [isAnimating, totalSlides])
+
+  useEffect(() => {
+    if (isAnimating) return
+
+    const interval = setInterval(() => {
+      nextSlide()
+    }, 5000)
+
+    return () => clearInterval(interval)
+  }, [isAnimating, nextSlide])
 
   const goToSlide = (index) => {
     if (isAnimating || index === activeIndex) return
