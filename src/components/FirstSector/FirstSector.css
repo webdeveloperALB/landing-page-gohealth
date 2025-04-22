@@ -1,20 +1,25 @@
+/* Base optimizations */
 .first-sector {
-  min-height: 0; /* Allows content to shrink if needed */
-  min-width: 0;  /* Prevents overflow issues */
+  min-height: 0;
+  min-width: 0;
+  contain: layout style;
 }
+
 body {
   font-family: Arial, sans-serif;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Treatment buttons */
+/* Treatment buttons with GPU acceleration */
 .nav-item.active {      
   border-radius: 15px;
   height: 70%;
   padding: 0.4rem;
   background: linear-gradient(272.32deg, #08171c -5.68%, #0e4354 100.56%);
-  color: rgb(255, 255, 255);
+  color: #fff;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 /* Date picker */
@@ -24,9 +29,9 @@ body {
 
 .date-picker {
   width: 100%;
-  border: none;
+  border: 0;
   background: transparent;
-  color: #000000;
+  color: #000;
   font-size: 1rem;
   cursor: pointer;
 }
@@ -34,20 +39,24 @@ body {
 /* Treatment select */
 .treatment-select {
   width: 100%;
-  border: none;
+  border: 0;
   background: transparent;
   font-size: 1rem;
   cursor: pointer;
   appearance: none;
   padding: 0;
 }
+
+/* Optimize container with hardware acceleration */
 .landing-container {
-  background: linear-gradient(to top, white 14%, #0e4354 14%, #08171c 100%);
+  background: linear-gradient(to top, #fff 14%, #0e4354 14%, #08171c 100%);
   display: flex;
   align-items: center;
   flex-direction: column;
   justify-content: center;
   padding: 7rem 4rem 4rem 4rem !important;
+  contain: content;
+  will-change: transform;
 }
 
 .landing-container2 {
@@ -90,7 +99,7 @@ body {
 
 .landing-header__main {
   width: 100%;
-  color: white;
+  color: #fff;
   margin-top: 12rem;
 }
 
@@ -159,19 +168,22 @@ body {
   width: 48px;
   height: 48px;
 }
+
 .landing-header__3 {
   width: 20%;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Centers horizontally */
+  align-items: center;
   position: absolute;
   top: 26%;
   left: 26%;
 }
+
 .landing-header__stat-3 img {
   width: 65%;
   order: -1;
 }
+
 .landing-header__stat-number {
   margin: 0;
   font-size: 30px;
@@ -185,6 +197,7 @@ body {
   text-align: center;
 }
 
+/* Optimize image container */
 .landing-content__image {
   position: relative;
   display: inline-block;
@@ -197,15 +210,16 @@ body {
   height: 75%;
   display: block;
 }
+
 .image-label {
   position: absolute;
-  color: white; /* Change color as needed */
+  color: #fff;
   font-size: 23px;
   font-weight: bold;
   background: #07121e4d;
   padding: 10px 25px;
   border-radius: 18px;
-  border: 1px solid #ffffff;
+  border: 1px solid #fff;
 }
 
 .prima {
@@ -218,6 +232,7 @@ body {
   right: 130px;
 }
 
+/* Optimize container with hardware acceleration */
 .appointment-container {
   display: flex;
   flex-direction: column;
@@ -227,6 +242,7 @@ body {
   background: #eefefd;
   border: 1px solid #1ba69e;
   border-radius: 24px;
+  contain: content;
 }
 
 .appointment-header {
@@ -249,7 +265,7 @@ body {
 }
 
 .nav-item {
-  color: #000000;
+  color: #000;
   font-weight: 500;
   font-size: 15px;
   background: none;
@@ -257,6 +273,7 @@ body {
   border-bottom: 2px solid transparent;
   padding-bottom: 4px;
   cursor: pointer;
+  transition: border-color 0.2s;
 }
 
 .nav-item:hover {
@@ -271,7 +288,7 @@ body {
 
 .form-field {
   width: 30%;
-  background-color: white;
+  background-color: #fff;
   border-radius: 16px;
   display: flex;
   align-items: center;
@@ -304,25 +321,29 @@ body {
   font-weight: 500;
 }
 
+/* Optimize button with hardware acceleration */
 .book-button {
   background: #1ba69e;
   font-size: 15px;
-  color: white;
+  color: #fff;
   font-weight: 500;
   padding: 16px 24px;
   border-radius: 16px;
-  border: none;
+  border: 0;
   cursor: pointer;
   transition: background-color 0.2s;
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 .book-button:hover {
   background-color: rgba(10, 158, 158, 0.9);
 }
 
+/* Optimize and reduce specificity of media queries */
 @media (max-width: 1200px) {
   .landing-container {
-    padding: 9rem 2rem 2rem 2rem !important; /* More top padding for fixed navbar */
+    padding: 9rem 2rem 2rem 2rem !important;
   }
 
   .landing-container2 {
@@ -387,7 +408,7 @@ body {
   }
 
   .nav-item {
-    border: #000000 2px solid;
+    border: 2px solid #000;
     border-radius: 20px;
     padding: 0.5rem;
   }
@@ -413,9 +434,10 @@ body {
 }
 
 @media (max-width: 576px) {
-  .landing-container    {
-    background: transparent
+  .landing-container {
+    background: transparent;
   }
+  
   .landing-header__title {
     font-size: 22px;
   }
@@ -463,6 +485,7 @@ body {
     justify-content: center;
     padding: 5rem 1rem 2rem 1rem !important;
   }
+  
   .landing-header__company {
     font-size: 10px;
   }
@@ -491,11 +514,11 @@ body {
     padding: 0;
     display: flex;
     flex-direction: column;
-    margin: 0rem 0 0 0;
+    margin: 0;
     align-items: center;
     justify-content: center;
     background: transparent;
-    border: none;
+    border: 0;
   }
 
   .appointment-header {
