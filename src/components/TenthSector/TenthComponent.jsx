@@ -1,8 +1,30 @@
 // DentalTourismBanner.jsx
-import React from 'react';
+import React, { memo } from 'react';
 import './TenthComponent.css';
 
-const TenthComponent = ({ className }) => {
+const publicationLogos = [
+  { src: "/comevisto/1.svg", alt: "Reader's Digest" },
+  { src: "/comevisto/2.svg", alt: "Wired" },
+  { src: "/comevisto/3.svg", alt: "Vogue" },
+  { src: "/comevisto/4.svg", alt: "Forbes" },
+  { src: "/comevisto/5.svg", alt: "National Geographic" }
+];
+
+const PublicationLogo = memo(({ src, alt }) => (
+  <img 
+    src={src} 
+    alt={alt} 
+    className="publication-logo" 
+    loading="lazy"
+    decoding="async"
+    width="auto"
+    height="auto"
+  />
+));
+
+PublicationLogo.displayName = 'PublicationLogo';
+
+const TenthComponent = memo(({ className }) => {
   return (
     <div className={`tenth-sector ${className || ''}`}>
       <div className="banner-container">
@@ -20,17 +42,21 @@ const TenthComponent = ({ className }) => {
             </div>
 
             <div className="publication-logos">
-              <img src="/comevisto/1.svg" alt="Reader's Digest" className="publication-logo" />
-              <img src="/comevisto/2.svg" alt="Wired" className="publication-logo" />
-              <img src="/comevisto/3.svg" alt="Vogue" className="publication-logo" />
-              <img src="/comevisto/4.svg" alt="Forbes" className="publication-logo" />
-              <img src="/comevisto/5.svg" alt="National Geographic" className="publication-logo" />
+              {publicationLogos.map((logo, index) => (
+                <PublicationLogo 
+                  key={`logo-${index}`}
+                  src={logo.src}
+                  alt={logo.alt}
+                />
+              ))}
             </div>
           </div>
         </div>
       </div>
     </div>
   );
-};
+});
+
+TenthComponent.displayName = 'TenthComponent';
 
 export default TenthComponent;

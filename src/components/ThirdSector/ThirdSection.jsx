@@ -1,39 +1,27 @@
-import React from 'react';
-import './ThirdSection.css'; // Make sure to create the CSS file
+import React, { memo } from 'react';
+import './ThirdSection.css';
 
-const ThirdSection = ({ className }) => {
-    return (
-        <div className={`third-sector ${className || ''}`}>
-        <div className="scrolling-container">
-            <div className="scrolling-content">
-                <div className="scrolling-text">
-                    Sorridi con fiducia, scegli la qualità che meriti 😁 &nbsp;
-                </div>
-                <div className="scrolling-text">
-                    Sorridi con fiducia, scegli la qualità che meriti 😁 &nbsp;
-                </div>
-                <div className="scrolling-text">
-                    Sorridi con fiducia, scegli la qualità che meriti 😁 &nbsp;
-                </div>
-                <div className="scrolling-text">
-                    Sorridi con fiducia, scegli la qualità che meriti 😁 &nbsp;
-                </div>
-                <div className="scrolling-text">
-                    Sorridi con fiducia, scegli la qualità che meriti 😁 &nbsp;
-                </div>
-                <div className="scrolling-text">
-                    Sorridi con fiducia, scegli la qualità che meriti 😁 &nbsp;
-                </div>
-                <div className="scrolling-text">
-                    Sorridi con fiducia, scegli la qualità che meriti 😁 &nbsp;
-                </div>
-                <div className="scrolling-text">
-                    Sorridi con fiducia, scegli la qualità che meriti 😁 &nbsp;
-                </div>
-            </div>
+const ScrollingText = memo(() => (
+  <div className="scrolling-text">
+    Sorridi con fiducia, scegli la qualità che meriti 😁 &nbsp;
+  </div>
+));
+
+const ThirdSection = memo(({ className = '' }) => {
+  // Create array with fixed length instead of duplicating JSX elements
+  const textElements = Array(8).fill(null);
+  
+  return (
+    <div className={`third-sector ${className}`}>
+      <div className="scrolling-container">
+        <div className="scrolling-content">
+          {textElements.map((_, index) => (
+            <ScrollingText key={index} />
+          ))}
         </div>
-        </div>
-    );
-};
+      </div>
+    </div>
+  );
+});
 
 export default ThirdSection;

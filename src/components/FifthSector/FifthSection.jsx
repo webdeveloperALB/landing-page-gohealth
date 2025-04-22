@@ -4,12 +4,13 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import "./FifthSection.css";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 
-const FifthSection = ({ className }) => {
+const FifthSection = ({ className = "" }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const carouselRef = useRef(null);
   const containerRef = useRef(null);
   const cardWidth = useRef(0);
   const isAnimating = useRef(false);
+  const scrollTimeout = useRef(null);
 
   const services = [
     {
@@ -38,44 +39,24 @@ const FifthSection = ({ className }) => {
     },
   ];
 
-  const scrollToElevenComponent = () => {
+  // Clone first and last item for infinite effect - moved outside of render
+  const carouselItems = [
+    services[services.length - 1],
+    ...services,
+    services[0],
+  ];
+
+  const scrollToElevenComponent = useCallback(() => {
     const elevenComponent = document.getElementById("eleven-section");
     elevenComponent?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
-
-  useEffect(() => {
-    // Calculate card width on mount and resize
-    const updateCardWidth = () => {
-      if (!containerRef.current) return;
-      cardWidth.current = containerRef.current.offsetWidth;
-    };
-
-    // Initial setup
-    updateCardWidth();
-    
-    // Position carousel at first real item
-    if (carouselRef.current) {
-      carouselRef.current.scrollLeft = cardWidth.current;
-    }
-    
-    // Handle window resize
-    window.addEventListener('resize', updateCardWidth);
-    return () => window.removeEventListener('resize', updateCardWidth);
   }, []);
 
-  // Effect to handle scroll position when activeIndex changes
-  useEffect(() => {
-    if (!carouselRef.current || !cardWidth.current) return;
-    
-    // Calculate position based on activeIndex (add 1 for the clone at the beginning)
-    const scrollPosition = (activeIndex + 1) * cardWidth.current;
-    
-    // Apply smooth scrolling
-    carouselRef.current.style.scrollBehavior = 'smooth';
-    carouselRef.current.scrollLeft = scrollPosition;
-  }, [activeIndex]);
+  const updateCardWidth = useCallback(() => {
+    if (!containerRef.current) return;
+    cardWidth.current = containerRef.current.offsetWidth;
+  }, []);
 
-  // Handle carousel navigation
+  // Handle carousel navigation with memoization
   const navigateToCard = useCallback((index) => {
     if (isAnimating.current) return;
     
@@ -93,7 +74,15 @@ const FifthSection = ({ className }) => {
     }, 500);
   }, [services.length]);
 
-  // Handle carousel snap back to corresponding real item after scrolling to a clone
+  const handleNext = useCallback(() => {
+    navigateToCard(activeIndex + 1);
+  }, [activeIndex, navigateToCard]);
+
+  const handlePrev = useCallback(() => {
+    navigateToCard(activeIndex - 1);
+  }, [activeIndex, navigateToCard]);
+
+  // Handle carousel snap back with memoization
   const handleScroll = useCallback(() => {
     if (!carouselRef.current || !cardWidth.current || isAnimating.current) return;
     
@@ -104,9 +93,11 @@ const FifthSection = ({ className }) => {
     if (slideIndex === services.length + 1) {
       // Wait for scroll to finish then snap back to the first real item
       setTimeout(() => {
-        carouselRef.current.style.scrollBehavior = 'auto';
-        carouselRef.current.scrollLeft = cardWidth.current;
-        carouselRef.current.style.scrollBehavior = 'smooth';
+        if (carouselRef.current) {
+          carouselRef.current.style.scrollBehavior = 'auto';
+          carouselRef.current.scrollLeft = cardWidth.current;
+          carouselRef.current.style.scrollBehavior = 'smooth';
+        }
       }, 500);
       
       setActiveIndex(0);
@@ -115,9 +106,11 @@ const FifthSection = ({ className }) => {
     else if (slideIndex === 0) {
       // Wait for scroll to finish then snap back to the last real item
       setTimeout(() => {
-        carouselRef.current.style.scrollBehavior = 'auto';
-        carouselRef.current.scrollLeft = services.length * cardWidth.current;
-        carouselRef.current.style.scrollBehavior = 'smooth';
+        if (carouselRef.current) {
+          carouselRef.current.style.scrollBehavior = 'auto';
+          carouselRef.current.scrollLeft = services.length * cardWidth.current;
+          carouselRef.current.style.scrollBehavior = 'smooth';
+        }
       }, 500);
       
       setActiveIndex(services.length - 1);
@@ -128,42 +121,57 @@ const FifthSection = ({ className }) => {
     }
   }, [services.length]);
 
-  // Add scroll event listener
+  // Handle debounced scroll - optimized with useCallback
+  const handleScrollDebounced = useCallback(() => {
+    if (scrollTimeout.current) {
+      clearTimeout(scrollTimeout.current);
+    }
+    scrollTimeout.current = setTimeout(handleScroll, 100);
+  }, [handleScroll]);
+
+  // Initial setup
+  useEffect(() => {
+    updateCardWidth();
+    
+    // Position carousel at first real item
+    if (carouselRef.current) {
+      carouselRef.current.scrollLeft = cardWidth.current;
+    }
+    
+    // Handle window resize with passive event listener for better performance
+    window.addEventListener('resize', updateCardWidth, { passive: true });
+    return () => window.removeEventListener('resize', updateCardWidth);
+  }, [updateCardWidth]);
+
+  // Effect to handle scroll position when activeIndex changes
+  useEffect(() => {
+    if (!carouselRef.current || !cardWidth.current) return;
+    
+    // Calculate position based on activeIndex (add 1 for the clone at the beginning)
+    const scrollPosition = (activeIndex + 1) * cardWidth.current;
+    
+    // Apply smooth scrolling
+    carouselRef.current.style.scrollBehavior = 'smooth';
+    carouselRef.current.scrollLeft = scrollPosition;
+  }, [activeIndex]);
+
+  // Add scroll event listener with cleanup
   useEffect(() => {
     const carousel = carouselRef.current;
     if (!carousel) return;
     
-    // Use a debounced scroll handler
-    let scrollTimeout;
-    const handleScrollDebounced = () => {
-      clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(handleScroll, 100);
-    };
+    carousel.addEventListener('scroll', handleScrollDebounced, { passive: true });
     
-    carousel.addEventListener('scroll', handleScrollDebounced);
     return () => {
       carousel.removeEventListener('scroll', handleScrollDebounced);
-      clearTimeout(scrollTimeout);
+      if (scrollTimeout.current) {
+        clearTimeout(scrollTimeout.current);
+      }
     };
-  }, [handleScroll]);
-
-  const handleNext = useCallback(() => {
-    navigateToCard(activeIndex + 1);
-  }, [activeIndex, navigateToCard]);
-
-  const handlePrev = useCallback(() => {
-    navigateToCard(activeIndex - 1);
-  }, [activeIndex, navigateToCard]);
-
-  // Clone first and last item for infinite effect
-  const carouselItems = [
-    services[services.length - 1],
-    ...services,
-    services[0],
-  ];
+  }, [handleScrollDebounced]);
 
   return (
-    <div className={`fifth-sector ${className || ""}`}>
+    <div className={`fifth-sector ${className}`}>
       <div className="dental-services-container">
         <div className="dental-services-header">
           <h3 className="dental-services-subtitle">SORRISO PERFETTO</h3>
@@ -178,6 +186,7 @@ const FifthSection = ({ className }) => {
             className="carousel-nav-button prev-button"
             onClick={handlePrev}
             aria-label="Previous service"
+            type="button"
           >
             <ChevronLeft size={24} />
           </button>
@@ -193,7 +202,7 @@ const FifthSection = ({ className }) => {
                 display: "flex",
                 userSelect: "none",
                 overflow: "hidden",
-                scrollSnapType: "x mandatory"
+                scrollSnapType: "x mandatory",
               }}
             >
               {carouselItems.map((service, index) => (
@@ -202,7 +211,7 @@ const FifthSection = ({ className }) => {
                   key={`service-${index}`}
                   style={{
                     flex: "0 0 100%",
-                    scrollSnapAlign: "center"
+                    scrollSnapAlign: "center",
                   }}
                 >
                   <div className="dental-service-card-content">
@@ -213,6 +222,9 @@ const FifthSection = ({ className }) => {
                           alt={service.title}
                           className="mask-icon"
                           draggable="false"
+                          loading="lazy"
+                          width="48"
+                          height="48"
                         />
                       </div>
                     </div>
@@ -223,6 +235,7 @@ const FifthSection = ({ className }) => {
                     <button
                       className="dental-service-link"
                       onClick={scrollToElevenComponent}
+                      type="button"
                     >
                       RICHIEDI INFO
                       <ArrowRight className="dental-service-arrow" size={16} />
@@ -237,6 +250,7 @@ const FifthSection = ({ className }) => {
             className="carousel-nav-button next-button"
             onClick={handleNext}
             aria-label="Next service"
+            type="button"
           >
             <ChevronRight size={24} />
           </button>
@@ -246,9 +260,7 @@ const FifthSection = ({ className }) => {
           {services.map((_, index) => (
             <span
               key={`dot-${index}`}
-              className={`pagination-dot ${
-                index === activeIndex ? "active" : ""
-              }`}
+              className={`pagination-dot ${index === activeIndex ? "active" : ""}`}
               onClick={() => navigateToCard(index)}
               role="button"
               aria-label={`Navigate to service ${index + 1}`}

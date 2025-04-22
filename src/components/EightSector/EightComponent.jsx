@@ -1,14 +1,87 @@
 "use client"
 
-import { useEffect, useState, useCallback, useRef } from "react"
+import { useEffect, useState, useCallback, useRef, memo } from "react"
 import "./EightComponent.css"
 
-export default function EightComponent({ className }) {
+const StoryCard = memo(({ story, isActive, direction, index, nextIndex, prevIndex }) => (
+  <div
+    className={`story-card ${
+      isActive
+        ? "active"
+        : direction === "next" && index === nextIndex
+          ? "entering"
+          : direction === "prev" && index === prevIndex
+            ? "entering"
+            : ""
+    }`}
+    data-index={index}
+  >
+    <div className="card-image">
+      <img
+        className="story-image"
+        src={story.image || "/placeholder.svg"}
+        alt={`Success story ${index + 1}`}
+        draggable="false"
+        loading="lazy"
+        width="100%"
+        height="auto"
+      />
+    </div>
+    <div className="card-content">
+      <h2 className="card-title">{story.title}</h2>
+      <p className="card-description">{story.description}</p>
+      <a href="https://gohealthalbania.com/case-studies/" target="_blank" rel="noopener noreferrer">
+        <button className="read-more-btn">READ MORE</button>
+      </a>
+    </div>
+  </div>
+))
+
+StoryCard.displayName = "StoryCard"
+
+const PaginationDot = memo(({ index, isActive, goToSlide }) => (
+  <span
+    className={`dot ${isActive ? "active" : ""}`}
+    onClick={() => goToSlide(index)}
+    role="button"
+    aria-label={`Go to story ${index + 1}`}
+    tabIndex={0}
+  ></span>
+))
+
+PaginationDot.displayName = "PaginationDot"
+
+// Stories content - moved outside component to prevent recreation on each render
+const stories = [
+  {
+    image: "/fifth-image.jpg",
+    title: "Trasformazione Del Sorriso",
+    description: "Un Uomo Di 65 Anni Si È Rivolto A Noi Con Un Problema Che Lo Affliggeva Da Tempo: Il Bruxismo, Che Ha Danneggiato I Suoi Denti, Soprattutto Nelle Aree Laterali.",
+  },
+  {
+    image: "/sixth-image.jpg",
+    title: "Corone Dentali E Impianti",
+    description: "Una Paziente Di 58 Anni Si È Rivolta A Noi Con Una Storia Di Parodontite E Ritiro Gengivale, Che Aveva Causato Denti Irregolari E Una Base Debole. Dopo Una Diagnosi...",
+  },
+  {
+    image: "/seventh-image.jpg",
+    title: "Ricostruzione Totale",
+    description: "Aenean Viverra Cursus Ipsum. Etiam Vitae Aliquet Lorem, Id Ultricies Nisl. Integer Tempor Metus Eget Massa.",
+  },
+]
+
+const TOTAL_SLIDES = stories.length
+const ANIMATION_DURATION = 800
+const AUTOPLAY_DELAY = 5000
+const DRAG_THRESHOLD = 0.15
+const VELOCITY_THRESHOLD = 0.5
+
+function EightComponent({ className }) {
   const [activeIndex, setActiveIndex] = useState(0)
   const [isAnimating, setIsAnimating] = useState(false)
   const [direction, setDirection] = useState("next")
   
-  // Dragging state references
+  // Refs for performance optimization
   const carouselRef = useRef(null)
   const isDragging = useRef(false)
   const startX = useRef(0)
@@ -17,14 +90,15 @@ export default function EightComponent({ className }) {
   const lastDragTime = useRef(0)
   const lastDragX = useRef(0)
   const autoplayTimeout = useRef(null)
-  
-  const totalSlides = 3
+  const animationFrameId = useRef(null)
 
-  // Calculate card width based on container
-  const getCardWidth = () => {
-    if (!carouselRef.current) return 0
-    return carouselRef.current.offsetWidth
-  }
+  const nextIndex = (activeIndex + 1) % TOTAL_SLIDES
+  const prevIndex = (activeIndex - 1 + TOTAL_SLIDES) % TOTAL_SLIDES
+
+  // Calculate card width based on container - memoized
+  const getCardWidth = useCallback(() => {
+    return carouselRef.current?.offsetWidth || 0
+  }, [])
 
   const transitionToSlide = useCallback((index, dir) => {
     if (isAnimating) return
@@ -34,22 +108,24 @@ export default function EightComponent({ className }) {
     setIsAnimating(true)
     setActiveIndex(index)
 
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setIsAnimating(false)
-    }, 800)
+    }, ANIMATION_DURATION)
+    
+    return () => clearTimeout(timer)
   }, [activeIndex, isAnimating])
 
   const nextSlide = useCallback(() => {
-    const newIndex = (activeIndex + 1) % totalSlides
+    const newIndex = (activeIndex + 1) % TOTAL_SLIDES
     transitionToSlide(newIndex, "next")
-  }, [activeIndex, totalSlides, transitionToSlide])
+  }, [activeIndex, transitionToSlide])
 
   const prevSlide = useCallback(() => {
-    const newIndex = (activeIndex - 1 + totalSlides) % totalSlides
+    const newIndex = (activeIndex - 1 + TOTAL_SLIDES) % TOTAL_SLIDES
     transitionToSlide(newIndex, "prev")
-  }, [activeIndex, totalSlides, transitionToSlide])
+  }, [activeIndex, transitionToSlide])
 
-  // Autoplay with pause during interaction
+  // Autoplay - optimized with useCallback
   const startAutoplay = useCallback(() => {
     if (autoplayTimeout.current) {
       clearTimeout(autoplayTimeout.current)
@@ -57,7 +133,7 @@ export default function EightComponent({ className }) {
     
     autoplayTimeout.current = setTimeout(() => {
       nextSlide()
-    }, 5000)
+    }, AUTOPLAY_DELAY)
   }, [nextSlide])
 
   const stopAutoplay = useCallback(() => {
@@ -67,22 +143,33 @@ export default function EightComponent({ className }) {
     }
   }, [])
 
+  // Optimize autoplay effect
   useEffect(() => {
     if (!isAnimating && !isDragging.current) {
       startAutoplay()
     }
     
-    return () => stopAutoplay()
+    return stopAutoplay
   }, [isAnimating, startAutoplay, stopAutoplay])
 
-  // Manual navigation
-  const goToSlide = (index) => {
+  // Clean up any potential memory leaks on unmount
+  useEffect(() => {
+    return () => {
+      stopAutoplay();
+      if (animationFrameId.current) {
+        cancelAnimationFrame(animationFrameId.current);
+      }
+    };
+  }, [stopAutoplay]);
+
+  // Manual navigation - memoized
+  const goToSlide = useCallback((index) => {
     if (isAnimating || index === activeIndex) return
     transitionToSlide(index)
-  }
+  }, [isAnimating, activeIndex, transitionToSlide])
 
-  // Handle drag start
-  const handleDragStart = (e) => {
+  // Optimized drag handlers
+  const handleDragStart = useCallback((e) => {
     stopAutoplay()
     isDragging.current = true
     
@@ -99,29 +186,35 @@ export default function EightComponent({ className }) {
       e.preventDefault()
       document.body.style.userSelect = "none"
     }
-  }
+  }, [stopAutoplay])
 
-  // Handle drag movement
-  const handleDragMove = (e) => {
+  // Handle drag movement with requestAnimationFrame for better performance
+  const handleDragMove = useCallback((e) => {
     if (!isDragging.current) return
     e.preventDefault()
     
-    const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX
-    dragDistance.current = clientX - startX.current
-    
-    // Calculate velocity for momentum effect
-    const now = Date.now()
-    const dt = now - lastDragTime.current
-    if (dt > 0) {
-      dragVelocity.current = (clientX - lastDragX.current) / dt
+    if (animationFrameId.current) {
+      cancelAnimationFrame(animationFrameId.current)
     }
     
-    lastDragX.current = clientX
-    lastDragTime.current = now
-  }
+    animationFrameId.current = requestAnimationFrame(() => {
+      const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX
+      dragDistance.current = clientX - startX.current
+      
+      // Calculate velocity for momentum effect
+      const now = Date.now()
+      const dt = now - lastDragTime.current
+      if (dt > 0) {
+        dragVelocity.current = (clientX - lastDragX.current) / dt
+      }
+      
+      lastDragX.current = clientX
+      lastDragTime.current = now
+    })
+  }, [])
 
-  // Handle drag end
-  const handleDragEnd = () => {
+  // Handle drag end - memoized
+  const handleDragEnd = useCallback(() => {
     if (!isDragging.current) return
     
     isDragging.current = false
@@ -129,15 +222,15 @@ export default function EightComponent({ className }) {
     
     // Determine slide change based on drag distance and velocity
     const cardWidth = getCardWidth()
-    const dragThreshold = cardWidth * 0.15 // Slightly lower threshold since there's no visual feedback
+    const dragThreshold = cardWidth * DRAG_THRESHOLD
     const velocity = dragVelocity.current * 100
     
     // Decide whether to change slides based on drag distance or velocity
     if (
       (Math.abs(dragDistance.current) > dragThreshold) || 
-      (Math.abs(velocity) > 0.5)
+      (Math.abs(velocity) > VELOCITY_THRESHOLD)
     ) {
-      if (dragDistance.current > 0 || velocity > 0.5) {
+      if (dragDistance.current > 0 || velocity > VELOCITY_THRESHOLD) {
         prevSlide()
       } else {
         nextSlide()
@@ -150,29 +243,7 @@ export default function EightComponent({ className }) {
     // Reset drag values
     dragDistance.current = 0
     dragVelocity.current = 0
-  }
-
-  // Stories content
-  const stories = [
-    {
-      image: "/fifth-image.jpg",
-      title: "Trasformazione Del Sorriso",
-      description: "Un Uomo Di 65 Anni Si È Rivolto A Noi Con Un Problema Che Lo Affliggeva Da Tempo: Il Bruxismo, Che Ha Danneggiato I Suoi Denti, Soprattutto Nelle Aree Laterali.",
-    },
-    {
-      image: "/sixth-image.jpg",
-      title: "Corone Dentali E Impianti",
-      description: "Una Paziente Di 58 Anni Si È Rivolta A Noi Con Una Storia Di Parodontite E Ritiro Gengivale, Che Aveva Causato Denti Irregolari E Una Base Debole. Dopo Una Diagnosi...",
-    },
-    {
-      image: "/seventh-image.jpg",
-      title: "Ricostruzione Totale",
-      description: "Aenean Viverra Cursus Ipsum. Etiam Vitae Aliquet Lorem, Id Ultricies Nisl. Integer Tempor Metus Eget Massa.",
-    },
-  ]
-
-  const nextIndex = (activeIndex + 1) % totalSlides
-  const prevIndex = (activeIndex - 1 + totalSlides) % totalSlides
+  }, [getCardWidth, prevSlide, nextSlide, startAutoplay])
 
   return (
     <div className={`eight-sector ${className || ''}`}>
@@ -197,35 +268,15 @@ export default function EightComponent({ className }) {
         >
           <div className="carousel-track">
             {stories.map((story, index) => (
-              <div
+              <StoryCard
                 key={`story-${index}`}
-                className={`story-card ${
-                  activeIndex === index
-                    ? "active"
-                    : direction === "next" && index === nextIndex
-                      ? "entering"
-                      : direction === "prev" && index === prevIndex
-                        ? "entering"
-                        : ""
-                }`}
-                data-index={index}
-              >
-                <div className="card-image">
-                  <img
-                    className="story-image"
-                    src={story.image || "/placeholder.svg"}
-                    alt={`Success story ${index + 1}`}
-                    draggable="false"
-                  />
-                </div>
-                <div className="card-content">
-                  <h2 className="card-title">{story.title}</h2>
-                  <p className="card-description">{story.description}</p>
-                  <a href="https://gohealthalbania.com/case-studies/" target="_blank" rel="noopener noreferrer">
-                    <button className="read-more-btn">READ MORE</button>
-                  </a>
-                </div>
-              </div>
+                story={story}
+                isActive={activeIndex === index}
+                direction={direction}
+                index={index}
+                nextIndex={nextIndex}
+                prevIndex={prevIndex}
+              />
             ))}
           </div>
         </div>
@@ -233,14 +284,12 @@ export default function EightComponent({ className }) {
         <div className="navigation-controls">
           <div className="pagination">
             {stories.map((_, index) => (
-              <span
+              <PaginationDot
                 key={`dot-${index}`}
-                className={`dot ${activeIndex === index ? "active" : ""}`}
-                onClick={() => goToSlide(index)}
-                role="button"
-                aria-label={`Go to story ${index + 1}`}
-                tabIndex={0}
-              ></span>
+                index={index}
+                isActive={activeIndex === index}
+                goToSlide={goToSlide}
+              />
             ))}
           </div>
         </div>
@@ -248,3 +297,5 @@ export default function EightComponent({ className }) {
     </div>
   )
 }
+
+export default memo(EightComponent)
