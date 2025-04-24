@@ -72,29 +72,24 @@ const Navbar = () => {
             >
               HOME
             </Link>
-            <Link
-              to="/treatments"
-              className={`nav-link ${
+            {/* Non-clickable links replaced with span elements */}
+            <span
+              className={`nav-link disabled ${
                 activeLink === "treatments" ? "active" : ""
               }`}
-              onClick={() => handleSetActive("treatments")}
             >
               TREATMENTS
-            </Link>
-            <Link
-              to="/about"
-              className={`nav-link ${activeLink === "about" ? "active" : ""}`}
-              onClick={() => handleSetActive("about")}
+            </span>
+            <span
+              className={`nav-link disabled ${activeLink === "about" ? "active" : ""}`}
             >
               ABOUT US
-            </Link>
-            <Link
-              to="/blog"
-              className={`nav-link ${activeLink === "blog" ? "active" : ""}`}
-              onClick={() => handleSetActive("blog")}
+            </span>
+            <span
+              className={`nav-link disabled ${activeLink === "blog" ? "active" : ""}`}
             >
               BLOG
-            </Link>
+            </span>
           </div>
 
           <Link 

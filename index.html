@@ -9,6 +9,14 @@
       content="Book your medical and dental appointments online with GoHealth Albania. Quality healthcare services with expert professionals. Dental tourism in Albania with competitive prices."
     />
 
+    <!-- Favicon and App Icons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
+    <meta name="msapplication-TileColor" content="#da532c" />
+
     <!-- Google Tag Manager -->
     <script>
       (function (w, d, s, l, i) {
@@ -39,9 +47,47 @@
         "description": "Premium dental clinic in Albania offering quality dental services at competitive prices",
         "medicalSpecialty": "Dentistry",
         "priceRange": "$$",
-        "areaServed": "Albania"
+        "areaServed": "Albania",
+        "url": "https://gohealthalbania.com",
+        "sameAs": [
+          "https://www.facebook.com/gohealthalbania",
+          "https://www.instagram.com/gohealthalbania"
+        ],
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "Albania"
+        },
+        "telephone": "+39 3450462456"
       }
     </script>
+
+    <!-- OpenGraph tags for social sharing -->
+    <meta
+      property="og:title"
+      content="GoHealth Albania - Premium Dental Clinic"
+    />
+    <meta
+      property="og:description"
+      content="Quality dental services at competitive prices in Albania. Expert professionals and modern facilities."
+    />
+    <meta property="og:image" content="/og-image.jpg" />
+    <meta property="og:url" content="https://gohealthalbania.com" />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="GoHealth Albania - Premium Dental Clinic"
+    />
+    <meta
+      name="twitter:description"
+      content="Quality dental services at competitive prices in Albania. Expert professionals and modern facilities."
+    />
+    <meta name="twitter:image" content="/og-image.jpg" />
+
+    <!-- Canonical URL for SEO -->
+    <link rel="canonical" href="https://gohealthalbania.com" />
 
     <!-- Styles & Fonts -->
     <link
@@ -54,6 +100,21 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
       rel="stylesheet"
     />
+
+    <!-- SEO-specific styles -->
+    <style>
+      .seo-nav {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+      }
+    </style>
   </head>
   <body>
     <!-- Google Tag Manager (noscript) -->
@@ -67,7 +128,145 @@
     ></noscript>
     <!-- End Google Tag Manager (noscript) -->
 
-    <div id="root"></div>
+    <div id="root">
+      <!-- Site content will be injected here by React, but we'll add fallback content for SEO -->
+      <header class="seo-nav">
+        <nav>
+          <ul>
+            <!-- Only include fully functional links -->
+            <li><a href="/">Home</a></li>
+            <li><a href="/checkup">Check-up Gratuito</a></li>
+
+            <!-- Non-functional navigation items with proper SEO attributes -->
+            <li><span aria-hidden="true">TREATMENTS</span></li>
+            <li><span aria-hidden="true">ABOUT US</span></li>
+            <li><span aria-hidden="true">BLOG</span></li>
+
+            <!-- Include main service sections as fragment identifiers that lead to homepage sections -->
+            <li><a href="/#dental-implants">Dental Implants</a></li>
+            <li><a href="/#dental-crowns">Dental Crowns</a></li>
+            <li><a href="/#veneers">Veneers</a></li>
+            <li><a href="/#tooth-whitening">Tooth Whitening</a></li>
+            <li><a href="/#dental-tourism">Dental Tourism</a></li>
+
+            <!-- Social and contact links -->
+            <li>
+              <a
+                href="https://www.facebook.com/gohealthalbania"
+                target="_blank"
+                rel="noopener"
+                >Facebook</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://www.instagram.com/gohealthalbania"
+                target="_blank"
+                rel="noopener"
+                >Instagram</a
+              >
+            </li>
+            <li>
+              <a href="tel:+393450462456">Emergency Contact: +39 3450462456</a>
+            </li>
+          </ul>
+        </nav>
+      </header>
+
+      <!-- Simple page fallback content for SEO -->
+      <div class="seo-nav">
+        <h1>GoHealth Albania - Premium Dental Clinic in Albania</h1>
+        <p>
+          Welcome to GoHealth Albania, your trusted dental clinic for quality
+          dental care at competitive prices. We specialize in dental implants,
+          crowns, veneers, and other dental treatments.
+        </p>
+
+        <h2>Our Dental Services</h2>
+        <ul>
+          <li>Dental Implants</li>
+          <li>Dental Crowns</li>
+          <li>Dental Veneers</li>
+          <li>Teeth Whitening</li>
+          <li>Free Check-up Consultations</li>
+        </ul>
+
+        <h2>Dental Tourism in Albania</h2>
+        <p>
+          Experience quality dental care at a fraction of European prices. Our
+          dental clinic in Albania offers premium dental services with expert
+          professionals in a modern facility.
+        </p>
+
+        <h2>Contact Us</h2>
+        <p>For emergency medical assistance, call: +39 3450462456</p>
+      </div>
+
+      <!-- Hidden footer links for SEO -->
+      <footer class="seo-nav">
+        <div>
+          <h3>Popular Dental Treatments</h3>
+          <ul>
+            <li>
+              <a href="/#dental-implants" rel="nofollow"
+                >Dental Implants in Albania</a
+              >
+            </li>
+            <li>
+              <a href="/#dental-crowns" rel="nofollow"
+                >Dental Crowns in Albania</a
+              >
+            </li>
+            <li><a href="/#veneers" rel="nofollow">Dental Veneers</a></li>
+            <li><a href="/#checkup" rel="nofollow">Free Dental Check-up</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Dental Tourism Information</h3>
+          <ul>
+            <li>
+              <a href="/#dental-tourism-pricing" rel="nofollow"
+                >Dental Treatment Costs in Albania</a
+              >
+            </li>
+            <li>
+              <a href="/#dental-tourism-benefits" rel="nofollow"
+                >Benefits of Dental Tourism</a
+              >
+            </li>
+            <li>
+              <a href="/#accommodation" rel="nofollow">Accommodation Options</a>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3>Dental Health Resources</h3>
+          <ul>
+            <li>
+              <a
+                href="https://www.who.int/health-topics/oral-health"
+                target="_blank"
+                rel="noopener"
+                >World Health Organization - Oral Health</a
+              >
+            </li>
+            <li>
+              <a href="https://www.ada.org" target="_blank" rel="noopener"
+                >American Dental Association</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3>Languages</h3>
+          <ul>
+            <li><a href="/" hreflang="en">English</a></li>
+            <li><a href="/it" rel="alternate" hreflang="it">Italiano</a></li>
+          </ul>
+        </div>
+        <p>© 2025 GoHealth Albania. All rights reserved.</p>
+      </footer>
+    </div>
 
     <!-- JavaScript Entry Point -->
     <script type="module" src="/src/main.jsx"></script>

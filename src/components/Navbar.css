@@ -1,3 +1,23 @@
+/* Add to your existing Navbar.css file */
+.nav-link.disabled {
+  cursor: default;
+  color: inherit; /* maintains the same color as other links */
+  opacity: 0.7; /* slightly dimmed to indicate non-clickable */
+  text-decoration: none;
+}
+
+.nav-link.disabled:hover {
+  /* Prevent any hover effects that might be applied to normal links */
+  color: inherit;
+  cursor: default;
+}
+
+/* If you have any specific styling for active links, you may need to duplicate it */
+.nav-link.disabled.active {
+  /* Copy any relevant active link styling here */
+  font-weight: bold; /* example */
+}
+
 /* components/Navbar.css */
 .navbar-container {
   position: fixed;
@@ -21,7 +41,6 @@
   width: 15px;
   height: auto;
 }
-
 
 .emergency-text {
   color: white;
@@ -59,26 +78,25 @@
 
 /* Navigation Link Styles */
 .nav-link {
-    color: #0a3366;
-    text-decoration: none;
-    font-weight: 500;
-    position: relative;
-    padding: 0.5rem 0 1rem 0;
-    margin: 0 0.5rem;
-    transition: all 0.3s ease;
-  }
+  color: #0a3366;
+  text-decoration: none;
+  font-weight: 500;
+  position: relative;
+  padding: 0.5rem 0 1rem 0;
+  margin: 0 0.5rem;
+  transition: all 0.3s ease;
+}
 
-  .nav-link.active {
-    border-bottom: 3px solid;
-    border-image-source: linear-gradient(90deg, #339bbb 0%, #1aa69d 100%);
-    border-image-slice: 1;
-  }
+.nav-link.active {
+  border-bottom: 3px solid;
+  border-image-source: linear-gradient(90deg, #339bbb 0%, #1aa69d 100%);
+  border-image-slice: 1;
+}
 
-  /* Remove hover color change */
+/* Remove hover color change */
 .nav-link:hover {
-    color: #0a3366; /* Maintain original color */
-  }
-  
+  color: #0a3366; /* Maintain original color */
+}
 
 @keyframes underlineGrow {
   from {
@@ -106,7 +124,8 @@
 }
 
 @keyframes zoomInOut {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
   }
   50% {
@@ -143,7 +162,6 @@
   );
   transition: all 0.5s;
 }
-
 
 .cta-button:hover::before {
   left: 100%;
@@ -198,30 +216,29 @@
   }
 }
 
-
 /* Responsive Styles */
 @media (max-width: 768px) {
   .emergency-text {
     font-size: 0.9rem;
   }
-  
+
   .main-nav {
-      display: flex;
+    display: flex;
     padding: 1rem;
     justify-content: space-between;
   }
-  
+
   .nav-logo {
     position: relative;
     left: 0;
     transform: none;
     height: 40px;
   }
-  
+
   .hamburger-button {
     display: flex;
   }
-  
+
   .nav-links-container {
     position: absolute;
     top: 100%;
@@ -234,22 +251,23 @@
     transition: max-height 0.5s ease;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   }
-  
+
   .nav-links-container.menu-open {
     max-height: 500px;
   }
-  
+
   .nav-section {
     flex-direction: column;
     gap: 0.5rem;
     padding: 1rem;
   }
-  
-  .left-section, .right-section {
+
+  .left-section,
+  .right-section {
     width: 100%;
     justify-content: center;
   }
-  
+
   .nav-link {
     width: 100%;
     text-align: center;
@@ -257,13 +275,13 @@
     margin: 0;
     border-bottom: 1px solid #f0f0f0;
   }
-  
+
   .nav-link.active {
     border-bottom: 3px solid;
     border-image-source: linear-gradient(90deg, #339bbb 0%, #1aa69d 100%);
     border-image-slice: 1;
   }
-  
+
   .cta-button {
     width: 100%;
     margin-top: 1rem;
@@ -276,7 +294,7 @@
   .nav-section {
     gap: 1rem;
   }
-  
+
   .cta-button {
     padding: 0.7rem 1.5rem;
     font-size: 0.9rem;
@@ -298,15 +316,15 @@
   .top-stripe {
     padding: 8px;
   }
-  
+
   .emergency-text {
     font-size: 0.8rem;
   }
-  
+
   .main-nav {
     padding: 0.8rem;
   }
-  
+
   .nav-logo {
     height: 35px;
   }
@@ -316,4 +334,3 @@
     margin-left: 15px;
   }
 }
-
