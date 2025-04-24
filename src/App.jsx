@@ -16,7 +16,7 @@ function App() {
           name="description"
           content="Book appointments with GoHealth Albania for quality dental and medical services. Expert care at competitive prices - your dental tourism destination in Albania."
         />
-        <link rel="canonical" href="https://lp.gohealthalbania.com" />
+        <link rel="canonical" href="https://gohealthalbania.com" />
         <link
           rel="alternate"
           hreflang="en"
