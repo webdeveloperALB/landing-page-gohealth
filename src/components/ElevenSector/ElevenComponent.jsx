@@ -122,7 +122,7 @@ const DateTimePicker = ({ selected, onChange, placeholder, timeOnly }) => {
 };
 
 const ElevenComponent = ({ className }) => {
-  const [selectedDepartment, setSelectedDepartment] =
+  const [selectedDepartment] =
     useState("Dental Oral Care");
   const [selectedTreatment, setSelectedTreatment] = useState("");
   const [captchaValue, setCaptchaValue] = useState(null);
@@ -136,17 +136,15 @@ const ElevenComponent = ({ className }) => {
     time: null,
   });
 
-  const departments = [
-    { value: "Dental Oral Care", label: "Dental Oral Care" },
-    { value: "Orthodontics", label: "Orthodontics" },
-    { value: "Surgery", label: "Surgery" },
-  ];
+
 
   const treatments = [
-    { value: "", label: "Seleziona Trattamento" },
-    { value: "Cleaning", label: "Cleaning" },
-    { value: "Root Canal", label: "Root Canal" },
-    { value: "Whitening", label: "Whitening" },
+    { value: "Seleziona Trattamento", label: "Seleziona Trattamento" },
+    { value: "Impainti Dentali", label: "Impainti Dentali" },
+    { value: "Corona Dentale", label: "Corona Dentale" },
+    { value: "Faccette Dentali", label: "Faccette Dentali" },
+    { value: "Ponte Dentale", label: "Ponte Dentale" },
+    { value: "Oltre", label: "Oltre" },
   ];
 
   const handleInputChange = (e) => {
@@ -277,16 +275,7 @@ const ElevenComponent = ({ className }) => {
 
           <form className="booking-form" onSubmit={handleSubmit}>
             <div className="form-row">
-              <div className="form-group">
-                <label>
-                  Reparto <span className="required">*</span>
-                </label>
-                <CustomSelect
-                  options={departments}
-                  value={selectedDepartment}
-                  onChange={setSelectedDepartment}
-                />
-              </div>
+              
 
               <div className="form-group">
                 <label>Tipologia Di Trattamento</label>
