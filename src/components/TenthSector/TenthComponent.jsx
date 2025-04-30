@@ -3,11 +3,11 @@ import React, { memo } from 'react';
 import './TenthComponent.css';
 
 const publicationLogos = [
-  { src: "/comevisto/1.svg", alt: "Reader's Digest" },
-  { src: "/comevisto/2.svg", alt: "Wired" },
-  { src: "/comevisto/3.svg", alt: "Vogue" },
-  { src: "/comevisto/4.svg", alt: "Forbes" },
-  { src: "/comevisto/5.svg", alt: "National Geographic" }
+  { src: "/comevisto/1.webp", alt: "Reader's Digest" },
+  { src: "/comevisto/2.webp", alt: "Wired" },
+  { src: "/comevisto/3.webp", alt: "Vogue" },
+  { src: "/comevisto/4.webp", alt: "Forbes" },
+  { src: "/comevisto/5.webp", alt: "National Geographic" }
 ];
 
 const PublicationLogo = memo(({ src, alt }) => (

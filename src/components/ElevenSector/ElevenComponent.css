@@ -1,3 +1,78 @@
+/* Add these styles to ElevenComponent.css */
+
+/* Loading placeholders */
+.loading-placeholder,
+.map-placeholder,
+.captcha-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5f5;
+  color: #777;
+  min-height: 80px;
+  text-align: center;
+  border-radius: 4px;
+  padding: 15px;
+  font-size: 14px;
+}
+
+.map-placeholder {
+  height: 100%;
+  min-height: 300px;
+}
+
+/* Button states */
+.submit-button {
+  position: relative;
+  transition: background-color 0.3s, opacity 0.3s;
+}
+
+.submit-button.submitting {
+  opacity: 0.75;
+  cursor: not-allowed;
+}
+
+.submit-button.submitting::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate {
+  0% { transform: translateY(-50%) rotate(0deg); }
+  100% { transform: translateY(-50%) rotate(360deg); }
+}
+
+/* Performance optimizations */
+.map-section, .form-section {
+  will-change: transform; /* Optimizes rendering performance */
+}
+
+/* Reduce layout shifts */
+.recaptcha-container {
+  min-height: 78px; /* Minimum height to prevent layout shifts */
+}
+
+/* Optimize dropdown performance */
+.dropdown-options {
+  contain: content; /* Improves rendering performance */
+}
+
+/* Minimize repaints for any animations */
+.icon.rotate {
+  transform: rotate(180deg);
+  transition: transform 0.3s;
+  will-change: transform;
+}
+
 /* Base Styles */
 .eleven-sector {
   min-height: 0; /* Allows content to shrink if needed */

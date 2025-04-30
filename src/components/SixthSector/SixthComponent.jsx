@@ -15,25 +15,25 @@ const testimonials = [
     id: 1,
     text: "Professionalità eccellente e assistenza impeccabile. Sono molto soddisfatto del lavoro e della gentilezza del personale!",
     author: "Davide Salè",
-    image: "/parapas/Rezultati 1.svg",
+    image: "/parapas/Rezultati 1.webp",
   },
   {
     id: 2,
     text: "Clinica professionale e attenta ai dettagli. Grazie per il sorriso che ho adesso, siete il top!",
     author: "Massimiliano Gullà",
-    image: "/parapas/Rezultati 6.svg",
+    image: "/parapas/Rezultati 6.webp",
   },
   {
     id: 3,
     text: "Scelta perfetta: ho trovato professionalità, umanità e attrezzature moderne. Non è solo risparmio, ma vera eccellenza.",
     author: "Pino Vessio",
-    image: "/parapas/Rezultati 3.svg",
+    image: "/parapas/Rezultati 3.webp",
   },
   {
     id: 4,
     text: "Accoglienza, velocità ed eccellenza rendono questa clinica unica. Tecnologie moderne e personale impeccabile garantiscono risultati eccezionali.",
     author: "Claudio Spinelli",
-    image: "/parapas/Rezultati 5.svg",
+    image: "/parapas/Rezultati 5.webp",
   },
 ];
 

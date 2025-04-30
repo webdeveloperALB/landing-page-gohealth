@@ -22,9 +22,48 @@ body {
   transform: translateZ(0);
 }
 
-/* Date picker */
+/* Date picker fixes */
 .react-datepicker-wrapper {
   width: 100%;
+  position: relative;
+}
+
+/* Fix for DatePicker portal positioning */
+#datepicker-portal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+}
+
+/* Reset inline styles that might interfere */
+#datepicker-portal [style*="position: absolute"] {
+  position: fixed !important;
+}
+
+/* Critical fix for the popper positioning */
+.react-datepicker-popper {
+  z-index: 9999 !important;
+  position: fixed !important;
+  width: auto !important;
+  transform: none !important;
+}
+
+/* Ensuring the datepicker is fully visible */
+.react-datepicker {
+  font-family: Arial, sans-serif;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  display: inline-block;
+  position: relative;
+}
+
+/* Make sure the calendar is prioritized in the stack */
+.react-datepicker__month-container {
+  float: left;
+  z-index: 10000;
 }
 
 .date-picker {
@@ -57,6 +96,7 @@ body {
   padding: 7rem 4rem 4rem 4rem !important;
   contain: content;
   will-change: transform;
+  position: relative; /* Add position relative */
 }
 
 .landing-container2 {
@@ -243,6 +283,8 @@ body {
   border: 1px solid #1ba69e;
   border-radius: 24px;
   contain: content;
+  position: relative; /* Add position relative */
+  z-index: 2; /* Add z-index */
 }
 
 .appointment-header {
@@ -284,6 +326,8 @@ body {
   display: flex;
   flex-direction: row;
   gap: 16px;
+  position: relative; /* Add position relative */
+  z-index: 3; /* Add higher z-index */
 }
 
 .form-field {
@@ -293,6 +337,8 @@ body {
   display: flex;
   align-items: center;
   border: 1px solid #cecac4;
+  position: relative; /* Add position relative */
+  z-index: 1; /* Lower z-index than the calendar */
 }
 
 .icon-container {
@@ -319,6 +365,11 @@ body {
 
 .field-value {
   font-weight: 500;
+}
+
+.field-content {
+  position: relative; /* Add position relative */
+  width: 100%;
 }
 
 /* Optimize button with hardware acceleration */
@@ -430,6 +481,14 @@ body {
   .dopo {
     bottom: 30px;
     right: 20px;
+  }
+  
+  /* Fix datepicker on mobile */
+  .react-datepicker-popper {
+    width: 280px !important;
+    max-width: 98vw !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
   }
 }
 

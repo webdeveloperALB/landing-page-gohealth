@@ -40,7 +40,7 @@ const SecondSector = memo(({ className }) => {
 
         <div className="imageSection">
           <img 
-            src="/second-image.png" 
+            src="/second-image.webp" 
             alt="Image description" 
             loading="lazy"
             decoding="async"

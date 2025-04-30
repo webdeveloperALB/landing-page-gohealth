@@ -1,9 +1,14 @@
-import { useState, memo, useCallback, useMemo } from "react";
+import { useState, memo, useCallback, useMemo, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { registerLocale } from "react-datepicker";
+import it from "date-fns/locale/it"; // Import Italian locale
 import { FaMapMarkerAlt, FaCalendarAlt, FaUserFriends } from "react-icons/fa";
 import Navbar from "../Navbar";
 import "./FirstSector.css";
+
+// Register the Italian locale
+registerLocale("it", it);
 
 // Extracted constant arrays outside component to prevent re-creation on every render
 const TREATMENTS = [
@@ -106,6 +111,26 @@ function FirstSector({ className }) {
   const [selectedTreatment, setSelectedTreatment] = useState("IMPLANTOLOGIA");
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [treatmentType, setTreatmentType] = useState("1 Adulto");
+  
+  // Create a ref for the root element to ensure portal works correctly
+  useEffect(() => {
+    // Create a div for the datepicker portal if it doesn't exist
+    if (!document.getElementById("datepicker-portal")) {
+      const portalDiv = document.createElement("div");
+      portalDiv.id = "datepicker-portal";
+      portalDiv.style.position = "relative";
+      portalDiv.style.zIndex = "9999";
+      document.body.appendChild(portalDiv);
+    }
+    
+    // Cleanup function
+    return () => {
+      const portalDiv = document.getElementById("datepicker-portal");
+      if (portalDiv) {
+        portalDiv.remove();
+      }
+    };
+  }, []);
 
   // Memoize handlers to prevent recreation on each render
   const handleTreatmentChange = useCallback((treatment) => {
@@ -158,7 +183,7 @@ function FirstSector({ className }) {
 
               <div className="experience-icon2">
                 <OptimizedImage 
-                  src="/logo3.png" 
+                  src="/logo3.webp" 
                   alt="Experience icon"
                   width="60" 
                   height="60" 
@@ -208,6 +233,32 @@ function FirstSector({ className }) {
                 minDate={new Date()}
                 locale="it"
                 className="date-picker"
+                popperPlacement="bottom-start"
+                popperModifiers={[
+                  {
+                    name: "preventOverflow",
+                    options: {
+                      boundary: "viewport",
+                      padding: 8,
+                    },
+                  },
+                  {
+                    name: "offset",
+                    options: {
+                      offset: [0, 8],
+                    },
+                  },
+                  {
+                    name: "flip",
+                    options: {
+                      fallbackPlacements: ["top", "right", "left"],
+                    },
+                  },
+                ]}
+                popperProps={{
+                  strategy: "fixed",
+                }}
+                portalId="datepicker-portal"
               />
             </FormField>
 

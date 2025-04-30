@@ -4,11 +4,11 @@ import { useEffect, useRef, memo } from "react"
 import "./NinthComponent.css"
 
 const partnerImages = [
-  { src: "/partner/1.svg", alt: "Partner 1" },
-  { src: "/partner/2.svg", alt: "Partner 2" },
-  { src: "/partner/3.svg", alt: "Partner 3" },
-  { src: "/partner/4.svg", alt: "Partner 4" },
-  { src: "/partner/5.svg", alt: "Partner 5" }
+  { src: "/partner/1.webp", alt: "Partner 1" },
+  { src: "/partner/2.webp", alt: "Partner 2" },
+  { src: "/partner/3.webp", alt: "Partner 3" },
+  { src: "/partner/4.webp", alt: "Partner 4" },
+  { src: "/partner/5.webp", alt: "Partner 5" }
 ]
 
 const ScrollerItem = memo(({ src, alt }) => (

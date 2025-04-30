@@ -56,12 +56,12 @@ export default function FourthSection({ className }) {
 
   // Predefine style objects to prevent recreation on each render
   const beforeImageStyle = {
-    backgroundImage: `url('/sixth-image.jpg')`,
+    backgroundImage: `url('/sixth-image.webp')`,
     clipPath: `polygon(0 0, ${position}% 0, ${position}% 100%, 0 100%)`,
   }
 
   const afterImageStyle = {
-    backgroundImage: `url('/third_image.jpg')`,
+    backgroundImage: `url('/third_image.webp')`,
     clipPath: `polygon(${position}% 0, 100% 0, 100% 100%, ${position}% 100%)`,
   }
 

@@ -1,34 +1,59 @@
-import React, { useState, useRef, useEffect } from "react";
-import DatePicker from "react-datepicker";
-import { registerLocale } from "react-datepicker";
-import it from "date-fns/locale/it";
-import "react-datepicker/dist/react-datepicker.css";
+import React, { useState, useRef, useEffect, lazy, Suspense } from "react";
+import { Calendar, Clock, ChevronDown, Info } from "lucide-react";
 import "./ElevenComponent.css";
-import ReCAPTCHA from "react-google-recaptcha";
-import {
-  Calendar,
-  Clock,
-  ChevronDown,
-  Phone,
-  Info,
-} from "lucide-react";
 
-registerLocale("it", it);
+// Lazy load components to reduce initial load time
+const DatePicker = lazy(() => import("react-datepicker"));
+
+// Properly handle locale registration
+const LazyDatePicker = (props) => {
+  useEffect(() => {
+    // Import CSS
+    import("react-datepicker/dist/react-datepicker.css");
+    
+    // Correctly register Italian locale
+    const registerLocale = async () => {
+      try {
+        const dateFnsLib = await import("date-fns/locale");
+        const reactDatepicker = await import("react-datepicker");
+        
+        if (dateFnsLib.it && reactDatepicker.registerLocale) {
+          reactDatepicker.registerLocale("it", dateFnsLib.it);
+        }
+      } catch (error) {
+        console.error("Failed to register locale:", error);
+      }
+    };
+    
+    registerLocale();
+  }, []);
+
+  return (
+    <Suspense fallback={<div className="loading-placeholder">Loading...</div>}>
+      <DatePicker {...props} />
+    </Suspense>
+  );
+};
+
+// Lazy load ReCAPTCHA to defer its loading
+const ReCAPTCHA = lazy(() => import("react-google-recaptcha"));
 
 const CustomSelect = ({ options, value, onChange, placeholder }) => {
   const [isOpen, setIsOpen] = useState(false);
   const selectRef = useRef(null);
 
-  const handleClickOutside = (event) => {
-    if (selectRef.current && !selectRef.current.contains(event.target)) {
-      setIsOpen(false);
-    }
-  };
-
   useEffect(() => {
+    if (!isOpen) return; // Only add listener when dropdown is open
+    
+    const handleClickOutside = (event) => {
+      if (selectRef.current && !selectRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [isOpen]);
 
   return (
     <div className="custom-select" ref={selectRef}>
@@ -44,8 +69,7 @@ const CustomSelect = ({ options, value, onChange, placeholder }) => {
           {options.map((option) => (
             <div
               key={option.value}
-              className={`option-item ${value === option.value ? "selected" : ""
-                }`}
+              className={`option-item ${value === option.value ? "selected" : ""}`}
               onClick={() => {
                 onChange(option.value);
                 setIsOpen(false);
@@ -64,32 +88,61 @@ const DateTimePicker = ({ selected, onChange, placeholder, timeOnly }) => {
   const [isOpen, setIsOpen] = useState(false);
   const pickerRef = useRef(null);
 
-  const handleClickOutside = (event) => {
-    if (pickerRef.current && !pickerRef.current.contains(event.target)) {
-      setIsOpen(false);
-    }
-  };
+  // Fallback to en-US if Italian locale isn't available
+  const [localeAvailable, setLocaleAvailable] = useState(false);
 
   useEffect(() => {
+    // Check if Italian locale is available
+    import("date-fns/locale")
+      .then(module => {
+        setLocaleAvailable(!!module.it);
+      })
+      .catch(() => {
+        setLocaleAvailable(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (!isOpen) return; // Only add listener when picker is open
+    
+    const handleClickOutside = (event) => {
+      if (pickerRef.current && !pickerRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [isOpen]);
+
+  // Format date/time safely
+  const formatDateTime = (date, isTimeOnly) => {
+    if (!date) return "";
+    
+    try {
+      return isTimeOnly 
+        ? date.toLocaleTimeString(localeAvailable ? "it-IT" : "en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
+          })
+        : date.toLocaleDateString(localeAvailable ? "it-IT" : "en-US");
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return isTimeOnly 
+        ? date.toLocaleTimeString("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
+          })
+        : date.toLocaleDateString("en-US");
+    }
+  };
 
   return (
     <div className="custom-datetime-picker" ref={pickerRef}>
       <div className="picker-input" onClick={() => setIsOpen(!isOpen)}>
         <input
           type="text"
-          value={
-            selected
-              ? timeOnly
-                ? selected.toLocaleTimeString("it-IT", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })
-                : selected.toLocaleDateString("it-IT")
-              : ""
-          }
+          value={selected ? formatDateTime(selected, timeOnly) : ""}
           placeholder={placeholder}
           readOnly
         />
@@ -102,7 +155,7 @@ const DateTimePicker = ({ selected, onChange, placeholder, timeOnly }) => {
 
       {isOpen && (
         <div className="picker-popup">
-          <DatePicker
+          <LazyDatePicker
             selected={selected}
             onChange={(date) => {
               onChange(date);
@@ -112,7 +165,7 @@ const DateTimePicker = ({ selected, onChange, placeholder, timeOnly }) => {
             showTimeSelect={timeOnly}
             showTimeSelectOnly={timeOnly}
             timeIntervals={15}
-            locale="it"
+            locale={localeAvailable ? "it" : "en"}
             dateFormat={timeOnly ? "HH:mm" : "dd/MM/yyyy"}
           />
         </div>
@@ -121,12 +174,53 @@ const DateTimePicker = ({ selected, onChange, placeholder, timeOnly }) => {
   );
 };
 
+// Memoize the Map component to prevent unnecessary re-renders
+const MapComponent = React.memo(() => {
+  const [mapLoaded, setMapLoaded] = useState(false);
+
+  // Defer map loading until component is visible in viewport
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setMapLoaded(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    const mapWrapper = document.querySelector('.map-wrapper');
+    if (mapWrapper) observer.observe(mapWrapper);
+    
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div className="map-wrapper">
+      {mapLoaded ? (
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2996.039790811289!2d19.8219329!3d41.329748099999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x13503155ad618535%3A0xa70a3361bf396f57!2sGo%20Health%20Albania!5e0!3m2!1sen!2s!4v1742404901054!5m2!1sen!2s&ui=2&z=18"
+          width="100%"
+          height="100%"
+          style={{ border: 0 }}
+          allowFullScreen=""
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+        ></iframe>
+      ) : (
+        <div className="map-placeholder">Caricamento della mappa...</div>
+      )}
+    </div>
+  );
+});
+
 const ElevenComponent = ({ className }) => {
-  const [selectedDepartment] =
-    useState("Dental Oral Care");
+  const [selectedDepartment] = useState("Dental Oral Care");
   const [selectedTreatment, setSelectedTreatment] = useState("");
   const [captchaValue, setCaptchaValue] = useState(null);
   const [captchaError, setCaptchaError] = useState(false);
+  const [showCaptcha, setShowCaptcha] = useState(false);
   const recaptchaRef = useRef(null);
   const [formData, setFormData] = useState({
     service: "",
@@ -135,8 +229,24 @@ const ElevenComponent = ({ className }) => {
     date: null,
     time: null,
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formTouched, setFormTouched] = useState(false);
 
-
+  // Load reCAPTCHA only when the form is partially filled out
+  useEffect(() => {
+    if (formData.name || formData.email || formData.service) {
+      setFormTouched(true);
+    }
+    
+    if (formTouched && !showCaptcha) {
+      // Delay loading captcha until user has started filling the form
+      const timer = setTimeout(() => {
+        setShowCaptcha(true);
+      }, 1000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [formData, formTouched, showCaptcha]);
 
   const treatments = [
     { value: "Seleziona Trattamento", label: "Seleziona Trattamento" },
@@ -171,6 +281,8 @@ const ElevenComponent = ({ className }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (isSubmitting) return; // Prevent multiple submissions
+
     if (
       !formData.name ||
       !formData.email ||
@@ -194,7 +306,10 @@ const ElevenComponent = ({ className }) => {
     }
 
     try {
-      console.log("Sending data:", {
+      setIsSubmitting(true);
+      
+      // Prepare data payload - only stringify once
+      const payload = JSON.stringify({
         name: formData.name,
         email: formData.email,
         service: formData.service,
@@ -210,18 +325,8 @@ const ElevenComponent = ({ className }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          service: formData.service,
-          date: formData.date.toISOString(),
-          time: formData.time.toISOString(),
-          department: selectedDepartment,
-          treatment: selectedTreatment,
-          recaptchaToken: captchaValue,
-        }),
+        body: payload,
       });
-    
 
       const data = await response.json();
       if (response.ok) {
@@ -235,6 +340,7 @@ const ElevenComponent = ({ className }) => {
         });
         setSelectedTreatment("");
         setCaptchaValue(null);
+        setFormTouched(false);
         // Reset recaptcha
         if (recaptchaRef.current) {
           recaptchaRef.current.reset();
@@ -245,6 +351,8 @@ const ElevenComponent = ({ className }) => {
     } catch (error) {
       console.error("Error:", error);
       alert(error.message || "Si è verificato un errore durante l'invio");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -252,17 +360,7 @@ const ElevenComponent = ({ className }) => {
     <div className={`eleven-sector ${className || ''}`}>
       <div id="eleven-section" className="booking-container">
         <div className="map-section">
-          <div className="map-wrapper">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2996.039790811289!2d19.8219329!3d41.329748099999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x13503155ad618535%3A0xa70a3361bf396f57!2sGo%20Health%20Albania!5e0!3m2!1sen!2s!4v1742404901054!5m2!1sen!2s&ui=2&z=18"
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen=""
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            ></iframe>
-          </div>
+          <MapComponent />
         </div>
 
         <div className="form-section">
@@ -275,8 +373,6 @@ const ElevenComponent = ({ className }) => {
 
           <form className="booking-form" onSubmit={handleSubmit}>
             <div className="form-row">
-              
-
               <div className="form-group">
                 <label>Tipologia Di Trattamento</label>
                 <CustomSelect
@@ -364,21 +460,29 @@ const ElevenComponent = ({ className }) => {
               </div>
             </div>
 
-            <div className="recaptcha-container">
-              <ReCAPTCHA
-                ref={recaptchaRef}
-                sitekey="6LfefxorAAAAABcnmActDbalv_YoCo1QauTwEBPo"
-                onChange={handleCaptchaChange}
-              />
-              {captchaError && (
-                <div className="captcha-error">
-                  Per favore completa il reCAPTCHA
-                </div>
-              )}
-            </div>
+            {showCaptcha && (
+              <div className="recaptcha-container">
+                <Suspense fallback={<div className="captcha-loading">Caricamento reCAPTCHA...</div>}>
+                  <ReCAPTCHA
+                    ref={recaptchaRef}
+                    sitekey="6LfefxorAAAAABcnmActDbalv_YoCo1QauTwEBPo"
+                    onChange={handleCaptchaChange}
+                  />
+                </Suspense>
+                {captchaError && (
+                  <div className="captcha-error">
+                    Per favore completa il reCAPTCHA
+                  </div>
+                )}
+              </div>
+            )}
 
-            <button type="submit" className="submit-button">
-              PRENOTA UN APPUNTAMENTO
+            <button 
+              type="submit" 
+              className={`submit-button ${isSubmitting ? 'submitting' : ''}`}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'INVIO IN CORSO...' : 'PRENOTA UN APPUNTAMENTO'}
             </button>
           </form>
         </div>

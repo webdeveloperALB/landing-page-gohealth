@@ -1,11 +1,13 @@
 "use client"
 import "./CheckupPage.css"
-import React from "react"
-// Removed unused 'useScript' import
+import React, { useState, useEffect, lazy, Suspense } from "react"
+
+// Lazy load reCAPTCHA component
+const ReCAPTCHA = lazy(() => import('react-google-recaptcha'));
 
 const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA" }) => {
-  // Initialize state for form data
-  const [formData, setFormData] = React.useState({
+  // Initialize state for form data with one useState call
+  const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     age: "",
@@ -15,91 +17,129 @@ const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA
     service: "",
     branch: "",
     message: "",
+    selectedDate: null,
+    selectedTime: null
   })
 
-  // State for date and time pickers
-  const [selectedDate, setSelectedDate] = React.useState(null)
-  const [selectedTime, setSelectedTime] = React.useState(null)
-  const [showCalendar, setShowCalendar] = React.useState(false)
-  const [showTimePicker, setShowTimePicker] = React.useState(false)
-  const [currentMonth, setCurrentMonth] = React.useState(new Date())
+  // UI state
+  const [uiState, setUiState] = useState({
+    showCalendar: false,
+    showTimePicker: false,
+    currentMonth: new Date(),
+    isSubmitting: false,
+    formMessage: { text: "", type: "" },
+    recaptchaToken: "",
+    recaptchaLoaded: false
+  })
   
-  // Add reCAPTCHA state
-  const [recaptchaToken, setRecaptchaToken] = React.useState("")
-  const [isSubmitting, setIsSubmitting] = React.useState(false)
-  const [formMessage, setFormMessage] = React.useState({ text: "", type: "" })
+  // Track if component is mounted to prevent memory leaks
+  const [isMounted, setIsMounted] = useState(false);
   
-  // Load reCAPTCHA script
-  React.useEffect(() => {
-    // Add reCAPTCHA script if it doesn't exist
-    if (!document.querySelector('script[src="https://www.google.com/recaptcha/api.js"]')) {
-      const script = document.createElement('script')
-      script.src = "https://www.google.com/recaptcha/api.js"
-      script.async = true
-      script.defer = true
-      document.head.appendChild(script)
+  // Set up mounting state
+  useEffect(() => {
+    setIsMounted(true);
+    return () => setIsMounted(false);
+  }, []);
+  
+  // Handle reCAPTCHA script loading
+  useEffect(() => {
+    // Only attempt to load or reset reCAPTCHA when component is mounted
+    if (isMounted) {
+      // Load reCAPTCHA script if not already loaded
+      if (!window.grecaptcha && !document.querySelector('script[src*="recaptcha"]')) {
+        const script = document.createElement('script');
+        script.src = 'https://www.google.com/recaptcha/api.js?render=explicit';
+        script.async = true;
+        script.defer = true;
+        script.onload = () => {
+          if (isMounted) {
+            setUiState(prev => ({ ...prev, recaptchaLoaded: true }));
+          }
+        };
+        document.head.appendChild(script);
+      } else if (window.grecaptcha) {
+        // If already loaded, just update state
+        setUiState(prev => ({ ...prev, recaptchaLoaded: true }));
+      }
     }
     
-    // Define the callback function for reCAPTCHA
-    window.onRecaptchaSuccess = (token) => {
-      setRecaptchaToken(token)
-    }
-    
-    // Cleanup function
+    // Cleanup for component unmount
     return () => {
-      window.onRecaptchaSuccess = undefined
-    }
-  }, [])
+      // We don't remove the script as other components might need it
+      // But we can reset the reCAPTCHA state if needed
+      if (isMounted && window.grecaptcha && window.grecaptcha.reset) {
+        try {
+          window.grecaptcha.reset();
+        } catch (e) {
+          // Silent fail if reset fails
+          console.debug("Could not reset reCAPTCHA:", e);
+        }
+      }
+    };
+  }, [isMounted]);
 
-  // Calendar constants
+  // Memoized calendar data
   const months = [
-    "Gennaio",
-    "Febbraio",
-    "Marzo",
-    "Aprile",
-    "Maggio",
-    "Giugno",
-    "Luglio",
-    "Agosto",
-    "Settembre",
-    "Ottobre",
-    "Novembre",
-    "Dicembre",
+    "Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno",
+    "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"
   ]
   const daysOfWeek = ["Lu", "Ma", "Me", "Gi", "Ve", "Sa", "Do"]
-
-  // Time slots
   const timeSlots = ["09:00", "10:00", "11:00", "12:00", "14:00", "15:00", "16:00", "17:00"]
 
-  // Handle input changes
+  // Handle input changes efficiently
   const handleInputChange = (e) => {
     const { id, value } = e.target
-    setFormData((prevData) => ({
-      ...prevData,
-      [id]: value,
-    }))
+    setFormData(prev => ({ ...prev, [id]: value }))
+  }
+
+  // Handle reCAPTCHA verification
+  const handleRecaptchaChange = (token) => {
+    if (isMounted) {
+      setUiState(prev => ({ ...prev, recaptchaToken: token || "" }))
+    }
   }
 
   // Calendar navigation
-  const prevMonth = () => {
-    setCurrentMonth((prev) => {
-      const newMonth = new Date(prev)
-      newMonth.setMonth(prev.getMonth() - 1)
-      return newMonth
+  const changeMonth = (direction) => {
+    setUiState(prev => {
+      const newMonth = new Date(prev.currentMonth)
+      newMonth.setMonth(prev.currentMonth.getMonth() + direction)
+      return { ...prev, currentMonth: newMonth }
     })
   }
 
-  const nextMonth = () => {
-    setCurrentMonth((prev) => {
-      const newMonth = new Date(prev)
-      newMonth.setMonth(prev.getMonth() + 1)
-      return newMonth
-    })
+  // Date and time selection handlers
+  const handleDateSelect = (date) => {
+    setFormData(prev => ({ ...prev, selectedDate: date }))
+    setUiState(prev => ({ ...prev, showCalendar: false }))
+  }
+
+  const handleTimeSelect = (time) => {
+    setFormData(prev => ({ ...prev, selectedTime: time }))
+    setUiState(prev => ({ ...prev, showTimePicker: false }))
+  }
+
+  // Toggle UI elements
+  const toggleCalendar = () => {
+    setUiState(prev => ({ 
+      ...prev, 
+      showCalendar: !prev.showCalendar,
+      showTimePicker: false 
+    }))
+  }
+
+  const toggleTimePicker = () => {
+    setUiState(prev => ({ 
+      ...prev, 
+      showTimePicker: !prev.showTimePicker,
+      showCalendar: false 
+    }))
   }
 
   // Render calendar days
   const renderCalendarDays = () => {
     const days = []
+    const { currentMonth } = uiState
     const firstDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1)
     const lastDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0)
 
@@ -113,21 +153,19 @@ const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA
     }
 
     // Add days of the month
+    const today = new Date().toDateString()
     for (let day = 1; day <= lastDay.getDate(); day++) {
       const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day)
-      const isToday = new Date().toDateString() === date.toDateString()
+      const isToday = today === date.toDateString()
 
       days.push(
         <div
           key={day}
           className={`day ${isToday ? "today" : ""}`}
-          onClick={() => {
-            setSelectedDate(date)
-            setShowCalendar(false)
-          }}
+          onClick={() => handleDateSelect(date)}
         >
           {day}
-        </div>,
+        </div>
       )
     }
 
@@ -138,19 +176,25 @@ const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA
     event.preventDefault()
     
     // Check if reCAPTCHA is completed
-    if (!recaptchaToken) {
-      setFormMessage({ 
-        text: "Per favore, completa il reCAPTCHA prima di inviare il modulo", 
-        type: "error" 
-      })
+    if (!uiState.recaptchaToken) {
+      setUiState(prev => ({
+        ...prev,
+        formMessage: { 
+          text: "Per favore, completa il reCAPTCHA prima di inviare il modulo", 
+          type: "error" 
+        }
+      }))
       return
     }
     
-    setIsSubmitting(true)
-    setFormMessage({ text: "", type: "" })
+    setUiState(prev => ({ 
+      ...prev, 
+      isSubmitting: true,
+      formMessage: { text: "", type: "" } 
+    }))
     
     try {
-      // Fixed the process.env issue by hardcoding the URL or using window.ENV if available
+      // Use a consistent API URL
       const apiUrl = window.ENV?.API_URL || 'https://gohealth-server.onrender.com/send-email'
       
       const response = await fetch(apiUrl, {
@@ -159,20 +203,14 @@ const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          age: formData.age,
-          email: formData.email,
-          mobile: formData.mobile,
-          address: formData.address,
-          service: formData.service,
-          branch: formData.branch,
-          message: formData.message,
-          date: selectedDate,
-          time: selectedTime,
-          recaptchaToken: recaptchaToken
+          ...formData,
+          date: formData.selectedDate,
+          time: formData.selectedTime,
+          recaptchaToken: uiState.recaptchaToken
         }),
       })
+      
+      if (!isMounted) return; // Prevent state updates if component unmounted
       
       const result = await response.json()
       
@@ -188,28 +226,68 @@ const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA
           service: "",
           branch: "",
           message: "",
+          selectedDate: null,
+          selectedTime: null
         })
-        setSelectedDate(null)
-        setSelectedTime(null)
         
         // Reset reCAPTCHA
-        if (window.grecaptcha) {
-          window.grecaptcha.reset()
-          setRecaptchaToken("")
+        if (window.grecaptcha && window.grecaptcha.reset) {
+          try {
+            window.grecaptcha.reset();
+          } catch (e) {
+            console.debug("Could not reset reCAPTCHA:", e);
+          }
         }
         
-        setFormMessage({ text: "Appuntamento prenotato con successo!", type: "success" })
+        setUiState(prev => ({
+          ...prev,
+          recaptchaToken: "",
+          formMessage: { text: "Appuntamento prenotato con successo!", type: "success" }
+        }))
       } else {
-        setFormMessage({ text: result.message || "Errore durante l'invio del modulo", type: "error" })
+        setUiState(prev => ({
+          ...prev,
+          formMessage: { 
+            text: result.message || "Errore durante l'invio del modulo", 
+            type: "error" 
+          }
+        }))
       }
     } catch (error) {
       console.error("Error submitting form:", error)
-      setFormMessage({ text: "Errore di connessione. Riprova più tardi.", type: "error" })
+      if (isMounted) {
+        setUiState(prev => ({
+          ...prev,
+          formMessage: { 
+            text: "Errore di connessione. Riprova più tardi.", 
+            type: "error" 
+          }
+        }))
+      }
     } finally {
-      setIsSubmitting(false)
+      if (isMounted) {
+        setUiState(prev => ({ ...prev, isSubmitting: false }))
+      }
     }
   }
 
+  // Custom component to handle reCAPTCHA loading and errors
+  const RecaptchaWrapper = () => {
+    return (
+      <Suspense fallback={<div className="recaptcha-loading">Caricamento reCAPTCHA...</div>}>
+        {uiState.recaptchaLoaded ? (
+          <ReCAPTCHA
+            sitekey="6LfefxorAAAAABcnmActDbalv_YoCo1QauTwEBPo"
+            onChange={handleRecaptchaChange}
+          />
+        ) : (
+          <div className="recaptcha-loading">Caricamento reCAPTCHA...</div>
+        )}
+      </Suspense>
+    );
+  };
+
+  // Render the component
   return (
     <>
       <div className="appointment-header1">
@@ -224,9 +302,9 @@ const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA
 
         <div className="divider"></div>
 
-        {formMessage.text && (
-          <div className={`form-message ${formMessage.type}`}>
-            {formMessage.text}
+        {uiState.formMessage.text && (
+          <div className={`form-message ${uiState.formMessage.type}`}>
+            {uiState.formMessage.text}
           </div>
         )}
 
@@ -344,22 +422,22 @@ const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA
                   type="text"
                   id="date"
                   placeholder="Seleziona Data"
-                  value={selectedDate ? selectedDate.toLocaleDateString("it-IT") : ""}
-                  onClick={() => setShowCalendar(!showCalendar)}
+                  value={formData.selectedDate ? formData.selectedDate.toLocaleDateString("it-IT") : ""}
+                  onClick={toggleCalendar}
                   readOnly
                   required
                 />
 
-                {showCalendar && (
+                {uiState.showCalendar && (
                   <div className="calendar-picker">
                     <div className="calendar-header">
-                      <button type="button" className="calendar-nav-btn" onClick={prevMonth}>
+                      <button type="button" className="calendar-nav-btn" onClick={() => changeMonth(-1)}>
                         &lt;
                       </button>
                       <div className="calendar-title">
-                        {months[currentMonth.getMonth()]} {currentMonth.getFullYear()}
+                        {months[uiState.currentMonth.getMonth()]} {uiState.currentMonth.getFullYear()}
                       </div>
-                      <button type="button" className="calendar-nav-btn" onClick={nextMonth}>
+                      <button type="button" className="calendar-nav-btn" onClick={() => changeMonth(1)}>
                         &gt;
                       </button>
                     </div>
@@ -388,14 +466,14 @@ const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA
                   id="time"
                   placeholder="Seleziona Orario"
                   value={
-                    selectedTime ? selectedTime.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" }) : ""
+                    formData.selectedTime ? formData.selectedTime.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" }) : ""
                   }
-                  onClick={() => setShowTimePicker(!showTimePicker)}
+                  onClick={toggleTimePicker}
                   readOnly
                   required
                 />
 
-                {showTimePicker && (
+                {uiState.showTimePicker && (
                   <div className="time-picker">
                     {timeSlots.map((time) => {
                       const [hours] = time.split(":")
@@ -406,10 +484,7 @@ const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA
                         <div
                           key={time}
                           className="time-slot"
-                          onClick={() => {
-                            setSelectedTime(date)
-                            setShowTimePicker(false)
-                          }}
+                          onClick={() => handleTimeSelect(date)}
                         >
                           {time}
                         </div>
@@ -449,22 +524,18 @@ const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA
             </div>
           </div>
 
-          {/* Add reCAPTCHA */}
+          {/* Improved reCAPTCHA implementation */}
           <div className="form-row recaptcha-row">
-            <div 
-              className="g-recaptcha" 
-              data-sitekey="6LfefxorAAAAABcnmActDbalv_YoCo1QauTwEBPo"
-              data-callback="onRecaptchaSuccess"
-            ></div>
+            <RecaptchaWrapper />
           </div>
 
           <div className="form-row center">
             <button 
               type="submit" 
               className="book-button2"
-              disabled={isSubmitting}
+              disabled={uiState.isSubmitting}
             >
-              {isSubmitting ? "INVIO IN CORSO..." : "PRENOTA APPUNTAMENTO"}
+              {uiState.isSubmitting ? "INVIO IN CORSO..." : "PRENOTA APPUNTAMENTO"}
             </button>
           </div>
         </form>

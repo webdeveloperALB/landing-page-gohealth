@@ -54,17 +54,17 @@ PaginationDot.displayName = "PaginationDot"
 // Stories content - moved outside component to prevent recreation on each render
 const stories = [
   {
-    image: "/fifth-image.jpg",
+    image: "/fifth-image.webp",
     title: "Trasformazione Del Sorriso",
     description: "Un Uomo Di 65 Anni Si È Rivolto A Noi Con Un Problema Che Lo Affliggeva Da Tempo: Il Bruxismo, Che Ha Danneggiato I Suoi Denti, Soprattutto Nelle Aree Laterali.",
   },
   {
-    image: "/sixth-image.jpg",
+    image: "/sixth-image.webp",
     title: "Corone Dentali E Impianti",
     description: "Una Paziente Di 58 Anni Si È Rivolta A Noi Con Una Storia Di Parodontite E Ritiro Gengivale, Che Aveva Causato Denti Irregolari E Una Base Debole. Dopo Una Diagnosi...",
   },
   {
-    image: "/seventh-image.jpg",
+    image: "/seventh-image.webp",
     title: "Ricostruzione Totale",
     description: "Aenean Viverra Cursus Ipsum. Etiam Vitae Aliquet Lorem, Id Ultricies Nisl. Integer Tempor Metus Eget Massa.",
   },

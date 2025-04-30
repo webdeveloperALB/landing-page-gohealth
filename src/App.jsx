@@ -1,13 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HelmetProvider, Helmet } from "react-helmet-async"; // Updated import
 import Navbar from "./components/Navbar";
 import LandingPage from "./LandingPage";
 import ElevenComponent from "./components/ElevenSector/ElevenComponent";
 import CheckupPage from "./components/CheckupPage";
-import { Helmet } from "react-helmet";
 
 function App() {
   return (
-    <>
+    <HelmetProvider> 
       <Helmet>
         <title>
           GoHealth Albania - Premium Medical Services & Dental Clinic
@@ -48,7 +48,7 @@ function App() {
           <Route path="/checkup" element={<CheckupPage />} />
         </Routes>
       </Router>
-    </>
+    </HelmetProvider>
   );
 }
 
