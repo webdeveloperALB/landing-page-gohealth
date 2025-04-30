@@ -1,9 +1,6 @@
 "use client"
 import "./CheckupPage.css"
-import React, { useState, useEffect, lazy, Suspense } from "react"
-
-// Lazy load reCAPTCHA component
-const ReCAPTCHA = lazy(() => import('react-google-recaptcha'));
+import React, { useState, useEffect, useRef, useCallback } from "react"
 
 const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA" }) => {
   // Initialize state for form data with one useState call
@@ -32,6 +29,10 @@ const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA
     recaptchaLoaded: false
   })
   
+  // Use refs for reCAPTCHA
+  const recaptchaRef = useRef(null);
+  const recaptchaWrapperRef = useRef(null);
+  
   // Track if component is mounted to prevent memory leaks
   const [isMounted, setIsMounted] = useState(false);
   
@@ -41,42 +42,91 @@ const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA
     return () => setIsMounted(false);
   }, []);
   
-  // Handle reCAPTCHA script loading
-  useEffect(() => {
-    // Only attempt to load or reset reCAPTCHA when component is mounted
+  // Memoize the handleRecaptchaChange function with useCallback
+  const handleRecaptchaChange = useCallback((token) => {
     if (isMounted) {
-      // Load reCAPTCHA script if not already loaded
-      if (!window.grecaptcha && !document.querySelector('script[src*="recaptcha"]')) {
-        const script = document.createElement('script');
-        script.src = 'https://www.google.com/recaptcha/api.js?render=explicit';
-        script.async = true;
-        script.defer = true;
-        script.onload = () => {
-          if (isMounted) {
-            setUiState(prev => ({ ...prev, recaptchaLoaded: true }));
-          }
-        };
-        document.head.appendChild(script);
-      } else if (window.grecaptcha) {
-        // If already loaded, just update state
-        setUiState(prev => ({ ...prev, recaptchaLoaded: true }));
-      }
+      setUiState(prev => ({ ...prev, recaptchaToken: token || "" }))
     }
-    
-    // Cleanup for component unmount
-    return () => {
-      // We don't remove the script as other components might need it
-      // But we can reset the reCAPTCHA state if needed
-      if (isMounted && window.grecaptcha && window.grecaptcha.reset) {
-        try {
-          window.grecaptcha.reset();
-        } catch (e) {
-          // Silent fail if reset fails
-          console.debug("Could not reset reCAPTCHA:", e);
-        }
-      }
-    };
   }, [isMounted]);
+  
+  // Handle reCAPTCHA script loading more reliably
+  useEffect(() => {
+    if (!isMounted) return;
+    
+    // Function to load the reCAPTCHA script
+    const loadRecaptcha = () => {
+      // Check if script is already loaded
+      if (window.grecaptcha) {
+        initializeRecaptcha();
+        return;
+      }
+      
+      // Create script element
+      const script = document.createElement('script');
+      script.src = 'https://www.google.com/recaptcha/api.js?render=explicit';
+      script.async = true;
+      script.defer = true;
+      
+      // Set up script onload handler
+      script.onload = () => {
+        if (isMounted) {
+          initializeRecaptcha();
+        }
+      };
+      
+      // Set up error handler
+      script.onerror = () => {
+        if (isMounted) {
+          console.error("Failed to load reCAPTCHA script");
+          setUiState(prev => ({ 
+            ...prev, 
+            formMessage: { 
+              text: "Impossibile caricare reCAPTCHA. Ricarica la pagina e riprova.", 
+              type: "error" 
+            } 
+          }));
+        }
+      };
+      
+      // Add the script to the document
+      document.head.appendChild(script);
+    };
+    
+    // Initialize reCAPTCHA after script is loaded
+    const initializeRecaptcha = () => {
+      if (!window.grecaptcha || !window.grecaptcha.ready) {
+        setTimeout(initializeRecaptcha, 100);
+        return;
+      }
+      
+      window.grecaptcha.ready(() => {
+        if (isMounted) {
+          setUiState(prev => ({ ...prev, recaptchaLoaded: true }));
+          
+          // Render reCAPTCHA if wrapper exists
+          if (recaptchaWrapperRef.current && !recaptchaRef.current) {
+            try {
+              recaptchaRef.current = window.grecaptcha.render(recaptchaWrapperRef.current, {
+                'sitekey': '6LfefxorAAAAABcnmActDbalv_YoCo1QauTwEBPo',
+                'callback': handleRecaptchaChange
+              });
+            } catch (error) {
+              console.error("Error rendering reCAPTCHA:", error);
+            }
+          }
+        }
+      });
+    };
+    
+    // Start loading process
+    loadRecaptcha();
+    
+    // Cleanup function
+    return () => {
+      // We don't remove the script but we can reset state
+      recaptchaRef.current = null;
+    };
+  }, [isMounted, handleRecaptchaChange]); // Added handleRecaptchaChange to dependency array
 
   // Memoized calendar data
   const months = [
@@ -90,13 +140,6 @@ const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA
   const handleInputChange = (e) => {
     const { id, value } = e.target
     setFormData(prev => ({ ...prev, [id]: value }))
-  }
-
-  // Handle reCAPTCHA verification
-  const handleRecaptchaChange = (token) => {
-    if (isMounted) {
-      setUiState(prev => ({ ...prev, recaptchaToken: token || "" }))
-    }
   }
 
   // Calendar navigation
@@ -172,6 +215,18 @@ const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA
     return days
   }
 
+  // Reset reCAPTCHA function
+  const resetRecaptcha = () => {
+    if (window.grecaptcha && recaptchaRef.current !== null) {
+      try {
+        window.grecaptcha.reset(recaptchaRef.current);
+        setUiState(prev => ({ ...prev, recaptchaToken: "" }));
+      } catch (e) {
+        console.error("Failed to reset reCAPTCHA:", e);
+      }
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault()
     
@@ -231,17 +286,10 @@ const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA
         })
         
         // Reset reCAPTCHA
-        if (window.grecaptcha && window.grecaptcha.reset) {
-          try {
-            window.grecaptcha.reset();
-          } catch (e) {
-            console.debug("Could not reset reCAPTCHA:", e);
-          }
-        }
+        resetRecaptcha();
         
         setUiState(prev => ({
           ...prev,
-          recaptchaToken: "",
           formMessage: { text: "Appuntamento prenotato con successo!", type: "success" }
         }))
       } else {
@@ -270,22 +318,6 @@ const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA
       }
     }
   }
-
-  // Custom component to handle reCAPTCHA loading and errors
-  const RecaptchaWrapper = () => {
-    return (
-      <Suspense fallback={<div className="recaptcha-loading">Caricamento reCAPTCHA...</div>}>
-        {uiState.recaptchaLoaded ? (
-          <ReCAPTCHA
-            sitekey="6LfefxorAAAAABcnmActDbalv_YoCo1QauTwEBPo"
-            onChange={handleRecaptchaChange}
-          />
-        ) : (
-          <div className="recaptcha-loading">Caricamento reCAPTCHA...</div>
-        )}
-      </Suspense>
-    );
-  };
 
   // Render the component
   return (
@@ -524,9 +556,16 @@ const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA
             </div>
           </div>
 
-          {/* Improved reCAPTCHA implementation */}
+          {/* Direct reCAPTCHA implementation without Suspense/lazy loading */}
           <div className="form-row recaptcha-row">
-            <RecaptchaWrapper />
+            <div 
+              ref={recaptchaWrapperRef} 
+              className="recaptcha-container"
+            >
+              {!uiState.recaptchaLoaded && (
+                <div className="recaptcha-loading">Caricamento reCAPTCHA...</div>
+              )}
+            </div>
           </div>
 
           <div className="form-row center">
