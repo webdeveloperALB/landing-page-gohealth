@@ -31,7 +31,6 @@ const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA
   
   // Use refs for reCAPTCHA
   const recaptchaRef = useRef(null);
-  const recaptchaWrapperRef = useRef(null);
   
   // Track if component is mounted to prevent memory leaks
   const [isMounted, setIsMounted] = useState(false);
@@ -103,16 +102,16 @@ const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA
         if (isMounted) {
           setUiState(prev => ({ ...prev, recaptchaLoaded: true }));
           
-          // Render reCAPTCHA if wrapper exists
-          if (recaptchaWrapperRef.current && !recaptchaRef.current) {
-            try {
-              recaptchaRef.current = window.grecaptcha.render(recaptchaWrapperRef.current, {
+          // Create a div element for reCAPTCHA if it doesn't exist
+          try {
+            if (!recaptchaRef.current) {
+              recaptchaRef.current = window.grecaptcha.render('recaptcha-container', {
                 'sitekey': '6LfefxorAAAAABcnmActDbalv_YoCo1QauTwEBPo',
                 'callback': handleRecaptchaChange
               });
-            } catch (error) {
-              console.error("Error rendering reCAPTCHA:", error);
             }
+          } catch (error) {
+            console.error("Error rendering reCAPTCHA:", error);
           }
         }
       });
@@ -556,15 +555,13 @@ const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA
             </div>
           </div>
 
-          {/* Direct reCAPTCHA implementation without Suspense/lazy loading */}
+          {/* reCAPTCHA container - FIXED: using ID instead of ref and making sure it's empty */}
           <div className="form-row recaptcha-row">
-            <div 
-              ref={recaptchaWrapperRef} 
-              className="recaptcha-container"
-            >
+            <div className="recaptcha-container">
               {!uiState.recaptchaLoaded && (
                 <div className="recaptcha-loading">Caricamento reCAPTCHA...</div>
               )}
+              <div id="recaptcha-container"></div>
             </div>
           </div>
 
