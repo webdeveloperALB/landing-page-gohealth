@@ -15,7 +15,8 @@ const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA
     branch: "",
     message: "",
     selectedDate: null,
-    selectedTime: null
+    selectedTime: null,
+    website: "" // Add honeypot field
   })
 
   // UI state
@@ -281,7 +282,8 @@ const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA
           branch: "",
           message: "",
           selectedDate: null,
-          selectedTime: null
+          selectedTime: null,
+          website: "" // Reset honeypot field
         })
         
         // Reset reCAPTCHA
@@ -340,6 +342,20 @@ const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA
         )}
 
         <form className="form-content" onSubmit={handleSubmit}>
+          {/* Honeypot field - hidden from users but visible to bots */}
+          <div className="form-group" style={{ display: "none" }}>
+            <label htmlFor="website">Website</label>
+            <input
+              type="text"
+              id="website"
+              name="website"
+              value={formData.website}
+              onChange={handleInputChange}
+              tabIndex="-1"
+              autoComplete="off"
+            />
+          </div>
+
           <h2 className="section-title">
             Dettagli del Paziente<span className="required-star">*</span>
           </h2>
