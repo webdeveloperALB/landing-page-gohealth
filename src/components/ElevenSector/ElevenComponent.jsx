@@ -228,6 +228,8 @@ const ElevenComponent = ({ className }) => {
     email: "",
     date: null,
     time: null,
+    // Honeypot field - should remain empty for legitimate users
+    website: "" 
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formTouched, setFormTouched] = useState(false);
@@ -283,6 +285,29 @@ const ElevenComponent = ({ className }) => {
 
     if (isSubmitting) return; // Prevent multiple submissions
 
+    // Check honeypot - if filled, silently "succeed" but don't actually submit
+    if (formData.website !== "") {
+      console.log("Honeypot detected - form submission blocked");
+      // Return a fake success to the bot to avoid it realizing it was blocked
+      setIsSubmitting(true);
+      setTimeout(() => {
+        setIsSubmitting(false);
+        alert("Prenotazione inviata con successo!");
+        setFormData({
+          service: "",
+          name: "",
+          email: "",
+          date: null,
+          time: null,
+          website: ""
+        });
+        setSelectedTreatment("");
+        setCaptchaValue(null);
+        setFormTouched(false);
+      }, 1500);
+      return;
+    }
+
     if (
       !formData.name ||
       !formData.email ||
@@ -318,6 +343,8 @@ const ElevenComponent = ({ className }) => {
         department: selectedDepartment,
         treatment: selectedTreatment,
         recaptchaToken: captchaValue,
+        // Include honeypot field in payload to server for additional validation
+        website: formData.website
       });
       
       const response = await fetch("https://gohealth-server.onrender.com/send-email", {
@@ -337,6 +364,7 @@ const ElevenComponent = ({ className }) => {
           email: "",
           date: null,
           time: null,
+          website: ""
         });
         setSelectedTreatment("");
         setCaptchaValue(null);
@@ -432,6 +460,21 @@ const ElevenComponent = ({ className }) => {
                     required
                   />
                 </div>
+              </div>
+            </div>
+
+            {/* Honeypot field - hidden from real users but visible to bots */}
+            <div className="form-group" style={{ display: 'none' }}>
+              <label>Website</label>
+              <div className="input-wrapper">
+                <input
+                  type="text"
+                  name="website"
+                  value={formData.website}
+                  onChange={handleInputChange}
+                  tabIndex="-1"
+                  autoComplete="off"
+                />
               </div>
             </div>
 
