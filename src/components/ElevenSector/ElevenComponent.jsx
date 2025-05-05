@@ -10,13 +10,13 @@ const LazyDatePicker = (props) => {
   useEffect(() => {
     // Import CSS
     import("react-datepicker/dist/react-datepicker.css");
-    
+
     // Correctly register Italian locale
     const registerLocale = async () => {
       try {
         const dateFnsLib = await import("date-fns/locale");
         const reactDatepicker = await import("react-datepicker");
-        
+
         if (dateFnsLib.it && reactDatepicker.registerLocale) {
           reactDatepicker.registerLocale("it", dateFnsLib.it);
         }
@@ -24,7 +24,7 @@ const LazyDatePicker = (props) => {
         console.error("Failed to register locale:", error);
       }
     };
-    
+
     registerLocale();
   }, []);
 
@@ -44,13 +44,13 @@ const CustomSelect = ({ options, value, onChange, placeholder }) => {
 
   useEffect(() => {
     if (!isOpen) return; // Only add listener when dropdown is open
-    
+
     const handleClickOutside = (event) => {
       if (selectRef.current && !selectRef.current.contains(event.target)) {
         setIsOpen(false);
       }
     };
-    
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen]);
@@ -69,7 +69,9 @@ const CustomSelect = ({ options, value, onChange, placeholder }) => {
           {options.map((option) => (
             <div
               key={option.value}
-              className={`option-item ${value === option.value ? "selected" : ""}`}
+              className={`option-item ${
+                value === option.value ? "selected" : ""
+              }`}
               onClick={() => {
                 onChange(option.value);
                 setIsOpen(false);
@@ -94,7 +96,7 @@ const DateTimePicker = ({ selected, onChange, placeholder, timeOnly }) => {
   useEffect(() => {
     // Check if Italian locale is available
     import("date-fns/locale")
-      .then(module => {
+      .then((module) => {
         setLocaleAvailable(!!module.it);
       })
       .catch(() => {
@@ -104,13 +106,13 @@ const DateTimePicker = ({ selected, onChange, placeholder, timeOnly }) => {
 
   useEffect(() => {
     if (!isOpen) return; // Only add listener when picker is open
-    
+
     const handleClickOutside = (event) => {
       if (pickerRef.current && !pickerRef.current.contains(event.target)) {
         setIsOpen(false);
       }
     };
-    
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen]);
@@ -118,9 +120,9 @@ const DateTimePicker = ({ selected, onChange, placeholder, timeOnly }) => {
   // Format date/time safely
   const formatDateTime = (date, isTimeOnly) => {
     if (!date) return "";
-    
+
     try {
-      return isTimeOnly 
+      return isTimeOnly
         ? date.toLocaleTimeString(localeAvailable ? "it-IT" : "en-US", {
             hour: "2-digit",
             minute: "2-digit",
@@ -128,7 +130,7 @@ const DateTimePicker = ({ selected, onChange, placeholder, timeOnly }) => {
         : date.toLocaleDateString(localeAvailable ? "it-IT" : "en-US");
     } catch (error) {
       console.error("Error formatting date:", error);
-      return isTimeOnly 
+      return isTimeOnly
         ? date.toLocaleTimeString("en-US", {
             hour: "2-digit",
             minute: "2-digit",
@@ -190,9 +192,9 @@ const MapComponent = React.memo(() => {
       { threshold: 0.1 }
     );
 
-    const mapWrapper = document.querySelector('.map-wrapper');
+    const mapWrapper = document.querySelector(".map-wrapper");
     if (mapWrapper) observer.observe(mapWrapper);
-    
+
     return () => observer.disconnect();
   }, []);
 
@@ -229,7 +231,7 @@ const ElevenComponent = ({ className }) => {
     date: null,
     time: null,
     // Honeypot field - should remain empty for legitimate users
-    website: "" 
+    website: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formTouched, setFormTouched] = useState(false);
@@ -239,13 +241,13 @@ const ElevenComponent = ({ className }) => {
     if (formData.name || formData.email || formData.service) {
       setFormTouched(true);
     }
-    
+
     if (formTouched && !showCaptcha) {
       // Delay loading captcha until user has started filling the form
       const timer = setTimeout(() => {
         setShowCaptcha(true);
       }, 1000);
-      
+
       return () => clearTimeout(timer);
     }
   }, [formData, formTouched, showCaptcha]);
@@ -299,7 +301,7 @@ const ElevenComponent = ({ className }) => {
           email: "",
           date: null,
           time: null,
-          website: ""
+          website: "",
         });
         setSelectedTreatment("");
         setCaptchaValue(null);
@@ -332,7 +334,7 @@ const ElevenComponent = ({ className }) => {
 
     try {
       setIsSubmitting(true);
-      
+
       // Prepare data payload - only stringify once
       const payload = JSON.stringify({
         name: formData.name,
@@ -344,37 +346,51 @@ const ElevenComponent = ({ className }) => {
         treatment: selectedTreatment,
         recaptchaToken: captchaValue,
         // Include honeypot field in payload to server for additional validation
-        website: formData.website
-      });
-      
-      const response = await fetch("https://gohealth-server.onrender.com/send-email", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: payload,
+        website: formData.website,
       });
 
-      const data = await response.json();
-      if (response.ok) {
-        alert("Prenotazione inviata con successo!");
-        setFormData({
-          service: "",
-          name: "",
-          email: "",
-          date: null,
-          time: null,
-          website: ""
-        });
-        setSelectedTreatment("");
-        setCaptchaValue(null);
-        setFormTouched(false);
-        // Reset recaptcha
-        if (recaptchaRef.current) {
-          recaptchaRef.current.reset();
+      // Using fetch with proper CORS handling
+      const response = await fetch(
+        "https://gohealth-server.onrender.com/send-email",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            // Don't set custom headers that might trigger preflight if not needed
+          },
+          mode: "cors", // Explicitly state that this is a CORS request
+          credentials: "same-origin", // Adjust based on your needs
+          body: payload,
+        }
+      );
+
+      // If we get a response, try to parse it
+      if (response) {
+        const data = await response.json();
+        if (response.ok) {
+          alert("Prenotazione inviata con successo!");
+          setFormData({
+            service: "",
+            name: "",
+            email: "",
+            date: null,
+            time: null,
+            website: "",
+          });
+          setSelectedTreatment("");
+          setCaptchaValue(null);
+          setFormTouched(false);
+          // Reset recaptcha
+          if (recaptchaRef.current) {
+            recaptchaRef.current.reset();
+          }
+        } else {
+          throw new Error(
+            data.message || "Errore nell'invio della prenotazione"
+          );
         }
       } else {
-        throw new Error(data.message || "Errore nell'invio della prenotazione");
+        throw new Error("Non è stata ricevuta alcuna risposta dal server");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -385,7 +401,7 @@ const ElevenComponent = ({ className }) => {
   };
 
   return (
-    <div className={`eleven-sector ${className || ''}`}>
+    <div className={`eleven-sector ${className || ""}`}>
       <div id="eleven-section" className="booking-container">
         <div className="map-section">
           <MapComponent />
@@ -464,7 +480,7 @@ const ElevenComponent = ({ className }) => {
             </div>
 
             {/* Honeypot field - hidden from real users but visible to bots */}
-            <div className="form-group" style={{ display: 'none' }}>
+            <div className="form-group" style={{ display: "none" }}>
               <label>Website</label>
               <div className="input-wrapper">
                 <input
@@ -505,7 +521,13 @@ const ElevenComponent = ({ className }) => {
 
             {showCaptcha && (
               <div className="recaptcha-container">
-                <Suspense fallback={<div className="captcha-loading">Caricamento reCAPTCHA...</div>}>
+                <Suspense
+                  fallback={
+                    <div className="captcha-loading">
+                      Caricamento reCAPTCHA...
+                    </div>
+                  }
+                >
                   <ReCAPTCHA
                     ref={recaptchaRef}
                     sitekey="6LfefxorAAAAABcnmActDbalv_YoCo1QauTwEBPo"
@@ -520,12 +542,12 @@ const ElevenComponent = ({ className }) => {
               </div>
             )}
 
-            <button 
-              type="submit" 
-              className={`submit-button ${isSubmitting ? 'submitting' : ''}`}
+            <button
+              type="submit"
+              className={`submit-button ${isSubmitting ? "submitting" : ""}`}
               disabled={isSubmitting}
             >
-              {isSubmitting ? 'INVIO IN CORSO...' : 'PRENOTA UN APPUNTAMENTO'}
+              {isSubmitting ? "INVIO IN CORSO..." : "PRENOTA UN APPUNTAMENTO"}
             </button>
           </form>
         </div>
