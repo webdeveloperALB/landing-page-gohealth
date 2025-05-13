@@ -10,13 +10,14 @@ const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA
     age: "",
     email: "",
     mobile: "",
+    phone: "", // Added dedicated phone field
     address: "",
     service: "",
     branch: "",
     message: "",
     selectedDate: null,
     selectedTime: null,
-    website: "" // Add honeypot field
+    website: "" 
   })
 
   // UI state
@@ -277,6 +278,7 @@ const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA
           age: "",
           email: "",
           mobile: "",
+          phone: "", // Also reset phone field
           address: "",
           service: "",
           branch: "",
@@ -411,13 +413,29 @@ const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA
                 required
               />
             </div>
+          </div>
+
+          <div className="form-row">
+            <div className="form-group wide">
+              <label htmlFor="phone">
+                Numero di Telefono <span className="required-star">*</span>
+              </label>
+              <input
+                type="tel"
+                id="phone"
+                placeholder="Il tuo numero di telefono"
+                value={formData.phone}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
 
             <div className="form-group wide">
-              <label htmlFor="mobile">Numero di Telefono</label>
+              <label htmlFor="mobile">Numero di Cellulare</label>
               <input
                 type="tel"
                 id="mobile"
-                placeholder="Il tuo numero di telefono"
+                placeholder="Il tuo numero di cellulare"
                 value={formData.mobile}
                 onChange={handleInputChange}
               />
