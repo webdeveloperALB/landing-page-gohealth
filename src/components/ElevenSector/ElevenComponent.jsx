@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, lazy, Suspense } from "react";
-import { Calendar, Clock, ChevronDown, Info } from "lucide-react";
+import { Calendar, Clock, ChevronDown, Info, Phone } from "lucide-react";
 import "./ElevenComponent.css";
 
 // Lazy load components to reduce initial load time
@@ -228,6 +228,7 @@ const ElevenComponent = ({ className }) => {
     service: "",
     name: "",
     email: "",
+    phone: "", // Added phone field
     date: null,
     time: null,
     // Honeypot field - should remain empty for legitimate users
@@ -238,7 +239,7 @@ const ElevenComponent = ({ className }) => {
 
   // Load reCAPTCHA only when the form is partially filled out
   useEffect(() => {
-    if (formData.name || formData.email || formData.service) {
+    if (formData.name || formData.email || formData.service || formData.phone) {
       setFormTouched(true);
     }
 
@@ -282,6 +283,11 @@ const ElevenComponent = ({ className }) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
 
+  const isValidPhone = (phone) => {
+    // Basic phone validation - can be customized for specific formats
+    return /^[+]?[\d\s()-]{6,20}$/.test(phone);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -299,6 +305,7 @@ const ElevenComponent = ({ className }) => {
           service: "",
           name: "",
           email: "",
+          phone: "",
           date: null,
           time: null,
           website: "",
@@ -313,6 +320,7 @@ const ElevenComponent = ({ className }) => {
     if (
       !formData.name ||
       !formData.email ||
+      !formData.phone || // Validate phone is required
       !formData.service ||
       !formData.date ||
       !formData.time
@@ -323,6 +331,11 @@ const ElevenComponent = ({ className }) => {
 
     if (!isValidEmail(formData.email)) {
       alert("Per favore inserisci un indirizzo email valido");
+      return;
+    }
+
+    if (!isValidPhone(formData.phone)) {
+      alert("Per favore inserisci un numero di telefono valido");
       return;
     }
 
@@ -339,6 +352,7 @@ const ElevenComponent = ({ className }) => {
       const payload = JSON.stringify({
         name: formData.name,
         email: formData.email,
+        phone: formData.phone, // Added phone to payload
         service: formData.service,
         date: formData.date.toISOString(),
         time: formData.time.toISOString(),
@@ -373,6 +387,7 @@ const ElevenComponent = ({ className }) => {
             service: "",
             name: "",
             email: "",
+            phone: "",
             date: null,
             time: null,
             website: "",
@@ -476,6 +491,24 @@ const ElevenComponent = ({ className }) => {
                     required
                   />
                 </div>
+              </div>
+            </div>
+
+            {/* New Phone Number Field */}
+            <div className="form-group full-width">
+              <label>
+                Telefono <span className="required">*</span>
+              </label>
+              <div className="input-wrapper">
+                <input
+                  type="tel"
+                  name="phone"
+                  placeholder="Il Tuo Numero Di Telefono"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  required
+                />
+                <Phone className="input-icon" />
               </div>
             </div>
 
