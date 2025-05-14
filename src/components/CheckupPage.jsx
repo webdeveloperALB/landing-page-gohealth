@@ -429,17 +429,6 @@ const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA
                 required
               />
             </div>
-
-            <div className="form-group wide">
-              <label htmlFor="mobile">Numero di Cellulare</label>
-              <input
-                type="tel"
-                id="mobile"
-                placeholder="Il tuo numero di cellulare"
-                value={formData.mobile}
-                onChange={handleInputChange}
-              />
-            </div>
           </div>
 
           <div className="form-row">
