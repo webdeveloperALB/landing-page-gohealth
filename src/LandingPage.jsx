@@ -7,16 +7,36 @@ import "./LandingPage.css";
 import FirstSector from "./components/FirstSector/FirstSector";
 
 // Lazy load all other components
-const SecondSector = lazy(() => import("./components/SecondSector/SecondSector"));
-const ThirdSection = lazy(() => import("./components/ThirdSector/ThirdSection"));
-const FourthSection = lazy(() => import("./components/FourthSector/FourthSection"));
-const FifthSection = lazy(() => import("./components/FifthSector/FifthSection"));
-const SixthComponent = lazy(() => import("./components/SixthSector/SixthComponent"));
-const SeventhComponent = lazy(() => import("./components/SeventhSector/SeventhComponent"));
-const EightComponent = lazy(() => import("./components/EightSector/EightComponent"));
-const NinthComponent = lazy(() => import("./components/NinthSector/NinthComponent"));
-const TenthComponent = lazy(() => import("./components/TenthSector/TenthComponent"));
-const ElevenComponent = lazy(() => import("./components/ElevenSector/ElevenComponent"));
+const SecondSector = lazy(() =>
+  import("./components/SecondSector/SecondSector")
+);
+const ThirdSection = lazy(() =>
+  import("./components/ThirdSector/ThirdSection")
+);
+const FourthSection = lazy(() =>
+  import("./components/FourthSector/FourthSection")
+);
+const FifthSection = lazy(() =>
+  import("./components/FifthSector/FifthSection")
+);
+const SixthComponent = lazy(() =>
+  import("./components/SixthSector/SixthComponent")
+);
+const SeventhComponent = lazy(() =>
+  import("./components/SeventhSector/SeventhComponent")
+);
+const EightComponent = lazy(() =>
+  import("./components/EightSector/EightComponent")
+);
+const NinthComponent = lazy(() =>
+  import("./components/NinthSector/NinthComponent")
+);
+const TenthComponent = lazy(() =>
+  import("./components/TenthSector/TenthComponent")
+);
+const ElevenComponent = lazy(() =>
+  import("./components/ElevenSector/ElevenComponent")
+);
 
 // Loading placeholder
 const LoadingFallback = () => <div className="loading-section">Loading...</div>;
@@ -26,7 +46,6 @@ const LandingPage = () => {
     <div className="sectors-container">
       {/* Load first sector eagerly (above the fold) */}
       <FirstSector className="first-sector" />
-      
       {/* Suspense for lazy loaded components */}
       <Suspense fallback={<LoadingFallback />}>
         <SecondSector className="second-sector" />
@@ -40,10 +59,15 @@ const LandingPage = () => {
         <TenthComponent className="tenth-sector" />
         <ElevenComponent className="eleven-sector" />
       </Suspense>
-
       {/* WhatsApp icon - keep outside Suspense for immediate visibility */}
       <div className="whatsapp-icon">
-        <a href="https://wa.me/355696283333" target="_blank" rel="noopener noreferrer">
+        <a
+          href={`https://wa.me/355696283333?text=${encodeURIComponent(
+            "Ciao! Vorrei avere più informazioni sui trattamenti dentali che offrite in Albania. Potete aiutarmi?"
+          )}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <FaWhatsapp size={40} color="#25D366" />
         </a>
       </div>
