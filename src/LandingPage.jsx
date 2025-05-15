@@ -42,6 +42,12 @@ const ElevenComponent = lazy(() =>
 const LoadingFallback = () => <div className="loading-section">Loading...</div>;
 
 const LandingPage = () => {
+  // Pre-define the WhatsApp message
+  const whatsappMessage = "Ciao! Vorrei avere più informazioni sui trattamenti dentali che offrite in Albania. Potete aiutarmi?";
+  
+  // Create the WhatsApp URL with properly encoded message
+  const whatsappUrl = `https://wa.me/355696283333?text=${encodeURIComponent(whatsappMessage)}`;
+
   return (
     <div className="sectors-container">
       {/* Load first sector eagerly (above the fold) */}
@@ -62,11 +68,10 @@ const LandingPage = () => {
       {/* WhatsApp icon - keep outside Suspense for immediate visibility */}
       <div className="whatsapp-icon">
         <a
-          href={`https://wa.me/355696283333?text=${encodeURIComponent(
-            "Ciao! Vorrei avere più informazioni sui trattamenti dentali che offrite in Albania. Potete aiutarmi?"
-          )}`}
+          href={whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
+          aria-label="Contact us on WhatsApp"
         >
           <FaWhatsapp size={40} color="#25D366" />
         </a>
