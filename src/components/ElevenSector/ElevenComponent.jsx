@@ -365,7 +365,7 @@ const ElevenComponent = ({ className }) => {
 
       // Using fetch with proper CORS handling
       const response = await fetch(
-        "https://gohealth-server.onrender.com/send-email",
+        "https://gohealth-server-production.up.railway.app/send-email",
         {
           method: "POST",
           headers: {

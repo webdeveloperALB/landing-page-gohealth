@@ -251,7 +251,7 @@ const CheckupPage = ({ title = "Appointment Form", subtitle = "GO HEALTH ALBANIA
     
     try {
       // Use a consistent API URL
-      const apiUrl = window.ENV?.API_URL || 'https://gohealth-server.onrender.com/send-email'
+      const apiUrl = window.ENV?.API_URL || 'https://gohealth-server-production.up.railway.app/send-email'
       
       const response = await fetch(apiUrl, {
         method: 'POST',
